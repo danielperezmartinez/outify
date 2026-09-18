@@ -1,7 +1,19 @@
-import { writeFileSync, existsSync } from 'node:fs';
+import { writeFileSync, existsSync, readFileSync } from 'node:fs';
 if (existsSync('.env.local')) process.loadEnvFile('.env.local');
-const production =
-  process.env.VERCEL_ENV === 'production' || process.env.OUTIFY_ENV === 'production';
+// Vercel siempre prevalece: una variable local nunca convierte una Preview en producción.
+const production = process.env.VERCEL_ENV
+  ? process.env.VERCEL_ENV === 'production'
+  : process.env.OUTIFY_ENV === 'production';
+const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
+writeFileSync(
+  'src/app/platform/app-version.ts',
+  `// Generado desde package.json.\nexport const appVersion = ${JSON.stringify(version)};\n`,
+);
+const workerConfig = JSON.parse(readFileSync('ngsw-config.template.json', 'utf8'));
+writeFileSync(
+  'ngsw-config.json',
+  JSON.stringify({ ...workerConfig, appData: { version } }, null, 2) + '\n',
+);
 const config = {
   url: process.env.SUPABASE_URL || 'https://zckqbrwdgxohdymiwbfz.supabase.co',
   key: process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_4Km0kzBpB6C3LJDDjO3cbg_V9vKSvod',

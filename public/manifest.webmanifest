@@ -1,0 +1,22 @@
+{
+  "id": "/",
+  "name": "Outify · Tu armario, en armonía",
+  "short_name": "Outify",
+  "description": "Organiza tus prendas y encuentra su lugar en tu armario visual y privado.",
+  "lang": "es",
+  "start_url": "/armarios",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F8F7F5",
+  "theme_color": "#F8F7F5",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

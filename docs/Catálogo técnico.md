@@ -15,6 +15,8 @@ Piezas vigentes: [[Catálogo técnico/Sesión y cliente Supabase]],
 [[Catálogo técnico/Editor SVG y armarios]] y
 [[Catálogo técnico/Lectura paginada]].
 
+PWA: [[Catálogo técnico/Actualizaciones de la aplicación]].
+
 ## Cómo utilizarlo
 
 1. Filtrar la vista por tipo, área, feature o estado.

@@ -23,8 +23,10 @@ Nunca introducir claves secretas o `service_role` en el frontend.
 
 ```sh
 corepack pnpm test --watch=false
+corepack pnpm test:config
 corepack pnpm build
-corepack pnpm exec prettier --check src scripts e2e playwright.config.ts
+corepack pnpm test:pwa
+corepack pnpm exec prettier --check src scripts e2e playwright.config.ts playwright.pwa.config.ts
 ```
 
 Las pruebas SQL de `supabase/tests/invariants.sql` crean identidades temporales,
@@ -63,15 +65,41 @@ Guardar el resultado TypeScript en `src/app/platform/database.types.ts`.
 
 En Auth debe estar habilitado Google y deben admitirse los callbacks utilizados:
 `http://localhost:4200/auth/callback`, `http://127.0.0.1:4200/auth/callback` y la
-URL final de Vercel. El acceso usa PKCE y requiere terminar el flujo en el mismo
+URL de producción `https://outify.vercel.app/auth/callback`. Se añaden en
+**Authentication → URL Configuration → Redirect URLs** de Supabase; configurar
+solo el dominio sin `/auth/callback` no autoriza este destino. Si se usa otro
+alias de Vercel, debe añadirse también su callback exacto. Conservar las URLs de
+otras aplicaciones: Auth se comparte dentro del proyecto Supabase.
+El acceso usa PKCE y requiere terminar el flujo en el mismo
 navegador y origen donde comenzó.
 
-## Primer despliegue en Vercel
+## Publicaciones en Vercel
 
-Lo realiza el propietario conectando GitHub, según ADR-0007. `vercel.json`
-prepara build, rutas SPA y cabeceras. Vercel Production selecciona automáticamente
-los recursos estables; Preview selecciona desarrollo. Fuera de Vercel, establecer
-`OUTIFY_ENV=production` explícitamente para compilar contra producción.
+La integración Git ya está conectada. El protocolo de versiones, publicación y
+supervisión está en [las reglas del proyecto](docs/README.md#3-versionado-y-despliegue).
+El estado y las evidencias de CI/CD se mantienen en
+[la tarea existente](docs/Tareas/Automatizar%20CI-CD%20y%20previews%20en%20Vercel.md).
+
+`vercel.json` prepara build, rutas SPA y cabeceras de revalidación del worker.
+Vercel Production selecciona recursos estables y Preview usa desarrollo, incluso
+si existe `OUTIFY_ENV=production`. Fuera de Vercel esa variable permite compilar
+contra producción explícitamente.
+
+## PWA y actualizaciones
+
+La aplicación publicada ofrece instalación desde el navegador y apertura del
+shell sin conexión después de la primera visita. Las consultas y cambios del
+inventario requieren conexión. Los iconos conservan la identidad provisional.
+
+El número discreto del pie permite comprobar actualizaciones. El aviso ofrece
+«Actualizar» y «Más tarde»; guarda las ediciones antes de recargar. Las pestañas
+abiertas antes de introducir la PWA necesitan una primera recarga manual.
+
+`pnpm test:pwa` utiliza una build previa y un servidor local en el puerto 4300,
+sin cuenta ni acceso al inventario. Comprueba el worker, shell offline, avisos,
+aplazamiento, recarga voluntaria, AXE en escritorio/móvil y restauración local
+de contenido anterior bajo una nueva versión. CI instala Chromium automáticamente;
+localmente utiliza Chrome. La suite del inventario sigue separada.
 
 Los textos legales, el dominio y la identidad pública final conservan sus tareas
 pendientes en la bóveda. Los enlaces legales se añadirán cuando existan documentos

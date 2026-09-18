@@ -2,8 +2,10 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router } from '@angular/router';
 import { Session } from './session';
 import { errorMessage } from './backend';
+import { VersionButton } from './version-button';
 @Component({
   selector: 'app-login',
+  imports: [VersionButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<main class="login-layout">
     <section class="login-copy">
@@ -23,7 +25,10 @@ import { errorMessage } from './backend';
         }
         <p class="muted small">Tu inventario y tus fotografías, solo para ti.</p>
       </div>
-      <p class="eyebrow">MENOS BUSCAR. MÁS DISFRUTAR.</p>
+      <div class="login-footer">
+        <p class="eyebrow">MENOS BUSCAR. MÁS DISFRUTAR.</p>
+        <app-version-button />
+      </div>
     </section>
     <section class="login-art" aria-label="Un armario organizado en dos zonas">
       <p class="eyebrow">EL ARTE DE TENERLO A MANO</p>

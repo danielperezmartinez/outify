@@ -193,6 +193,8 @@ hr {
   outline: none;
 }
 .shell-footer {
+  align-items: center;
+  flex-wrap: wrap;
   border-top: 1px solid var(--border);
   padding: 22px 4%;
   display: flex;
@@ -200,6 +202,13 @@ hr {
   gap: 20px;
   color: var(--body);
   font-size: 13px;
+}
+.login-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .page-heading {
   display: flex;

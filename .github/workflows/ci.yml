@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verificar
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 12.4.2
+          run_install: false
+      - name: Instalar dependencias reproducibles
+        run: pnpm install --frozen-lockfile
+      - name: Verificar incremento de versión
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: pnpm check:release "$BASE_SHA"
+      - name: Probar configuración y SemVer
+        run: pnpm test:config
+      - name: Tests de aplicación
+        run: pnpm test --watch=false
+      - name: Build de Preview
+        env:
+          VERCEL_ENV: preview
+        run: pnpm build
+      - name: Instalar navegador de prueba
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Verificar PWA y actualización entre versiones
+        run: pnpm test:pwa
+      - name: Build de Production
+        env:
+          VERCEL_ENV: production
+        run: pnpm build
