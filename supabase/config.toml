@@ -1,0 +1,8 @@
+project_id = "outify"
+[api]
+enabled = true
+schemas = ["outify", "outify_dev"]
+extra_search_path = ["extensions"]
+[db.migrations]
+enabled = true
+schema_paths = ["./schemas/outify.sql", "./schemas/outify_dev.sql"]
