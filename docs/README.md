@@ -116,7 +116,9 @@ documenta contexto, alternativas consideradas y consecuencias.
   [[Decisiones/ADR-0006 Motor de edición con SVG nativo]] y
   [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel]],
   [[Decisiones/ADR-0008 Flujo Git con ramas cortas y squash]] y
-  [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]].
+  [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]],
+  [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]] y
+  [[Decisiones/ADR-0011 PWA y actualización voluntaria]].
 
 [[Decisiones|Abrir decisiones de arquitectura]]
 
@@ -240,17 +242,32 @@ pnpm test   # Tests con Vitest
 
 ### 3. Versionado y despliegue
 
-- Versionado semántico (SemVer) en `package.json`.
+- Versionado semántico (SemVer) en `package.json`, única fuente de la versión
+  visible y de los metadatos de actualización de la PWA.
+- Antes de cada despliegue, acordar con el usuario el incremento y el número
+  exacto: `major` para cambios incompatibles, `minor` para funcionalidades
+  compatibles y `patch` para correcciones compatibles. No inferir el consenso
+  por silencio ni incrementar o publicar sin él. Registrar el acuerdo en la PR.
+- Desplegar significa hacer push del cambio con la versión acordada ya
+  modificada. La integración Git de Vercel crea Preview para ramas de trabajo y
+  Production al integrar mediante squash en `main`; no usar despliegues manuales
+  por CLI/MCP ni promover una Preview construida con recursos de desarrollo.
+- Después de publicar, usar el MCP de Vercel para localizar el despliegue del SHA
+  exacto y comprobar destino, URL, estado y logs. Ante un fallo, **avisar con un
+  reporte y detenerse**: no corregir, reintentar, redesplegar ni ejecutar rollback
+  por iniciativa propia. Cualquier recuperación requiere una nueva instrucción.
 - Repositorio Git local en la rama `main`, enlazado como `origin` a
   `https://github.com/danielperezmartinez/outify`.
 - `main` es la rama estable y se protege contra force-push. El trabajo se hace
   en ramas cortas `feat/*`, `fix/*`, `chore/*` o `docs/*`, se integra mediante
   pull request y squash, y usa Conventional Commits.
-- Destino de despliegue: Vercel. El primer proyecto y despliegue los realizará
-  el usuario conectando el repositorio de GitHub; la automatización y el flujo
-  de CI/CD se definirán después.
+- Destino de despliegue: el proyecto Vercel `outify`, ya conectado a GitHub,
+  con producción en `https://outify.vercel.app`. CI comprueba instalación
+  reproducible, incremento SemVer, tests, PWA y builds de Preview y Production.
+- `main` requiere PR, historial lineal y el check `Verificar` actualizado;
+  la protección también se aplica a administradores. Solo se admite squash.
 - Fuentes y justificación:
-  [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel]] y
+  [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]] y
   [[Decisiones/ADR-0008 Flujo Git con ramas cortas y squash]].
 
 ### 4. Idioma

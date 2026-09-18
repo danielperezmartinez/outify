@@ -1,14 +1,14 @@
 ---
 Nombre: Repositorio GitHub y despliegue en Vercel
 Número: 7
-Estado: Aceptada
+Estado: Reemplazada
 Resumen: El código se versionará en GitHub y la aplicación Angular se desplegará en Vercel; el usuario realizará la conexión y el primer despliegue antes de automatizar el flujo.
 Decisión: Usar la rama local main, el repositorio GitHub danielperezmartinez/outify como origin y Vercel como plataforma de despliegue.
 Consecuencias: "El código queda preparado para un flujo GitHub–Vercel, pero el primer push, la creación del proyecto en Vercel y la futura política de CI/CD siguen siendo acciones separadas."
 Reemplaza: []
-Reemplazada por: []
+Reemplazada por: "[[ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]"
 Fecha de creación: 2026-09-18T09:56:11+02:00
-Última modificación: 2026-09-18T09:56:11+02:00
+Última modificación: 2026-09-18
 ---
 
 # ADR-0007 · Repositorio GitHub y despliegue en Vercel

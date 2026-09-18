@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Backend, errorMessage, unwrap } from './backend';
+import { VersionButton } from './version-button';
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, VersionButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<a class="skip-link" href="#main-content">Saltar al contenido</a>
     <header class="shell-header">
@@ -34,6 +35,7 @@ import { Backend, errorMessage, unwrap } from './backend';
     <footer class="shell-footer">
       <span>Un lugar para lo que te acompaña.</span
       ><span class="eyebrow">OUTIFY · TU ARMARIO, CON CALMA</span>
+      <app-version-button />
     </footer>`,
 })
 export class Shell {

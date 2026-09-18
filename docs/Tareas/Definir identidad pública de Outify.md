@@ -44,3 +44,7 @@ la aplicación, el navegador, Vercel y futuras superficies de comunicación.
 Se ha aplicado el nombre tipográfico Outify, un favicon SVG provisional y los
 metadatos básicos de título/descripción. La identidad final, el dominio y los
 recursos sociales siguen pendientes de esta tarea; no sustituyen su aprobación.
+
+[[Añadir PWA y actualización de versiones]] aporta PNG de 192/512, maskable de
+512 y apple-touch-icon de 180 derivados del favicon provisional. Son recursos
+funcionales para instalar la aplicación; no aprueban una identidad definitiva.

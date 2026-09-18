@@ -1,3 +1,6 @@
+---
+Última modificación: 2026-09-18
+---
 # Decisiones de arquitectura (ADR)
 
 Registro de decisiones técnicas duraderas de outify: contexto, alternativas
@@ -17,6 +20,8 @@ ni contradecir sin darse cuenta una decisión vigente.
 - [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel]]
 - [[Decisiones/ADR-0008 Flujo Git con ramas cortas y squash]]
 - [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]]
+- [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]
+- [[Decisiones/ADR-0011 PWA y actualización voluntaria]]
 
 ## Cómo utilizarlo
 

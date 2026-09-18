@@ -48,6 +48,8 @@ Thumbs.db
 .env*
 !.env.example
 /src/app/platform/runtime-config.ts
+/src/app/platform/app-version.ts
+/ngsw-config.json
 /test-results/
 /playwright-report/
 /supabase/.temp/
