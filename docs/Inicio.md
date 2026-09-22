@@ -1,3 +1,6 @@
+---
+Última modificación: 2026-09-19
+---
 # Inicio
 
 Este es el nexo de navegación de la memoria del proyecto outify.
@@ -5,6 +8,9 @@ Este es el nexo de navegación de la memoria del proyecto outify.
 ## Producto
 
 [[Producto|Abrir la definición funcional y el alcance del MVP]]
+
+Preparación pública: [[Lanzamiento en Product Hunt]], [[Tratamiento de datos]] y
+[[Privacidad y condiciones - borrador]].
 
 ## Sistemas
 

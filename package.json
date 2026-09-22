@@ -1,6 +1,6 @@
 {
   "name": "outify",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "preinstall": "node scripts/require-pnpm.mjs",
     "ng": "ng",
@@ -10,6 +10,9 @@
     "test": "node scripts/configure.mjs && ng test",
     "test:config": "node --test scripts/configure.test.mjs scripts/verify-release.test.mjs",
     "test:pwa": "playwright test --config playwright.pwa.config.ts",
+    "test:editor": "playwright test --config playwright.editor.config.ts",
+    "test:server": "node --test server/account-deletion.test.mjs",
+    "test:account:local": "node server/account-deletion.integration.mjs",
     "check:release": "node scripts/verify-release.mjs"
   },
   "private": true,

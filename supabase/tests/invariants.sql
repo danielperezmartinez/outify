@@ -3,9 +3,12 @@ begin;
 insert into auth.users(id,email) values
  ('11111111-0000-4000-8000-000000000001','outify-test-a@example.invalid'),
  ('11111111-0000-4000-8000-000000000002','outify-test-b@example.invalid');
+insert into auth.sessions(id,user_id,created_at,updated_at) select id,id,now(),now() from auth.users where id in ('11111111-0000-4000-8000-000000000001','11111111-0000-4000-8000-000000000002');
 set local role authenticated;
-select set_config('request.jwt.claim.sub','11111111-0000-4000-8000-000000000001',true);
+select set_config('request.jwt.claims','{"sub":"11111111-0000-4000-8000-000000000001","session_id":"11111111-0000-4000-8000-000000000001","role":"authenticated"}',true);
+select outify_dev.activate_workspace(true);
 select outify_dev.initialize_user_workspace();
+select outify_dev.activate_workspace(true);
 select outify_dev.initialize_user_workspace();
 do $$begin
  if (select count(*) from outify_dev.wardrobes)<>1 then raise exception 'Inicialización duplicada'; end if;
@@ -16,10 +19,11 @@ do $$begin
  if (select count(*) from outify_dev.tags)<>1 then raise exception 'Etiquetas duplicadas'; end if;
  if (select count(*) from outify_dev.item_locations)<>1 then raise exception 'Ubicación no guardada'; end if;
 end$$;
-select set_config('request.jwt.claim.sub','11111111-0000-4000-8000-000000000002',true);
+select set_config('request.jwt.claims','{"sub":"11111111-0000-4000-8000-000000000002","session_id":"11111111-0000-4000-8000-000000000002","role":"authenticated"}',true);
 do $$begin
  if exists(select 1 from outify_dev.items) or exists(select 1 from outify_dev.wardrobes) then raise exception 'Fuga RLS'; end if;
 end$$;
+select outify_dev.activate_workspace(true);
 select outify_dev.initialize_user_workspace();
 do $$begin
  begin
@@ -27,7 +31,7 @@ do $$begin
   raise exception 'RLS permitió inserción ajena';
  exception when insufficient_privilege then null; end;
 end$$;
-select set_config('request.jwt.claim.sub','11111111-0000-4000-8000-000000000001',true);
+select set_config('request.jwt.claims','{"sub":"11111111-0000-4000-8000-000000000001","session_id":"11111111-0000-4000-8000-000000000001","role":"authenticated"}',true);
 update outify_dev.items set status='archived' where name='Camisa';
 do $$begin
  if exists(select 1 from outify_dev.item_locations) then raise exception 'Archivado conserva ubicación'; end if;
@@ -43,6 +47,7 @@ do $$begin
  if not exists(select 1 from outify_dev.items) then raise exception 'Eliminar armario eliminó prenda'; end if;
  if exists(select 1 from outify_dev.item_locations) then raise exception 'Ubicación huérfana'; end if;
 end$$;
+select outify_dev.activate_workspace(true);
 select outify_dev.initialize_user_workspace();
 do $$begin if exists(select 1 from outify_dev.wardrobes) then raise exception 'Se recreó plantilla eliminada'; end if; end$$;
 update outify_dev.items set status='archived' where name='Camisa';

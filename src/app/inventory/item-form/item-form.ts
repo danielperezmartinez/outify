@@ -19,7 +19,7 @@ import { errorMessage } from '../../platform/backend';
   imports: [RouterLink, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '(window:beforeunload)': 'beforeUnload($event)' },
-  template: `<a class="back-link" routerLink="/articulos">← Volver a artículos</a>
+  template: `<a class="back-link" routerLink="/items">← Volver a artículos</a>
     <div class="page-heading">
       <div>
         <p class="eyebrow">CADA PRENDA, UNA HISTORIA</p>
@@ -135,7 +135,9 @@ import { errorMessage } from '../../platform/backend';
             @if (item()?.zoneId) {
               <p>
                 {{ wardrobes.locationLabel(item()!.zoneId) }}
-                <a routerLink="/armarios" [queryParams]="{ armario: form.controls.wardrobe.value }"
+                <a
+                  routerLink="/wardrobes"
+                  [queryParams]="{ wardrobe: form.controls.wardrobe.value }"
                   >Ver en el armario ↗</a
                 >
               </p>
@@ -145,7 +147,7 @@ import { errorMessage } from '../../platform/backend';
             <p class="error" role="alert">{{ error() }}</p>
           }
           <div class="form-actions">
-            <a class="button" routerLink="/articulos">Cancelar</a
+            <a class="button" routerLink="/items">Cancelar</a
             ><button class="primary" type="submit" [disabled]="busy()">
               {{ busy() ? 'Guardando…' : id ? 'Guardar cambios' : 'Crear artículo' }}
             </button>
@@ -312,7 +314,7 @@ export class ItemForm {
       );
       saved = true;
       this.completed = true;
-      await this.router.navigateByUrl('/articulos');
+      await this.router.navigateByUrl('/items');
     } catch (e) {
       this.error.set(errorMessage(e));
       if (newPath && !saved) {
@@ -346,7 +348,7 @@ export class ItemForm {
     try {
       await action();
       this.completed = true;
-      await this.router.navigateByUrl('/articulos');
+      await this.router.navigateByUrl('/items');
     } catch (e) {
       this.error.set(errorMessage(e));
     } finally {

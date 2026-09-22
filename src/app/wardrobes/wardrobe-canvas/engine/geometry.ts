@@ -31,8 +31,9 @@ export function transformRect(
   delta: Point,
   resize: boolean,
   bounds: { width: number; height: number },
+  snapping = true,
 ): Rect {
-  const snap = (n: number) => Math.round(n / 8) * 8;
+  const snap = (n: number) => (snapping ? Math.round(n / 8) * 8 : Math.round(n * 100) / 100);
   return constrain(
     resize
       ? { ...rect, width: snap(rect.width + delta.x), height: snap(rect.height + delta.y) }
@@ -69,15 +70,17 @@ export interface GeometryCommand {
   before: Rect;
   after: Rect;
 }
-export class CommandHistory {
-  private past: GeometryCommand[] = [];
-  private future: GeometryCommand[] = [];
-  push(command: GeometryCommand) {
-    this.past.push({
-      id: command.id,
-      before: rectOf(command.before),
-      after: rectOf(command.after),
-    });
+export class CommandHistory<T = GeometryCommand> {
+  private past: T[] = [];
+  private future: T[] = [];
+  get canUndo() {
+    return this.past.length > 0;
+  }
+  get canRedo() {
+    return this.future.length > 0;
+  }
+  push(command: T) {
+    this.past.push(structuredClone(command));
     this.future = [];
   }
   undo() {

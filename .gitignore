@@ -47,12 +47,14 @@ Thumbs.db
 
 .env*
 !.env.example
+!.env.server.example
 /src/app/platform/runtime-config.ts
 /src/app/platform/app-version.ts
 /ngsw-config.json
 /test-results/
 /playwright-report/
 /supabase/.temp/
+/supabase/.branches/
 
 # Estado local de Obsidian
 /docs/.obsidian/workspace*.json

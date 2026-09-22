@@ -164,6 +164,7 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
   readonly zones = input.required<Zone[]>();
   readonly items = input.required<Item[]>();
   readonly editing = input(false);
+  readonly snapping = input(true);
   readonly selected = input<number | null>(null);
   readonly disabled = input(false);
   readonly select = output<number>();
@@ -189,6 +190,14 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
     return groups;
   });
   constructor() {
+    effect(() => {
+      const zones = this.zones();
+      const svg = this.canvas().nativeElement;
+      for (const zone of zones) {
+        const node = svg.querySelector<SVGGElement>(`[data-zone="${zone.id}"]`);
+        if (node) this.draw(node, zone);
+      }
+    });
     effect(() => {
       this.viewportIdentity();
       untracked(() => this.fit());
@@ -262,7 +271,7 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
       this.changed.emit({
         id: zone.id,
         before: rectOf(zone),
-        after: transformRect(zone, delta, event.shiftKey, this.wardrobe()),
+        after: transformRect(zone, delta, event.shiftKey, this.wardrobe(), this.snapping()),
       });
     }
   }
@@ -353,7 +362,13 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
         const delta = { x: point.x - start.x, y: point.y - start.y };
         if (Math.abs(delta.x) + Math.abs(delta.y) > 3) moved = true;
         if ((mode === 'move' || mode === 'resize') && original && node) {
-          draft = transformRect(original, delta, mode === 'resize', this.wardrobe());
+          draft = transformRect(
+            original,
+            delta,
+            mode === 'resize',
+            this.wardrobe(),
+            this.snapping() && !e.shiftKey,
+          );
           this.draw(node, draft);
         } else if (mode === 'item' && itemNode) {
           itemNode.setAttribute('transform', `translate(${delta.x} ${delta.y}) ${itemTransform}`);
@@ -378,11 +393,15 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
         return;
       }
       const cancelled = e.type === 'pointercancel';
+      if (!cancelled && start && mode !== 'pan') {
+        const finalPoint = this.point(e);
+        moved ||= Math.abs(finalPoint.x - start.x) + Math.abs(finalPoint.y - start.y) > 3;
+      }
       if (itemNode) {
         itemNode.setAttribute('transform', itemTransform);
         itemNode.removeAttribute('opacity');
       }
-      if (node && original) this.draw(node, original);
+      if (node && original && (cancelled || !moved)) this.draw(node, original);
       if (!cancelled && start) {
         if (original && (mode === 'move' || mode === 'resize') && moved) {
           const point = this.point(e);
@@ -391,9 +410,11 @@ export class WardrobeCanvas implements AfterViewInit, OnDestroy {
             { x: point.x - start.x, y: point.y - start.y },
             mode === 'resize',
             this.wardrobe(),
+            this.snapping() && !e.shiftKey,
           );
+          if (node) this.draw(node, draft);
         }
-        if (draft && original)
+        if (draft && original && moved)
           this.ngZone.run(() =>
             this.changed.emit({ id: original!.id, before: rectOf(original!), after: draft! }),
           );

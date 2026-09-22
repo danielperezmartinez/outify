@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Session } from '../platform/session';
 import { errorMessage } from '../platform/backend';
+import { DeleteAccount } from './delete-account';
+import { LegalLinks } from '../shared/ui/legal-links';
 @Component({
   selector: 'app-account',
+  imports: [DeleteAccount, LegalLinks],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="page-heading">
       <div>
@@ -20,13 +23,15 @@ import { errorMessage } from '../platform/backend';
       <hr />
       <h3>Un armario solo tuyo</h3>
       <p>Tus artículos, armarios y fotografías son privados.</p>
+      <app-legal-links label="Privacidad de tu cuenta" />
       <button (click)="logout()" [disabled]="busy()">
         {{ busy() ? 'Cerrando sesión…' : 'Cerrar sesión' }}
       </button>
       @if (error()) {
         <p class="error" role="alert">{{ error() }}</p>
       }
-    </section>`,
+    </section>
+    <app-delete-account />`,
 })
 export class Account {
   readonly session = inject(Session);

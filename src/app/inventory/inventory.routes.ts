@@ -12,7 +12,7 @@ export const INVENTORY_ROUTES: Routes = [
         loadComponent: () => import('./item-list/item-list').then((m) => m.ItemList),
       },
       {
-        path: 'nuevo',
+        path: 'new',
         canDeactivate: [
           (component: import('./item-form/item-form').ItemForm) => component.canLeave(),
         ],

@@ -12,12 +12,13 @@
           "/*.js",
           "/favicon.svg",
           "/manifest.webmanifest",
-          "/icons/*.png"
+          "/icons/*.png",
+          "/fonts/*.woff2"
         ]
       }
     }
   ],
   "dataGroups": [],
-  "navigationUrls": ["/**", "!/**/*.*", "!/**/*__*", "!/**/*__*/**", "!/auth/**"],
+  "navigationUrls": ["/**", "!/**/*.*", "!/**/*__*", "!/**/*__*/**", "!/auth/**", "!/api/**"],
   "navigationRequestStrategy": "performance"
 }

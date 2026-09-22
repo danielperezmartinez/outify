@@ -1,11 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: '14.5';
-  };
   outify: {
     Tables: {
       image_cleanup: {
@@ -341,8 +336,37 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      account_deletion_batch: {
+        Args: { claim: string; target_user: string };
+        Returns: Json;
+      };
+      activate_workspace: {
+        Args: { age_confirmed: boolean; start_new?: boolean };
+        Returns: undefined;
+      };
+      claim_account_deletion: { Args: { target_user?: string }; Returns: Json };
+      defer_account_deletion: {
+        Args: { claim: string; target_user: string };
+        Returns: undefined;
+      };
       delete_archived_item: { Args: { item: number }; Returns: undefined };
+      finish_account_deletion: {
+        Args: { claim: string; target_user: string };
+        Returns: boolean;
+      };
+      get_workspace_status: { Args: never; Returns: string };
       initialize_user_workspace: { Args: never; Returns: undefined };
+      request_account_deletion: { Args: never; Returns: string };
+      restore_zone_state: {
+        Args: {
+          assigned_items: number[];
+          expected_state: Json;
+          restored_state: Json;
+          target_id: number;
+          target_wardrobe: number;
+        };
+        Returns: Json;
+      };
       save_item: {
         Args: { item_data: Json; tag_names?: string[]; target_zone?: number };
         Returns: number;
@@ -690,8 +714,37 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      account_deletion_batch: {
+        Args: { claim: string; target_user: string };
+        Returns: Json;
+      };
+      activate_workspace: {
+        Args: { age_confirmed: boolean; start_new?: boolean };
+        Returns: undefined;
+      };
+      claim_account_deletion: { Args: { target_user?: string }; Returns: Json };
+      defer_account_deletion: {
+        Args: { claim: string; target_user: string };
+        Returns: undefined;
+      };
       delete_archived_item: { Args: { item: number }; Returns: undefined };
+      finish_account_deletion: {
+        Args: { claim: string; target_user: string };
+        Returns: boolean;
+      };
+      get_workspace_status: { Args: never; Returns: string };
       initialize_user_workspace: { Args: never; Returns: undefined };
+      request_account_deletion: { Args: never; Returns: string };
+      restore_zone_state: {
+        Args: {
+          assigned_items: number[];
+          expected_state: Json;
+          restored_state: Json;
+          target_id: number;
+          target_wardrobe: number;
+        };
+        Returns: Json;
+      };
       save_item: {
         Args: { item_data: Json; tag_names?: string[]; target_zone?: number };
         Returns: number;

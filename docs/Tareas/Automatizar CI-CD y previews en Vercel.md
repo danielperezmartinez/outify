@@ -1,11 +1,11 @@
 ---
 Nombre: Automatizar CI-CD y previews en Vercel
-Estado: En curso
-Resumen: CI de instalación, SemVer, tests, PWA y builds preparado; main protegida y squash exclusivo configurados en GitHub. Pendiente validar PR, Preview y Production con la versión acordada.
+Estado: Hecha
+Resumen: CI validado en PR y main; Preview y Production 0.2.0 READY confirmados por MCP, con main protegida, squash exclusivo y consenso SemVer documentado.
 Decisiones: "[[Decisiones/ADR-0003 pnpm exclusivo y seguridad de dependencias|ADR-0003]]; [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel|ADR-0007]]; [[Decisiones/ADR-0008 Flujo Git con ramas cortas y squash|ADR-0008]]; [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase|ADR-0009]]"
 Bloqueada: []
 Fecha de creación: 2026-09-18T14:27:30+02:00
-Última modificación: 2026-09-18
+Última modificación: 2026-09-19
 ---
 
 # Automatizar CI-CD y previews en Vercel
@@ -31,10 +31,10 @@ el 2026-09-18: `https://outify.vercel.app`.
 
 ## Criterios de finalización
 
-- [ ] Cada pull request obtiene un resultado verificable de tests y build.
-- [ ] Cada pull request elegible obtiene una URL Preview.
+- [x] Cada pull request obtiene un resultado verificable de tests y build.
+- [x] Cada pull request elegible obtiene una URL Preview.
 - [x] La configuración de Preview selecciona exclusivamente recursos de desarrollo, verificada mediante pruebas de precedencia.
-- [ ] Solo `main` despliega en Production.
+- [x] Solo `main` despliega en Production.
 - [x] La protección de rama exige el check `Verificar` actualizado, también para administradores (API de GitHub).
 - [x] Existe un ensayo local documentado de restauración; no se ha ejecutado rollback en producción.
 
@@ -64,12 +64,25 @@ y desarrollo en Preview. La conexión inicial ya está hecha.
 - Protocolo y autoridad: [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]
   y [[../README#3. Versionado y despliegue]].
 
-## Validación y publicación pendientes
+## Validación y publicación completadas
 
-Publicar la rama `feat/pwa-cicd` únicamente tras acordar versión. Abrir PR,
-confirmar `Verificar` en GitHub y localizar por MCP el despliegue Preview del SHA
-publicado. Integrar por squash solo tras los checks y comprobar por MCP el nuevo
-SHA de `main` en Production. Nunca confundir el despliegue inicial con el nuevo.
+La rama `feat/pwa-cicd` se publicó con la versión acordada mediante
+[PR #1](https://github.com/danielperezmartinez/outify/pull/1), integrada por squash
+tras CI y Preview correctos. Evidencia confirmada el 2026-09-19:
+
+- CI de la PR: [35390248695](https://github.com/danielperezmartinez/outify/actions/runs/35390248695), `success`.
+- Preview del SHA `24ba2e250a6a734876a281b0a60ac5411e67234a`:
+  `dpl_7gkHsDp42DSMg6nqLhDErvnCuKVV`, `READY` por MCP, logs de build correctos.
+  URL: `https://outify-1wqoxlq5y-devappsdpms-projects.vercel.app`.
+- CI de `main`: [35390559820](https://github.com/danielperezmartinez/outify/actions/runs/35390559820), `success`.
+- Production del SHA `4be7608f46e060daf0c7e16b2afd14807e26a17d`:
+  `dpl_DAEScmktmD5Za3wpBcK4oZ28rxTa`, `READY` por MCP, `target=production`,
+  `source=git`, `githubCommitRef=main`, alias `https://outify.vercel.app` y sin
+  error de alias. `/ngsw.json` público devuelve HTTP 200 y versión `0.2.0`.
+- Logs runtime de errores/fatales consultados por MCP: sin entradas para el
+  despliegue en las últimas 24 horas. La API MCP de logs de build no estaba
+  disponible en la comprobación final («Tool get_deployment_build_logs not found»).
+  No se declara revisado ese log de Production ni los errores del navegador.
 
 Las previews permiten verificar la PWA y la pantalla de acceso. Para probar OAuth
 en un alias Preview, añadir su callback exacto en Supabase conservando las URLs
@@ -78,8 +91,8 @@ existentes; no se han cambiado las URLs de Auth del proyecto compartido.
 Verificación local satisfactoria: instalación frozen, 17 tests Angular, 6 tests
 de configuración/SemVer, 1 escenario PWA con AXE y builds de ambos entornos.
 El usuario autorizó publicar la versión propuesta `0.2.0` (minor) el 2026-09-18,
-previa confirmación del consenso documentado. Publicación en curso; la tarea
-permanece abierta hasta verificar CI, Preview y Production.
+previa confirmación del consenso documentado. CI, Preview y Production quedaron
+verificados; no se requirieron correcciones, reintentos ni rollback.
 
 ## Restauración y diagnóstico
 

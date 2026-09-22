@@ -1,7 +1,7 @@
 ---
 Nombre: Implementar MVP funcional
 Estado: Hecha
-Resumen: MVP implementado y verificado con Google real, Supabase aislado, inventario privado y editor SVG; 11 pruebas unitarias, 2 E2E, SQL transaccional y AXE correctos.
+Resumen: MVP desplegado en Vercel y acceso Google en producción confirmado por el usuario; inventario privado y editor SVG verificados con 11 pruebas unitarias, 2 E2E, SQL y AXE.
 Decisiones: "[[Producto]]; [[Decisiones visuales]]; [[Decisiones]]"
 Bloqueada: []
 Fecha de creación: 2026-09-18
@@ -23,8 +23,8 @@ Fecha de creación: 2026-09-18
 ## Seguimiento
 
 Se parte del scaffold Angular, sin commits ni recursos Outify en Supabase.
-Trabajo en `feat/functional-mvp`. El primer despliegue Vercel continúa reservado
-al usuario según [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel]].
+Trabajo inicial en `feat/functional-mvp`. El usuario realizó el primer despliegue
+Vercel según [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Vercel]].
 
 
 ## Resultado verificado · 2026-09-18
@@ -51,9 +51,8 @@ al usuario según [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Verce
 ## Operación y límites conocidos
 
 - Servidor local activo en `http://127.0.0.1:4200`; trabaja con `outify_dev`.
-- El usuario autorizó el primer push el 2026-09-18. El primer despliegue sigue
-  reservado al usuario por ADR-0007. No se ha publicado
-  en Vercel ni se ha automatizado CI/CD; están preparados los ajustes de build.
+- El usuario autorizó el primer push el 2026-09-18 y realizó el primer despliegue
+  en Vercel: `https://outify.vercel.app`. Sigue pendiente automatizar CI/CD.
 - Continúan separadas las tareas de privacidad/condiciones, identidad final y
   eliminación integral de cuenta. No son parte del MVP aprobado en [[Producto]].
 - El zoom táctil se implementó mediante Pointer Events; no se ha medido todavía
@@ -66,9 +65,29 @@ al usuario según [[Decisiones/ADR-0007 Repositorio GitHub y despliegue en Verce
 
 ## Entrega inicial a GitHub
 
-El usuario solicita publicar el MVP para conectarlo a Vercel. Se comprueba que
-`origin` apunta a `danielperezmartinez/outify` y no tiene ramas remotas. Se prepara
-un commit inicial en `main`, aplicando la excepción de arranque de ADR-0008.
+El usuario solicitó publicar el MVP para conectarlo a Vercel. Se comprobó que
+`origin` apuntaba a `danielperezmartinez/outify` y no tenía ramas remotas. Se publicó
+el commit inicial `d2b593e` en `main`, aplicando la excepción de arranque de ADR-0008.
 El snapshot incluye código, tests, migraciones, lockfile y documentación; excluye
 credenciales temporales, configuración generada, resultados de pruebas y estado
 local de Obsidian. Build y pruebas ya verificados en esta implementación.
+
+## Seguimiento del login en producción · 2026-09-18
+
+El usuario informa de un retorno OAuth a `localhost:3000`. Se comprueba que
+`Session.login()` envía `${location.origin}/auth/callback` y que
+`https://outify.vercel.app/auth/callback` sirve la aplicación con HTTP 200.
+El panel de Supabase confirmó que faltaba el callback de Outify en Redirect URLs
+y que Site URL tenía el valor por defecto `http://localhost:3000`. El usuario
+añadió la URL de retorno y confirmó que el acceso en producción funciona
+correctamente. Incidencia resuelta y verificada por el usuario; no requirió cambios
+de código ni un nuevo despliegue. Se documenta el callback exacto en el README raíz.
+
+## Cierre de sesión · 2026-09-18
+
+MVP publicado en GitHub, desplegado en `https://outify.vercel.app` y login de
+producción confirmado. Sin bloqueos activos para esta entrega. Las tareas de
+CI/CD, identidad pública y privacidad conservan sus estados pendientes; no forman
+parte de la corrección de redirección. La actualización documental de este cierre
+queda en la rama local `fix/production-auth-redirect`, pendiente de commit e
+integración mediante PR.

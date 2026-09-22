@@ -1,3 +1,7 @@
+---
+Última modificación: 2026-09-21
+---
+
 # Producto
 
 Esta nota es la fuente de verdad del alcance funcional del primer MVP de
@@ -26,13 +30,22 @@ de armarios.
 
 ### 1. Acceso
 
-Inicio de sesión mediante Google, con estados claros de carga y error. Incluye
+Inicio de sesión mediante Google, con estados claros de carga y error. El registro
+requiere declarar al menos 14 años; los menores de 14 no pueden hacerse cuenta.
+La declaración se guarda en el backend, sin recopilar fecha de nacimiento.
+Los perfiles existentes también deben confirmarla antes de abrir su espacio. Incluye
 enlaces a privacidad y condiciones cuando esos documentos existan.
 
 En el primer acceso, la aplicación abre directamente la pantalla de armarios con
 una plantilla que contiene un armario y dos zonas. La plantilla puede utilizarse
 tal cual o modificarse; no se muestra antes un panel de inicio ni se obliga a
 completar un asistente de configuración.
+
+La baja se solicita en Mi cuenta para el espacio indicado, con confirmación
+explícita. Cierra el acceso y continúa limpiando datos y fotografías desde
+servidor; no elimina la identidad compartida ni los datos de otras aplicaciones.
+Volver tras una baja requiere nueva sesión y crear expresamente un espacio vacío.
+Estado de implementación y publicación en [[Tratamiento de datos]].
 
 ### 2. Armarios
 
@@ -51,6 +64,20 @@ Modo específico de la pantalla de armarios para modificar su estructura:
 - mover y redimensionar zonas;
 - edición del nombre, tipo y color de una zona;
 - guardado automático con indicador de estado.
+
+Las operaciones sobre zonas forman un historial común: movimiento, tamaño,
+propiedades, creación y eliminación. Deshacer revierte la última operación y
+rehacer la recupera con sus propiedades y ubicaciones de artículos. Se comprueba
+el estado actual antes de restaurar; un conflicto se informa sin aplicar una
+restauración parcial. El historial es de la sesión del editor: recargar o cambiar
+de armario lo vacía, y una nueva operación descarta el futuro. Crear/eliminar un
+armario cambia ese contexto y no forma parte del historial de zonas.
+
+El arrastre y redimensionado usan snap a 8 unidades activado inicialmente.
+Mantener Mayús durante el gesto lo suspende. Un botón con estado pulsado permite
+activarlo/desactivarlo también en móvil. Las flechas y Mayús+flechas mantienen
+sus funciones de mover/redimensionar; las medidas numéricas permiten precisión
+libre. El gesto sin snap conserva dos decimales.
 
 La eliminación de una zona o un armario requiere confirmación y deja sus
 artículos sin asignar. El usuario puede salir del modo de edición para volver a

@@ -13,6 +13,7 @@ import { ItemStore } from '../../inventory/item-data/item-store';
 import { WardrobeCanvas } from '../wardrobe-canvas/viewport/wardrobe-canvas';
 import { CommandHistory, GeometryCommand, constrain } from '../wardrobe-canvas/engine/geometry';
 import { zoneTypeOptions } from '../wardrobe-data/models';
+import { EditorCommand } from '../wardrobe-data/editor-command';
 import { errorMessage } from '../../platform/backend';
 @Component({
   selector: 'app-wardrobe-view',
@@ -93,8 +94,15 @@ import { errorMessage } from '../../platform/backend';
               @if (editing()) {
                 <span class="toolbar-divider"></span
                 ><button (click)="addZone()" [disabled]="busy()">+ Zona</button
-                ><button (click)="undo()" [disabled]="busy()">Deshacer</button
-                ><button (click)="redo()" [disabled]="busy()">Rehacer</button>
+                ><button (click)="undo()" [disabled]="busy() || !canUndo()">Deshacer</button
+                ><button (click)="redo()" [disabled]="busy() || !canRedo()">Rehacer</button>
+                <button
+                  type="button"
+                  [attr.aria-pressed]="snapping()"
+                  (click)="snapping.update(toggle)"
+                >
+                  Snap {{ snapping() ? 'activado' : 'desactivado' }}
+                </button>
               }
               <span class="toolbar-hint">{{
                 editing()
@@ -108,6 +116,7 @@ import { errorMessage } from '../../platform/backend';
                 [zones]="zones()"
                 [items]="items.items()"
                 [editing]="editing()"
+                [snapping]="snapping()"
                 [selected]="selectedId()"
                 [disabled]="busy()"
                 (select)="selectZone($event)"
@@ -120,7 +129,7 @@ import { errorMessage } from '../../platform/backend';
             <div class="canvas-bottom">
               <span class="small muted">{{
                 editing()
-                  ? 'También puedes editar las medidas en el panel.'
+                  ? 'Snap a 8 unidades. Mantén Mayús al arrastrar para mover libremente. En móvil, usa el botón Snap.'
                   : 'Selecciona una prenda para abrir su ficha.'
               }}</span
               ><span class="eyebrow">{{ wardrobe.width }} × {{ wardrobe.height }}</span>
@@ -184,12 +193,26 @@ import { errorMessage } from '../../platform/backend';
                       </select></label
                     ><label>Color<input type="color" formControlName="color" /></label>
                     <div class="form-row">
-                      <label>X<input type="number" formControlName="position_x" min="0" /></label
-                      ><label>Y<input type="number" formControlName="position_y" min="0" /></label>
+                      <label
+                        >X<input
+                          type="number"
+                          formControlName="position_x"
+                          min="0"
+                          step="any" /></label
+                      ><label
+                        >Y<input type="number" formControlName="position_y" min="0" step="any"
+                      /></label>
                     </div>
                     <div class="form-row">
-                      <label>Ancho<input type="number" formControlName="width" min="80" /></label
-                      ><label>Alto<input type="number" formControlName="height" min="80" /></label>
+                      <label
+                        >Ancho<input
+                          type="number"
+                          formControlName="width"
+                          min="80"
+                          step="any" /></label
+                      ><label
+                        >Alto<input type="number" formControlName="height" min="80" step="any"
+                      /></label>
                     </div>
                     <label
                       >Orden de superposición<input
@@ -216,7 +239,7 @@ import { errorMessage } from '../../platform/backend';
             <div class="side-items">
               @for (item of panelItems(); track item.id) {
                 <div class="side-item">
-                  <a [routerLink]="['/articulos', item.id]"
+                  <a [routerLink]="['/items', item.id]"
                     ><img
                       [src]="item.imageUrl"
                       [alt]="item.name"
@@ -245,7 +268,7 @@ import { errorMessage } from '../../platform/backend';
             @if (selected()) {
               <button class="text-button" (click)="selectedId.set(null)">Ver sin asignar</button>
             }
-            <a class="button primary full-width" routerLink="/articulos/nuevo">+ Crear artículo</a>
+            <a class="button primary full-width" routerLink="/items/new">+ Crear artículo</a>
           }
         </aside>
       </div>
@@ -259,6 +282,8 @@ export class WardrobeView {
   private readonly fb = inject(FormBuilder);
   readonly canvas = viewChild(WardrobeCanvas);
   readonly editing = signal(false);
+  readonly snapping = signal(true);
+  readonly toggle = (value: boolean) => !value;
   readonly busy = signal(false);
   readonly loading = signal(true);
   readonly error = signal('');
@@ -266,7 +291,7 @@ export class WardrobeView {
   readonly notice = signal('');
   readonly selectedId = signal<number | null>(null);
   readonly wardrobeId = signal<number | null>(
-    Number(this.route.snapshot.queryParamMap.get('armario')) || null,
+    Number(this.route.snapshot.queryParamMap.get('wardrobe')) || null,
   );
   readonly current = computed<import('../wardrobe-data/models').Wardrobe | undefined>(
     () =>
@@ -285,7 +310,27 @@ export class WardrobeView {
       .filter((i) => i.status === 'active' && i.zoneId === (this.selectedId() ?? null)),
   );
   readonly zoneTypes = zoneTypeOptions;
-  private readonly history = new CommandHistory();
+  private readonly history = new CommandHistory<EditorCommand>();
+  readonly canUndo = signal(false);
+  readonly canRedo = signal(false);
+  private updateHistory() {
+    this.canUndo.set(this.history.canUndo);
+    this.canRedo.set(this.history.canRedo);
+  }
+  private record(command: EditorCommand) {
+    const comparable = (value: EditorCommand['before']) =>
+      value === null
+        ? 'null'
+        : JSON.stringify(
+            value,
+            Object.keys(value)
+              .filter((key) => key !== 'updated_at')
+              .sort(),
+          );
+    if (comparable(command.before) === comparable(command.after)) return;
+    this.history.push(command);
+    this.updateHistory();
+  }
   private previousLocation: { itemId: number; zoneId: number | null } | null = null;
   readonly wardrobeForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -311,8 +356,11 @@ export class WardrobeView {
     this.loading.set(true);
     try {
       await Promise.all([this.store.load(), this.items.load()]);
+      this.history.clear();
+      this.updateHistory();
       this.patchForms();
       this.error.set('');
+      this.saveState.set('Todo guardado');
     } catch (e) {
       this.error.set(errorMessage(e));
     } finally {
@@ -329,6 +377,7 @@ export class WardrobeView {
     this.wardrobeId.set(id);
     this.selectedId.set(null);
     this.history.clear();
+    this.updateHistory();
     this.patchForms();
   }
   toggleEdit() {
@@ -358,7 +407,9 @@ export class WardrobeView {
         )
       )
         throw new Error('Mueve o reduce las zonas antes de reducir el tamaño del armario.');
-      await this.store.saveWardrobe({ ...v, id: this.current()!.id });
+      const before = this.current()!;
+      const after = await this.store.saveWardrobe({ ...v, id: before.id });
+      this.record({ kind: 'wardrobe', before, after });
     });
   }
   async addZone() {
@@ -371,7 +422,10 @@ export class WardrobeView {
         ...constrain({ position_x: 32, position_y: 32, width: 240, height: 200 }, w),
         z_index: this.zones().length,
       });
-      if (z) this.selectZone(z.id);
+      if (z) {
+        this.record({ kind: 'zone', id: z.id, before: null, after: z, itemIds: [] });
+        this.selectZone(z.id);
+      }
     });
   }
   async saveZone() {
@@ -380,43 +434,80 @@ export class WardrobeView {
     if (!z || !w || this.zoneForm.invalid || this.busy()) return;
     await this.run(async () => {
       const v = this.zoneForm.getRawValue();
-      await this.store.saveZone({ ...v, ...constrain(v, w), id: z.id, wardrobe_id: w.id });
+      const after = await this.store.saveZone({
+        ...v,
+        ...constrain(v, w),
+        id: z.id,
+        wardrobe_id: w.id,
+      });
+      this.record({ kind: 'zone', id: z.id, before: z, after, itemIds: [] });
       this.patchForms();
     });
   }
   async geometry(command: GeometryCommand) {
-    const success = await this.applyGeometry(command, 'after');
-    if (success) this.history.push(command);
-  }
-  private async applyGeometry(command: GeometryCommand, side: 'before' | 'after') {
     const z = this.zones().find((z) => z.id === command.id);
-    if (!z) return false;
-    return this.run(async () => {
-      await this.store.saveZone({
+    if (!z || JSON.stringify(command.before) === JSON.stringify(command.after)) return;
+    await this.run(async () => {
+      const after = await this.store.saveZone({
         id: z.id,
         name: z.name,
         wardrobe_id: z.wardrobe_id,
-        ...command[side],
+        ...command.after,
       });
+      this.record({ kind: 'zone', id: z.id, before: z, after, itemIds: [] });
+      this.patchForms();
+    });
+  }
+  private async applyCommand(command: EditorCommand, side: 'before' | 'after') {
+    return this.run(async () => {
+      if (command.kind === 'wardrobe') {
+        await this.store.saveWardrobe(command[side]);
+      } else {
+        const target = command[side];
+        const expected = command[side === 'before' ? 'after' : 'before'];
+        const itemIds =
+          target === null
+            ? this.items
+                .items()
+                .filter((item) => item.zoneId === command.id)
+                .map((item) => item.id)
+            : command.itemIds;
+        await this.store.restoreZoneState(command.id, expected, target, itemIds);
+        command.itemIds = itemIds;
+        this.items.restoreZoneLocations(
+          command.id,
+          target !== null,
+          expected === null ? itemIds : [],
+        );
+        this.selectedId.set(target?.id ?? null);
+      }
       this.patchForms();
     });
   }
   async undo() {
+    if (this.busy()) return;
     const c = this.history.undo();
-    if (c && !(await this.applyGeometry(c, 'before'))) this.history.redo();
+    if (c && !(await this.applyCommand(c, 'before'))) this.history.redo();
+    this.updateHistory();
   }
   async redo() {
+    if (this.busy()) return;
     const c = this.history.redo();
-    if (c && !(await this.applyGeometry(c, 'after'))) this.history.undo();
+    if (c && !(await this.applyCommand(c, 'after'))) this.history.undo();
+    this.updateHistory();
   }
   async removeZone() {
     const z = this.selected();
     if (z && confirm(`¿Eliminar «${z.name}»? Sus artículos quedarán sin asignar.`))
       await this.run(async () => {
-        await this.store.deleteZone(z.id);
+        const itemIds = this.items
+          .items()
+          .filter((item) => item.zoneId === z.id)
+          .map((item) => item.id);
+        await this.store.restoreZoneState(z.id, z, null, itemIds);
+        this.record({ kind: 'zone', id: z.id, before: z, after: null, itemIds });
+        this.items.restoreZoneLocations(z.id, false, itemIds);
         this.selectedId.set(null);
-        this.history.clear();
-        await this.items.load();
       });
   }
   async removeWardrobe() {
@@ -429,6 +520,7 @@ export class WardrobeView {
         await this.store.deleteWardrobe(w.id);
         this.selectedId.set(null);
         this.history.clear();
+        this.updateHistory();
         await this.items.load();
         this.patchForms();
       });
@@ -457,10 +549,10 @@ export class WardrobeView {
     }
   }
   openItem(id: number) {
-    void this.router.navigate(['/articulos', id]);
+    void this.router.navigate(['/items', id]);
   }
   showZone(id: number) {
-    void this.router.navigate(['/articulos'], { queryParams: { zona: id } });
+    void this.router.navigate(['/items'], { queryParams: { zone: id } });
   }
   private async run(action: () => Promise<void>): Promise<boolean> {
     if (this.busy()) return false;

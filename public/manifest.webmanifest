@@ -4,7 +4,7 @@
   "short_name": "Outify",
   "description": "Organiza tus prendas y encuentra su lugar en tu armario visual y privado.",
   "lang": "es",
-  "start_url": "/armarios",
+  "start_url": "/wardrobes",
   "scope": "/",
   "display": "standalone",
   "background_color": "#F8F7F5",
