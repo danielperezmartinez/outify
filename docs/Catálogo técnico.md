@@ -1,6 +1,7 @@
 ---
-Última modificación: 2026-09-18
+Última modificación: 2026-09-22
 ---
+
 # Catálogo técnico
 
 Este sistema permite descubrir la superficie reutilizable de outify antes de
@@ -16,6 +17,12 @@ Piezas vigentes: [[Catálogo técnico/Sesión y cliente Supabase]],
 [[Catálogo técnico/Lectura paginada]].
 
 PWA: [[Catálogo técnico/Actualizaciones de la aplicación]].
+
+Cuentas: [[Catálogo técnico/Baja y admisión de cuentas]] (implementación local).
+
+Interfaz compartida: [[Catálogo técnico/Panel flotante]].
+
+Presentación: [[Catálogo técnico/Páginas públicas y enlaces legales]] (local).
 
 ## Cómo utilizarlo
 

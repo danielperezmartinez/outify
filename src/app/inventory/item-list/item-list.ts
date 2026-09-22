@@ -6,10 +6,11 @@ import { ItemStore } from '../item-data/item-store';
 import { WardrobeStore } from '../../wardrobes/wardrobe-data/wardrobe-store';
 import { categoryLabel, categoryOptions, seasonOptions } from '../item-data/models';
 import { filterItems, ItemFilter } from '../item-data/filter-items';
+import { Popover } from '../../shared/ui/popover';
 import { errorMessage } from '../../platform/backend';
 @Component({
   selector: 'app-item-list',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, Popover],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="page-heading">
       <div>
@@ -17,7 +18,7 @@ import { errorMessage } from '../../platform/backend';
         <h1>Tus artículos<span class="heading-dot">.</span></h1>
         <p class="muted">Lo que tienes, siempre a la vista.</p>
       </div>
-      <a class="button primary" routerLink="nuevo">+ Crear artículo</a>
+      <a class="button primary" routerLink="new">+ Crear artículo</a>
     </div>
     <div class="section-tabs">
       <button
@@ -62,8 +63,7 @@ import { errorMessage } from '../../platform/backend';
           <option value="assigned">Asignados</option>
         </select></label
       >
-      <details>
-        <summary>Más filtros</summary>
+      <app-popover label="Más filtros">
         <div class="extra-filters">
           <label>Color<input formControlName="color" placeholder="Ej. verde" /></label
           ><label
@@ -75,7 +75,7 @@ import { errorMessage } from '../../platform/backend';
             </select></label
           ><label>Etiqueta<input formControlName="tag" /></label>
         </div>
-      </details>
+      </app-popover>
       <button type="button" class="text-button" (click)="reset()">Limpiar filtros</button>
     </form>
     @if (error()) {
@@ -117,7 +117,7 @@ import { errorMessage } from '../../platform/backend';
               }}
             </h2>
             <p>Fotografía lo que te acompaña y dale su lugar.</p>
-            <a class="button primary" routerLink="nuevo">Crear artículo</a>
+            <a class="button primary" routerLink="new">Crear artículo</a>
           </div>
         }
       </div>
@@ -142,7 +142,7 @@ export class ItemList {
     wardrobe: new FormControl('', { nonNullable: true }),
     assignment: new FormControl('', { nonNullable: true }),
     status: new FormControl('active', { nonNullable: true }),
-    zone: new FormControl(this.route.snapshot.queryParamMap.get('zona') ?? '', {
+    zone: new FormControl(this.route.snapshot.queryParamMap.get('zone') ?? '', {
       nonNullable: true,
     }),
   });

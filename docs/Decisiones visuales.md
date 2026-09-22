@@ -1,3 +1,6 @@
+---
+Última modificación: 2026-09-22
+---
 # Decisiones visuales y de estilos
 
 Acuerdos sobre lenguaje visual, tokens y componentes de outify. Lista ligera
@@ -145,6 +148,14 @@ soporte funcional para foco, texto y contraste, no como grandes masas de color.
 
 **Navegación y acciones**
 
+- Los menús y paneles flotantes desplegados desde un botón incluyen backdrop y
+  se cierran al pulsar fuera, pulsar Escape o abandonar el grupo con Tab. El clic
+  exterior solo cierra; no activa el contenido situado debajo. Escape y el cierre
+  exterior devuelven el foco al botón, que expone `aria-expanded`. Tab conserva su
+  navegación natural. Los filtros no se reinician al cerrar.
+- Reutilizar [[Catálogo técnico/Panel flotante]] para este patrón. Los selectores
+  nativos conservan el comportamiento accesible del navegador.
+
 - Acción primaria: `sage-300` con texto `ink`; hover `sage-500` y estado
   presionado `sage-700` con texto claro.
 - Acciones secundarias: fondo transparente o `rice-paper`, borde `smoked-stone`
@@ -174,6 +185,10 @@ soporte funcional para foco, texto y contraste, no como grandes masas de color.
   el usuario edita siempre permanece exacta.
 
 ### Tipografía y voz Replicate
+
+Desde la preparación del 2026-09-22 las tres familias se sirven desde Outify,
+con sus licencias SIL OFL en `public/fonts`, para evitar solicitudes del navegador
+a Google Fonts. Se conservan las familias, pesos y roles aprobados.
 
 - Mantener el contraste editorial de Replicate: titulares grandes y
   expresivos, cuerpo sobrio y etiquetas técnicas monoespaciadas.

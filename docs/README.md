@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-18
+Última modificación: 2026-09-19
 ---
 # Memoria del proyecto
 
@@ -274,6 +274,8 @@ pnpm test   # Tests con Vitest
 
 - Código (identificadores, nombres de variables/funciones/componentes):
   **inglés**.
+- Las rutas de URL y sus parámetros también son código: se escriben en inglés.
+  Al renombrarlos se conservan redirecciones de los enlaces publicados.
 - Comentarios de código y toda la documentación (incluida esta bóveda):
   **español**.
 

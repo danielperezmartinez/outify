@@ -10,7 +10,7 @@ test('PWA instalable, apertura offline y actualización voluntaria', async ({
   const version = JSON.parse(readFileSync('package.json', 'utf8')).version;
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/acceso');
+  await page.goto('/login');
   const versionButton = page.getByRole('button', {
     name: `Versión ${version}. Comprobar actualizaciones`,
     exact: true,

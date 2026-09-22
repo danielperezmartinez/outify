@@ -26,12 +26,20 @@ corepack pnpm test --watch=false
 corepack pnpm test:config
 corepack pnpm build
 corepack pnpm test:pwa
-corepack pnpm exec prettier --check src scripts e2e playwright.config.ts playwright.pwa.config.ts
+corepack pnpm test:editor
+corepack pnpm test:server
+corepack pnpm exec prettier --check src scripts e2e playwright.config.ts playwright.pwa.config.ts playwright.editor.config.ts
 ```
 
 Las pruebas SQL de `supabase/tests/invariants.sql` crean identidades temporales,
 operan solo sobre datos funcionales de desarrollo y deshacen toda la transacción.
 Comprueban RLS, inicialización, etiquetas, archivado y cascadas.
+
+`supabase/tests/zone-history.sql` comprueba restauración de zonas, ubicaciones,
+conflictos, atomicidad y aislamiento. Requiere la migración de historial. Las
+regresiones de `test:editor` arrancan su servidor en el puerto 4201 y simulan las
+respuestas del backend para probar latencia y fallos; no necesitan credenciales
+ni modifican datos remotos. Incluyen escritorio, móvil y AXE.
 
 La prueba Playwright usa una cuenta de pruebas real (nunca una cuenta personal),
 con credenciales en el archivo ignorado `tmp/test-account.json`:
@@ -44,7 +52,8 @@ corepack pnpm exec playwright test
 Comprueba creación con foto privada, ubicación, recarga, filtros, edición por
 teclado, undo/redo, archivado/restauración/borrado, Storage, AXE y vista móvil.
 La cuenta debe tener un espacio inicial limpio. Las credenciales y los resultados
-no se versionan. Se debe eliminar la cuenta de pruebas al terminar la validación.
+no se versionan. Limpiar los datos de prueba al terminar; no borrar una identidad
+Auth compartida sin revisar sus dependencias con las otras aplicaciones.
 
 ## Supabase
 
@@ -104,3 +113,20 @@ localmente utiliza Chrome. La suite del inventario sigue separada.
 Los textos legales, el dominio y la identidad pública final conservan sus tareas
 pendientes en la bóveda. Los enlaces legales se añadirán cuando existan documentos
 aprobados, conforme al alcance del MVP.
+
+## Admisión y baja de cuentas
+
+El código preparado requiere confirmar al menos 14 años y permite solicitar la
+baja de los datos del espacio actual. Incluye funciones de servidor en `api/`,
+cola persistente, limpieza por Storage API y reintentos diarios. `pnpm start`
+sirve Angular; para ejecutar también `api/` se necesita el runtime de Vercel o
+las pruebas de handlers del servidor. El frontend nunca recibe claves secretas.
+
+Configurar las variables de `.env.server.example` exclusivamente en servidor,
+además de las variables públicas de conexión. La migración de cuentas debe
+publicarse de forma coordinada con la interfaz. Operación y pendientes:
+[Tratamiento de datos](docs/Tratamiento%20de%20datos.md).
+
+`pnpm test:account:local` prueba Auth, RLS, Storage y aislamiento reales en una
+instancia Supabase local desechable. Preparación:
+[Baja y admisión de cuentas](docs/Cat%C3%A1logo%20t%C3%A9cnico/Baja%20y%20admisi%C3%B3n%20de%20cuentas.md).

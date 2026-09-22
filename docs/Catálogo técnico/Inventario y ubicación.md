@@ -9,7 +9,7 @@ Resumen: ItemStore concentra fotos privadas, ubicación, persistencia transaccio
 Fuente: src/app/inventory/item-data/item-store.ts
 Entrada pública: ItemStore; filterItems; Item
 Fecha de creación: 2026-09-18
-Última modificación: 2026-09-18
+Última modificación: 2026-09-19
 ---
 
 El formulario y el plano usan la misma operación de ubicación. Las fotos usan
@@ -19,5 +19,9 @@ ubicación en una transacción. El backend retira la ubicación al archivar.
 El borrado definitivo registra una limpieza persistente antes de eliminar la
 ficha; Storage se limpia mediante su API y se reintenta al cargar el inventario.
 El cambio de foto encola la anterior dentro de la misma transacción.
+
+`restoreZoneLocations` sincroniza únicamente el estado local después de confirmar
+la restauración transaccional del historial del editor. No persiste por su cuenta
+ni debe llamarse antes de confirmar `WardrobeStore.restoreZoneState`.
 
 Véase [[Decisiones/ADR-0002 Modelo de datos inicial]].

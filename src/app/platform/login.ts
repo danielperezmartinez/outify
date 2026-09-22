@@ -3,9 +3,12 @@ import { Router } from '@angular/router';
 import { Session } from './session';
 import { errorMessage } from './backend';
 import { VersionButton } from './version-button';
+import { ageConfirmationKey } from './workspace-access';
+import { LegalLinks } from '../shared/ui/legal-links';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
-  imports: [VersionButton],
+  imports: [VersionButton, LegalLinks, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<main class="login-layout">
     <section class="login-copy">
@@ -16,7 +19,15 @@ import { VersionButton } from './version-button';
         <p class="intro">
           Redescubre lo que tienes. Dale un lugar.<br />Un armario más claro, un día más sencillo.
         </p>
-        <button class="primary google-button" (click)="login()" [disabled]="busy()">
+        <label class="age-confirmation">
+          <input type="checkbox" [checked]="ageConfirmed()" (change)="confirmAge($event)" />
+          Confirmo que tengo al menos 14 años.
+        </label>
+        <button
+          class="primary google-button"
+          (click)="login()"
+          [disabled]="busy() || !ageConfirmed()"
+        >
           <span aria-hidden="true">G</span> {{ busy() ? 'Conectando…' : 'Continuar con Google' }}
           <span aria-hidden="true">↗</span>
         </button>
@@ -24,6 +35,11 @@ import { VersionButton } from './version-button';
           <p class="error" role="alert">{{ error() }}</p>
         }
         <p class="muted small">Tu inventario y tus fotografías, solo para ti.</p>
+        <p class="small">
+          Al abrir tu espacio aceptas las <a routerLink="/terms">condiciones de uso</a>. Consulta
+          cómo tratamos tus datos en la <a routerLink="/privacy">política de privacidad</a>.
+        </p>
+        <app-legal-links />
       </div>
       <div class="login-footer">
         <p class="eyebrow">MENOS BUSCAR. MÁS DISFRUTAR.</p>
@@ -80,17 +96,23 @@ export class Login {
   private readonly router = inject(Router);
   readonly busy = signal(false);
   readonly error = signal('');
+  readonly ageConfirmed = signal(false);
+  confirmAge(event: Event) {
+    this.ageConfirmed.set((event.target as HTMLInputElement).checked);
+  }
   constructor() {
     if (new URLSearchParams(location.search).has('error'))
       this.error.set('No se pudo completar el acceso con Google. Vuelve a intentarlo.');
     void this.session.ready.then(() => {
-      if (this.session.user()) void this.router.navigateByUrl('/armarios');
+      if (this.session.user()) void this.router.navigateByUrl('/wardrobes');
     });
   }
   async login() {
+    if (!this.ageConfirmed() || this.busy()) return;
     this.busy.set(true);
     this.error.set('');
     try {
+      sessionStorage.setItem(ageConfirmationKey, String(Date.now()));
       await this.session.login();
     } catch (e) {
       this.error.set(errorMessage(e));

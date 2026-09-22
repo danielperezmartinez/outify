@@ -40,6 +40,8 @@ jobs:
         run: pnpm test:config
       - name: Tests de aplicación
         run: pnpm test --watch=false
+      - name: Tests de baja y límites del servidor
+        run: pnpm test:server
       - name: Build de Preview
         env:
           VERCEL_ENV: preview
@@ -48,6 +50,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Verificar PWA y actualización entre versiones
         run: pnpm test:pwa
+      - name: Verificar editor, navegación y menús
+        run: pnpm test:editor
       - name: Build de Production
         env:
           VERCEL_ENV: production

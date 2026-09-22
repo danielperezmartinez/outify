@@ -4,13 +4,16 @@ import { Json } from '../../platform/database.types';
 import { Session } from '../../platform/session';
 import { Item } from './models';
 import { readPages } from '../../shared/utilities/read-pages';
+import { WorkspaceAccess } from '../../platform/workspace-access';
 @Injectable()
 export class ItemStore {
   private readonly backend = inject(Backend);
   private readonly session = inject(Session);
+  private readonly workspace = inject(WorkspaceAccess);
   private readonly state = signal<Item[]>([]);
   readonly items = this.state.asReadonly();
   constructor() {
+    this.workspace.registerCache(() => this.state.set([]), inject(DestroyRef));
     const timer = setInterval(
       () => {
         void this.refreshImages().catch(() => {});
@@ -20,6 +23,7 @@ export class ItemStore {
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
   }
   private async refreshImages() {
+    const revision = this.workspace.revision;
     const rows = this.items();
     for (let offset = 0; offset < rows.length; offset += 100) {
       const batch = rows.slice(offset, offset + 100);
@@ -30,12 +34,14 @@ export class ItemStore {
         ),
       );
       const urls = new Map(batch.map((i, index) => [i.id, signed?.[index]?.signedUrl ?? '']));
+      if (revision !== this.workspace.revision) return;
       this.state.update((items) =>
         items.map((i) => (urls.has(i.id) ? { ...i, imageUrl: urls.get(i.id)! } : i)),
       );
     }
   }
   async load() {
+    const revision = this.workspace.revision;
     this.state.set([]);
     const rows = await readPages((from, to) =>
       this.backend.client
@@ -45,6 +51,7 @@ export class ItemStore {
         .order('id')
         .range(from, to),
     );
+    if (revision !== this.workspace.revision) return;
     this.state.set(
       rows.map((i, index) => ({
         ...i,
@@ -89,6 +96,17 @@ export class ItemStore {
         await this.backend.client.from('item_locations').upsert({ item_id: id, zone_id: zoneId }),
       );
     this.state.update((items) => items.map((i) => (i.id === id ? { ...i, zoneId } : i)));
+  }
+  restoreZoneLocations(zoneId: number, exists: boolean, itemIds: number[]) {
+    this.state.update((items) =>
+      items.map((item) =>
+        !exists && item.zoneId === zoneId
+          ? { ...item, zoneId: null }
+          : exists && itemIds.includes(item.id)
+            ? { ...item, zoneId }
+            : item,
+      ),
+    );
   }
   async archive(id: number) {
     unwrap(await this.backend.client.from('items').update({ status: 'archived' }).eq('id', id));

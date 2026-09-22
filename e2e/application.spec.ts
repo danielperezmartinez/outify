@@ -18,6 +18,7 @@ test('inventario, editor, persistencia, archivado, imágenes y accesibilidad', a
   expect(login.data.session).toBeTruthy();
   expect(credentials.email).toMatch(/^outify-test-/);
   const db = client.schema('outify_dev');
+  expect((await db.rpc('activate_workspace', { age_confirmed: true })).error).toBeNull();
   const previous = await db.from('items').select('id');
   for (const row of previous.data ?? []) {
     expect(
@@ -31,7 +32,7 @@ test('inventario, editor, persistencia, archivado, imágenes y accesibilidad', a
   );
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/armarios');
+  await page.goto('/wardrobes');
   await expect(page.getByRole('heading', { name: 'Mi armario', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Para colgar, 0 artículos' })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
@@ -151,7 +152,7 @@ test('inventario, editor, persistencia, archivado, imágenes y accesibilidad', a
   await page.getByRole('button', { name: 'Archivados', exact: true }).click();
   await page.getByRole('heading', { name: 'Camisa de prueba' }).click();
   await page.getByRole('button', { name: 'Restaurar sin asignar', exact: true }).click();
-  await expect(page).toHaveURL(/\/articulos$/);
+  await expect(page).toHaveURL(/\/items$/);
   await expect(
     page.locator('.item-caption').getByText('Sin asignar', { exact: true }),
   ).toBeVisible();
@@ -168,7 +169,7 @@ test('inventario, editor, persistencia, archivado, imágenes y accesibilidad', a
   expect(objects.error).toBeNull();
   expect(objects.data).toHaveLength(0);
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/armarios');
+  await page.goto('/wardrobes');
   await expect(page.getByRole('heading', { name: 'Mi armario', exact: true })).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
@@ -185,7 +186,7 @@ test('inventario, editor, persistencia, archivado, imágenes y accesibilidad', a
 });
 
 test('acceso accesible y adaptable sin sesión', async ({ page }) => {
-  await page.goto('/acceso');
+  await page.goto('/login');
   await expect(page.getByRole('button', { name: 'Continuar con Google' })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.setViewportSize({ width: 390, height: 844 });

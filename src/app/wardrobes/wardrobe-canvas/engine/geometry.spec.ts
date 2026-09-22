@@ -2,6 +2,12 @@ import { CommandHistory, constrain, hitTest, thumbnailLayout, transformRect } fr
 describe('Motor de geometría', () => {
   const rect = { position_x: 20, position_y: 20, width: 200, height: 160 };
   const bounds = { width: 800, height: 600 };
+  it('ajusta a cuadrícula por defecto y permite precisión libre sin perder límites', () => {
+    expect(transformRect(rect, { x: 7, y: 3 }, false, bounds).position_x).toBe(24);
+    expect(transformRect(rect, { x: 7, y: 3 }, false, bounds, false).position_x).toBe(27);
+    expect(transformRect(rect, { x: 7, y: 3 }, true, bounds, false).width).toBe(207);
+    expect(transformRect(rect, { x: -100, y: 1000 }, false, bounds, false).position_y).toBe(440);
+  });
   it('mantiene las zonas dentro del armario al moverlas', () => {
     expect(transformRect(rect, { x: 1000, y: -200 }, false, bounds)).toEqual({
       ...rect,
