@@ -9,12 +9,18 @@ Resumen: Declaración de edad desde 14 años, cierre por entorno, worker de Stor
 Fuente: server/account-deletion.mjs
 Entrada pública: WorkspaceAccess; get_workspace_status; activate_workspace; POST /api/account-deletion
 Fecha de creación: 2026-09-21
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 La política de edad y el ciclo de baja residen en las funciones y tabla privada
 de `supabase/migrations/20260921104610_outify_account_lifecycle.sql`, reflejadas
 en ambos esquemas declarativos. El estado no se toma de metadatos editables de Auth.
+
+Actualización 2026-09-25: migración aplicada en remoto y cron configurado en
+producción. Pasó `supabase/tests/account-lifecycle.sql` con rollback, además de
+invariantes e historial. `account-queue-status.sql` ofrece diagnóstico agregado
+sin datos personales. Se mantiene En revisión hasta completar HTTP/Storage/cron
+autenticados en remoto; la evidencia histórica de Preview aparece abajo.
 
 `WorkspaceAccess` coordina estado, registro de edad y vaciado de cachés. El shell
 retira el contenido privado al cerrarse el espacio; descarta respuestas de estado
@@ -31,7 +37,8 @@ El cron procesa las dos colas en paralelo, con presupuesto de tiempo compartido
 y contadores independientes. Un error o una espera en una no impide atender la
 otra; cualquier fallo produce HTTP 503 para que sea observable. Nueve pruebas
 de servidor cubren también esa independencia. Variables configuradas en Vercel;
-funciones, cron y migraciones aún sin publicar.
+funciones incluidas en la Preview 0.3.0. Cron de producción y migraciones siguen
+pendientes; no se declara verificada la baja remota. Véase [[Lanzamiento en Product Hunt]].
 
 Verificación: `pnpm test:server`, `pnpm test:editor`, tests de Angular y
 `supabase/tests/{invariants,zone-history}.sql`. El test

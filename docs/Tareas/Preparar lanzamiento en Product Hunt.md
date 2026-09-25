@@ -1,14 +1,19 @@
 ---
 Nombre: Preparar lanzamiento en Product Hunt
 Estado: En curso
-Resumen: Portada ES/EN, páginas legales, propuesta de marca, galería y metadatos preparados y probados; pendientes contratos, publicación, OAuth real, aprobación visual y ficha de Product Hunt.
+Resumen: Producción 0.3.0 y migraciones verificadas; pruebas SQL remotas y recursos públicos correctos. Faltan OAuth externo, baja HTTP/Storage completa, recuperación/alertas, contratos y acceso/decisiones de Product Hunt.
 Decisiones: '[[Producto]]; [[Decisiones visuales]]'
 Bloqueada: []
 Fecha de creación: 2026-09-19
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 # Preparar lanzamiento en Product Hunt
+
+Estado vigente y evidencia en [[Lanzamiento en Product Hunt#Estado vigente · cierre técnico del 2026-09-25]].
+La tarea sigue En curso: la ficha requiere la sesión personal de Daniel y aún
+quedan validaciones operativas. Migraciones aplicadas y cron configurado en
+producción; las menciones a Preview pendiente siguientes son históricas.
 
 La revisión y preparación se realizan en esta sesión. La identidad se sigue en
 [[Definir identidad pública de Outify]] y los requisitos legales en
@@ -26,5 +31,6 @@ la plataforma de nuestras recomendaciones de preparación.
 Daniel aprobó expresamente la versión **0.3.0** el 2026-09-22 y pidió una lista
 de pasos personales para completar el lanzamiento. El acuerdo se registra en
 la PR; la lista ordenada vive en [[Lanzamiento en Product Hunt#Pasos que debe completar Daniel]].
-Se prepara Preview, manteniendo producción pendiente de cobertura contractual,
-migración coordinada y verificación remota.
+Preview 0.3.0 READY por MCP y PR #2 en borrador, manteniendo producción pendiente
+de cobertura contractual, migración coordinada y verificación remota. Evidencia
+del SHA y límites en [[Lanzamiento en Product Hunt]].

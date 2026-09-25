@@ -1,11 +1,11 @@
 ---
 Nombre: Corregir interacciones del editor y navegación
-Estado: En curso
-Resumen: Cambios implementados y verificados localmente con unitarias, E2E, AXE y SQL; pendientes de aplicar la migración de historial y acordar/publicar versión.
+Estado: Hecha
+Resumen: Correcciones publicadas en 0.3.0; migración de historial aplicada en ambos entornos y pruebas SQL remotas satisfactorias. Producción READY y redirección antigua verificada.
 Decisiones: "[[Decisiones visuales]]; [[Catálogo técnico/Editor SVG y armarios]]"
 Bloqueada: []
 Fecha de creación: 2026-09-19
-Última modificación: 2026-09-19
+Última modificación: 2026-09-26
 ---
 
 # Corregir interacciones del editor y navegación
@@ -19,10 +19,19 @@ Solicitud del usuario del 2026-09-19. Trabajo en `feat/editor-launch-preparation
 - [x] Menús flotantes con backdrop, cierre exterior y teclado; norma reutilizable.
 - [x] Rutas y parámetros en inglés con compatibilidad de enlaces anteriores.
 - [x] Pruebas y revisión visual.
-- [ ] Aplicar migración y verificar la publicación con versión acordada.
+- [x] Aplicar migración y verificar la publicación con versión acordada.
+
+Cierre 2026-09-26 (comprobaciones del 25 en UTC): producción READY del SHA
+`d2daa00`, migración de historial aplicada en ambos entornos, `zone-history.sql`
+e `invariants.sql` satisfactorios en remoto con rollback y redirección
+`/acceso` → `/login` verificada tras actualizar la PWA. El estado siguiente
+conserva la evidencia histórica. Los recorridos OAuth/Storage completos siguen
+en [[Preparar lanzamiento en Product Hunt]], no se dan por comprobados aquí.
 
 Los cambios previos de cierre documental de MVP, PWA y CI/CD se conservan.
-No existe todavía un acuerdo de versión ni de publicación para estos cambios.
+Daniel aprobó la versión 0.3.0 el 2026-09-22. La Preview del commit `875649b`
+está READY; la migración y producción siguen pendientes. Evidencia y límites
+en [[Lanzamiento en Product Hunt]].
 
 ## Evidencia local · 2026-09-19
 

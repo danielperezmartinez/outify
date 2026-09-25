@@ -1,8 +1,36 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 # Tratamiento de datos
+
+## Actualización operativa · 2026-09-25
+
+Producción 0.3.0, migraciones de historial/admisión/baja aplicadas y cron activo
+a las 03:00 UTC. Evidencia y límites en
+[[Lanzamiento en Product Hunt#Estado vigente · cierre técnico del 2026-09-25]].
+Las referencias posteriores a implementación local o migración pendiente son
+históricas. La prueba SQL remota con rollback pasó; siguen sin acreditarse
+Google externo, baja HTTP/Storage completa y ejecución autenticada del cron.
+
+Seguimiento manual reproducible: ejecutar
+`supabase/tests/account-queue-status.sql` con mantenimiento. Solo devuelve
+agregados por entorno. Investigar errores de reintento y solicitudes mayores de
+48 horas; ese umbral es operativo, no un plazo garantizado al usuario. Revisar
+el resultado HTTP del cron diario y sus logs antes de que expire la ventana
+disponible. No existe aún una alerta automática ni una guardia asignada.
+
+Recuperación pendiente de implementación y ensayo: una copia debe incluir solo
+esquemas Outify y sus buckets, cifrarse y mantenerse fuera de Git y de esta bóveda.
+Las identidades Auth son compartidas: no restaurarlas ni sobrescribir otras apps.
+Ensayar primero en instancia aislada, conservar las solicitudes de baja más
+recientes y reaplicarlas antes de reabrir acceso. Un dump SQL no recupera fotos.
+Hasta disponer de copia y ensayo verificables, no prometer recuperación de datos.
+
+Advisors: las dos tablas privadas de ciclo de cuenta tienen RLS sin políticas,
+intencionadamente cerradas y accesibles mediante funciones controladas. El aviso
+global de contraseñas filtradas sigue presente; no se cambió Auth compartido
+(Outify usa Google). No se encontraron otros avisos en esta consulta.
 
 Inventario técnico verificado contra `Session`, `Backend`, `ItemStore`, las
 definiciones SQL, el manifest y la configuración del service worker. Complementa
@@ -248,8 +276,9 @@ conservando EXIF; no anunciar eliminación de metadatos.
   `CRON_SECRET` sensible solo para Production. Los transitorios con secretos se
   eliminaron. La clave de servidor tiene alcance del proyecto Supabase compartido:
   solo se usa en los handlers con esquema/bucket fijo; nunca se envía al navegador.
-- Funciones y cron **sin desplegar**; las dos migraciones siguen pendientes.
-  Configurar variables no activa la baja ni modifica la base compartida.
+- Funciones incluidas en la Preview 0.3.0 del commit `875649b`, READY por MCP.
+  Cron sin activar en producción y dos migraciones pendientes. La baja remota
+  aún no está operativa; no se ha modificado la base compartida.
 - El límite visible de logs de runtime de Hobby es una hora según la
   [documentación](https://vercel.com/docs/logs/runtime). No equivale al plazo de
   todos sus registros internos de seguridad, facturación o soporte.

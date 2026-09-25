@@ -1,12 +1,105 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 # Lanzamiento en Product Hunt
 
+## Estado vigente · cierre técnico del 2026-09-25
+
+Daniel solicita completar los pendientes. Rama de trabajo
+`chore/product-hunt-readiness`, basada en `origin/main`; se han preservado las
+seis notas locales de la sesión anterior. Esta sección sustituye como estado
+actual a las revisiones históricas siguientes.
+
+- Aplicadas las migraciones de historial y ciclo de cuenta en `devappsdpm-db`,
+  saludable según MCP. Se ejecutó exactamente el SQL ya publicado en 0.3.0.
+  Historial reconciliado con los identificadores originales
+  `20260919075341` y `20260921104610` después de que MCP asignara timestamps de
+  aplicación. No se modificó el historial de otras aplicaciones.
+- Verificados permisos de las RPC en ambos entornos y ocho políticas
+  restrictivas por esquema. Las RPC de mantenimiento solo admiten `service_role`.
+  Los perfiles existentes deben declarar su edad; no se ha declarado por ellos.
+- Pasan en la base remota `invariants.sql`, `zone-history.sql` y la nueva prueba
+  `account-lifecycle.sql`, con datos sintéticos y rollback. Esta última verifica
+  edad, baja idempotente, bloqueo RLS, lease exclusivo, espera de cargas,
+  conservación de Auth y del otro entorno, reapertura y rechazo de sesión vieja.
+  No sustituye OAuth ni la prueba HTTP/Storage remota de extremo a extremo.
+- Pasan 14 pruebas locales de servidor y configuración. El diagnóstico
+  `supabase/tests/account-queue-status.sql` muestra cero bajas pendientes y
+  cero errores en ambos entornos. No hay alertas automáticas configuradas.
+- Production READY por MCP, SHA `d2daa00f52c44ce279521b5f9c256216a76a42c6`,
+  despliegue `dpl_BVQnFuer7dH8wuJ5SZGenkvC8Mtq`. API Vercel confirma cron
+  `/api/account-deletion-retry` activo a `0 3 * * *` para ese despliegue.
+  Configuración comprobada; no se afirma una ejecución autenticada satisfactoria.
+- HTTP 200 en portada ES/EN, privacidad, condiciones, miniatura, cuatro galerías
+  e imagen social. Open Graph/Twitter están presentes en el HTML inicial.
+  POST de baja sin sesión y cron sin secreto devuelven 401; GET de baja, 405.
+- Navegador: actualización voluntaria de PWA 0.2.0 a 0.3.0 correcta, redirección
+  de `/acceso` a `/login`, admisión por edad y páginas públicas verificadas.
+  No se inició sesión con una cuenta real ni se aceptaron condiciones por Daniel.
+- Consulta MCP de logs 5xx de la última hora sin resultados; no acredita el
+  funcionamiento de recorridos no ejecutados.
+- Product Hunt abierto sin sesión. Búsqueda interna de Outify sin coincidencia
+  exacta entre los resultados visibles; no acredita inexistencia de ficha.
+  Guía oficial de publicación reconsultada: las dimensiones y textos preparados
+  siguen encajando. No se guardó ni publicó una ficha.
+
+**Pendientes efectivos:** acceso de Daniel a Product Hunt, usuario maker y fecha;
+decisiones de marca/dominio/idioma; cobertura contractual e identificación si
+procede; Google externo y móvil; ensayo remoto completo de baja con Storage y
+cron autenticado; copia recuperable y ensayo de restauración; alertas de colas y
+coordinación de identidad central. Los textos legales ya están publicados,
+pero su publicación no resuelve esas cuestiones contractuales.
+
+Los cambios de esta sesión en el repositorio son documentación y pruebas SQL;
+no se ha incrementado la versión ni generado otro despliegue de la aplicación.
+
+## Estado tras el merge · 2026-09-25
+
+Daniel informa de problemas y pide solo aclarar pendientes; las correcciones
+se harán en una sesión nueva. PR #2 integrada, commit de `main`
+`d2daa00f52c44ce279521b5f9c256216a76a42c6`. MCP confirma Production **READY**,
+despliegue `dpl_BVQnFuer7dH8wuJ5SZGenkvC8Mtq`. Ese estado acredita el despliegue,
+no el funcionamiento completo de la aplicación.
+
+**Pendiente prioritario confirmado por lectura de Supabase:** no constan las
+migraciones `20260919075341_outify_zone_history.sql` ni
+`20260921104610_outify_account_lifecycle.sql`. Tampoco existen
+`get_workspace_status`, `activate_workspace` ni `request_account_deletion`
+en `outify`/`outify_dev`. El frontend publicado depende de esas RPC; existe un
+desajuste entre código y base de datos. Comprobarlo primero en la próxima sesión,
+sin asumir que explica todos los problemas comunicados.
+
+La sesión anterior terminó con código subido, PR en borrador, CI y Preview
+correctos. Quedaron migración coordinada, prueba remota de baja/cron/reapertura,
+OAuth externo y móvil, recuperación/seguimiento de colas y los pendientes legales
+y de Product Hunt listados abajo. La lista de pasos de Daniel ya estaba escrita,
+pero no llegó a entregarse el mensaje final de cierre.
+
+Persisten seis notas locales con evidencia posterior al push, sin commit ni
+publicación; preservarlas al actualizar la rama. El checkout local permanece en
+`feat/editor-launch-preparation`, commit `875649b`. En esta comprobación no se
+modifican código, base de datos, despliegues ni configuraciones remotas.
+
 ## Avance · 2026-09-22
 
 Daniel revisó el dossier y encargó abordar los pendientes. Preparado localmente:
+
+**Actualización de publicación:** versión 0.3.0 aprobada el 2026-09-22 y subida
+en `875649b08f0ad89f5754c22b1d4e2e528d965876`.
+[PR #2 en borrador](https://github.com/danielperezmartinez/outify/pull/2).
+[Preview](https://outify-a1mzla96l-devappsdpms-projects.vercel.app), despliegue
+`dpl_BqYCejiuYDLYUVekELLM7sWXHWXU`, **READY** por MCP, origen Git y destino Preview.
+Logs de build correctos mediante CLI oficial (el método MCP devolvió no disponible).
+MCP no encontró errores runtime en la consulta; no acredita recorridos privados.
+`/ngsw.json` responde 200 y declara 0.3.0. La protección de Vercel puede pedir sesión.
+Las migraciones no se han aplicado: esta Preview sirve para revisar presentación,
+no acredita alta, editor conectado ni baja remota. Producción continúa en 0.2.0.
+[CI 35775112821](https://github.com/danielperezmartinez/outify/actions/runs/35775112821)
+completado con **success** para ese SHA: SemVer, instalación reproducible, tests,
+PWA, navegador y builds de Preview/Production. No se ha integrado la PR.
+La evidencia posterior al despliegue se conserva localmente en esta bóveda;
+no se genera otra Preview únicamente para publicar este registro.
 
 - Portada `/` y presentación inglesa `/en`, con precio, soporte, relato y aviso
   de que la app está en español. La traducción de la app sigue sin decidirse.
@@ -22,7 +115,9 @@ Daniel revisó el dossier y encargó abordar los pendientes. Preparado localment
 - Open Graph/Twitter y canónica con el dominio actual como propuesta. Fuentes
   autoalojadas, sin peticiones a Google Fonts.
 - Variables de servidor de la baja configuradas y verificadas en Vercel.
-  Migraciones, funciones y cron todavía sin publicar.
+  Funciones incluidas en Preview; migraciones pendientes y cron sin activar en
+  producción. Las pruebas locales descritas siguen siendo las realizadas antes
+  de esta publicación de Preview.
 
 Verificación: build, 23 pruebas Angular, 9 de servidor, 6 de configuración,
 9 de navegador y 1 de PWA, incluyendo AXE y móvil. La prueba de baja con backend real sigue
