@@ -1,5 +1,6 @@
 @import './fonts.css';
 @import './public.css';
+@import './app/outfits/outfits.css';
 :root {
   --rice-paper: #f8f7f5;
   --warm-plaster: #d9d6cf;
@@ -864,14 +865,21 @@ legend {
 }
 @media (max-width: 700px) {
   .shell-header {
-    height: 80px;
-    padding: 0 20px;
+    min-height: 108px;
+    height: auto;
+    padding: 14px 20px 0;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .wordmark {
     font-size: 29px;
   }
   .shell-header nav {
-    gap: 10px;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 24px;
+    min-height: 44px;
   }
   .shell-header nav a {
     font-size: 14px;

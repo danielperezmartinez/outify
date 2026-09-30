@@ -24,6 +24,7 @@ import { LegalLinks } from '../shared/ui/legal-links';
       <nav aria-label="Navegación principal">
         <a routerLink="/wardrobes" routerLinkActive="active">Armarios</a
         ><a routerLink="/items" routerLinkActive="active">Artículos</a>
+        <a routerLink="/outfits" routerLinkActive="active">Outfits</a>
       </nav>
       <a routerLink="/account" routerLinkActive="active" class="account-link"
         >Mi cuenta <span aria-hidden="true">↗</span></a

@@ -1,12 +1,241 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-30
 ---
 
 # Lanzamiento en Product Hunt
 
+## Preparación finalizada por Daniel · 2026-09-30
+
+Daniel confirma que todo está preparado para publicar mañana, **2026-10-01**.
+Ficha: [Outify en Product Hunt](https://www.producthunt.com/products/outify-3?launch=outify-3).
+
+Comprobada la ficha pública sin sesión en el navegador: nombre Outify, tagline
+«Know what you own. Find where it lives.», descripción inglesa del inventario,
+enlace a `https://outify.vercel.app/`, GitHub y galería con contenido marcado
+Interactive. La fecha procede de la confirmación de Daniel; la vista pública
+consultada no muestra la programación ni permite verificar su hora exacta.
+No se cambia la ficha ni se publica nada desde el agente.
+
+La preparación de la ficha queda confirmada por Daniel; falta comprobar la
+publicación efectiva. Las observaciones anteriores sobre Arcade se conservan
+como historial, sin reabrirlas como pendientes de preparación tras esta
+confirmación. No se infiere que se hayan resuelto los asuntos contractuales u
+operativos documentados por separado en [[Tratamiento de datos]].
+
+## Corrección de Arcade · 2026-09-29
+
+Daniel encarga aplicar en su Chrome las correcciones de la revisión del
+2026-09-28. Hecho en el editor
+`https://app.arcade.software/flows/1tqSY9FR9H6jInhGUCbP/edit`, sin publicar ni
+compartir:
+
+- Título: `Outify — Interactive Product Tour`.
+- Orden de imágenes 01–08: el paso con `01-wardrobe.png` se copió al inicio y se
+  borró el duplicado final. Textos y nombres internos reescritos según
+  `tmp/Outify-Product-Hunt-Media/arcade/steps.json`.
+- Puntos verificados tras salir y volver a cada paso (horizontal / vertical):
+  1 · 56,0 / 5,4; 2 · 18,6 / 45,6; 3 · 14,9 / 78,1; 4 · 47,4 / 3,4;
+  5 · 87,3 / 55,1; 6 · 90,3 / 21,9; 7 · 73,9 / 61,2. Los hotspots de los pasos 2
+  y 3 se recrearon con el mismo texto, «Open by default» y destino Next Step.
+- Paso 8: convertido en Callout sin puntero, con botón y destino Next Step.
+- Paso 9 nuevo (Chapter): «Know what you own. Find where it lives.», subtítulo
+  con enlace automático a `http://outify.vercel.app/en` (pestaña nueva) y botón
+  «Replay tour» hacia el primer paso.
+
+Límites del plan gratuito: el botón con destino URL y los temas requieren
+Growth; no se ha contratado. En Arcade el color del punto es el `Background` del
+hotspot, el mismo que el del globo; el texto ya es `#292724` sobre `#F8F7F5` y
+el punto `#334231` queda pendiente de que Daniel elija cómo aplicarlo. Durante
+el trabajo se añadió y retiró por error un menú (consume 1 de 3 usos gratuitos
+de Menu) y se abrió sin aplicar el editor de imagen.
+
+## Revisión de Arcade · 2026-09-28
+
+Daniel ha montado la demo en Arcade y solicita revisar los puntos, sin encargar
+cambios. Revisados los ocho pasos en su navegador integrado:
+`https://app.arcade.software/flows/1tqSY9FR9H6jInhGUCbP/view`.
+No se modifica ni publica la demo; se devuelve la reproducción al inicio.
+
+Las capturas visibles están en orden **02, 03, 04, 05, 06, 07, 08, 01**, mientras
+los textos corresponden a **01–08**. Corregir primero las parejas imagen/texto;
+mover pasos completos también mueve sus textos y no basta para resolverlo.
+Posiciones recomendadas sobre cada PNG, desde la esquina superior izquierda:
+
+| Paso / imagen | Destino del punto | Horizontal | Vertical |
+| --- | --- | --- | --- |
+| 01-wardrobe.png | Artículos en la navegación superior | 55,9 % | 5,4 % |
+| 02-inventory.png | Campo Buscar | 18,6 % | 45,5 % |
+| 03-search.png | Tarjeta Camisa de lino | 14,9 % | 78,3 % |
+| 04-details.png | Armarios en la navegación superior | 47,4 % | 3,7 % |
+| 05-unassigned.png | Selector de ubicación de la bolsa | 87,3 % | 55,3 % |
+| 06-assigned.png | Botón Editar armarios | 90,3 % | 22,0 % |
+| 07-editor.png | Tirador inferior derecho de Baldas | 73,8 % | 61,4 % |
+| 08-resized.png | Botón de avanzar/finalizar, sin punto sobre la app | — | — |
+
+Los puntos 1, 5 y 7 requieren recolocación respecto a la captura correcta;
+el 8 señala una zona sin acción correspondiente y debería ser un cierre.
+Los puntos 2, 3, 4 y 6 quedan en el entorno de sus controles al corregir las
+imágenes; se recomienda centrarlos según la tabla. Texto y puntos casi blancos
+contrastan poco con el fondo; propuesta: texto `#292724`, punto `#334231` con
+borde claro. El título sigue siendo `Untitled (Sun Sep 27 2026)` y no aparece
+la pantalla final propuesta con enlace a Outify.
+
+Daniel también aporta el apartado «Connect with Investors» de Product Hunt.
+Su texto lo presenta como contacto voluntario con inversores, separado de la
+presentación pública. Recomendación: omitirlo si solo busca lanzar el proyecto
+personal gratuito. Se ha preguntado si desea buscar inversión; no se presupone
+esa intención, no se inventan métricas ni se envía ninguna respuesta al formulario.
+
+## Registro en curso · 2026-09-27
+
+Daniel encarga preparar vídeo y demo interactiva. Entrega local en
+`tmp/Outify-Product-Hunt-Media/` y paquete ZIP del mismo nombre:
+
+- `Outify-Product-Tour.mp4`: 60,4 segundos, H.264, 1920 × 1080, 30 fps, sin audio;
+  presentación inglesa con interfaz española. Cuatro escenas reales del frontend
+  local: mapa/zoom, búsqueda y ficha, asignación, redimensionado y deshacer/rehacer.
+- `Outify-Interactive-Demo.html`: vista previa autónoma con ocho capturas clicables
+  y pantalla final. Abre localmente sin servidor; no es un enlace publicado en Arcade.
+- `arcade/`: ocho PNG a 1440 × 900, guion inglés y coordenadas de puntos de clic.
+  `LEEME - Pasos para publicar.md`: instrucciones de YouTube, Arcade y Product Hunt.
+  Incluye descripción para YouTube y portada PNG aparte.
+- Verificado: grabación sin errores de página ni peticiones remotas reales;
+  decodificación completa del MP4; revisión visual de escenas; navegación por
+  todos los pasos, teclado, retroceso y repetición; sin desbordamiento móvil y
+  cero incidencias AXE en la portada de la demo en escritorio y móvil.
+- Generadores: `scripts/launch-demo-fixture.mjs`, `scripts/prepare-launch-video.mjs`,
+  `scripts/render-launch-media.mjs` y `scripts/launch-demo-template.html`.
+  Usan el servidor local en 4201, Playwright/Chrome y FFmpeg ya disponibles.
+  Los datos son sintéticos y las imágenes son las ilustraciones originales.
+  No se modifica ni despliega la aplicación; no acredita el backend remoto.
+- Pendiente de Daniel: revisar el MP4, subirlo a YouTube como público u oculto,
+  importar las capturas en su cuenta gratuita de Arcade, añadir los puntos según
+  el guion y publicar el enlace de demo. No se han creado cuentas, contratado
+  planes ni publicado estos materiales en servicios externos. Se le ha solicitado
+  acceso al panel de Arcade y facilitado una guía paso a paso.
+
+Daniel comunica que ha completado el paso inicial con la descripción, comentario
+inicial y otros textos, y está en la carga de capturas. Decide continuar con el
+registro mientras espera respuesta de Vercel. Se han localizado las cuatro
+galerías en `public/launch/gallery-1.png` a `gallery-4.png`, la miniatura
+`public/launch/thumbnail.png` y el paquete `tmp/Outify-Product-Hunt.zip`.
+Se entregan las rutas; no se ha confirmado una publicación en Product Hunt.
+
+## Decisiones de Daniel · 2026-09-26
+
+- Proyecto personal y sin actividad económica, confirmado.
+- Marca aprobada; cierre en [[Tareas/Definir identidad pública de Outify]].
+- Dominio definitivo para esta etapa: `https://outify.vercel.app`, sin compra.
+- Presentación para Product Hunt en inglés: usar `https://outify.vercel.app/en`.
+  La app permanece en español y debe avisarse antes del acceso. Sistema ES/EN
+  aplazado en [[Tareas/Añadir sistema de idiomas español e inglés]], sin bloquear PH.
+- Revisión de otras apps e identidad común aplazada por indicación de Daniel;
+  no pedirle ahora resultados ni actuar sobre esas apps. El riesgo documentado
+  se conserva; aplazarlo no equivale a declararlo resuelto.
+- Daniel preparará Product Hunt paso a paso y consultará cuando necesite ayuda.
+  No se crea ni publica una ficha por esta confirmación.
+
+Contrato de tratamiento: Daniel aporta respuesta del agente de Vercel que niega
+DPA para Hobby y remite al equipo de privacidad para aclaración formal. Sigue
+pendiente el alcance del alojamiento estático; sin gastos autorizados. Evidencia y opciones en
+[[Tratamiento de datos#Cobertura contractual pendiente]].
+
+## Estado vigente · cierre técnico del 2026-09-25
+
+Daniel solicita completar los pendientes. Rama de trabajo
+`chore/product-hunt-readiness`, basada en `origin/main`; se han preservado las
+seis notas locales de la sesión anterior. Esta sección sustituye como estado
+actual a las revisiones históricas siguientes.
+
+- Aplicadas las migraciones de historial y ciclo de cuenta en `devappsdpm-db`,
+  saludable según MCP. Se ejecutó exactamente el SQL ya publicado en 0.3.0.
+  Historial reconciliado con los identificadores originales
+  `20260919075341` y `20260921104610` después de que MCP asignara timestamps de
+  aplicación. No se modificó el historial de otras aplicaciones.
+- Verificados permisos de las RPC en ambos entornos y ocho políticas
+  restrictivas por esquema. Las RPC de mantenimiento solo admiten `service_role`.
+  Los perfiles existentes deben declarar su edad; no se ha declarado por ellos.
+- Pasan en la base remota `invariants.sql`, `zone-history.sql` y la nueva prueba
+  `account-lifecycle.sql`, con datos sintéticos y rollback. Esta última verifica
+  edad, baja idempotente, bloqueo RLS, lease exclusivo, espera de cargas,
+  conservación de Auth y del otro entorno, reapertura y rechazo de sesión vieja.
+  No sustituye OAuth ni la prueba HTTP/Storage remota de extremo a extremo.
+- Pasan 14 pruebas locales de servidor y configuración. El diagnóstico
+  `supabase/tests/account-queue-status.sql` muestra cero bajas pendientes y
+  cero errores en ambos entornos. No hay alertas automáticas configuradas.
+- Production READY por MCP, SHA `d2daa00f52c44ce279521b5f9c256216a76a42c6`,
+  despliegue `dpl_BVQnFuer7dH8wuJ5SZGenkvC8Mtq`. API Vercel confirma cron
+  `/api/account-deletion-retry` activo a `0 3 * * *` para ese despliegue.
+  Configuración comprobada; no se afirma una ejecución autenticada satisfactoria.
+- HTTP 200 en portada ES/EN, privacidad, condiciones, miniatura, cuatro galerías
+  e imagen social. Open Graph/Twitter están presentes en el HTML inicial.
+  POST de baja sin sesión y cron sin secreto devuelven 401; GET de baja, 405.
+- Navegador: actualización voluntaria de PWA 0.2.0 a 0.3.0 correcta, redirección
+  de `/acceso` a `/login`, admisión por edad y páginas públicas verificadas.
+  No se inició sesión con una cuenta real ni se aceptaron condiciones por Daniel.
+- Consulta MCP de logs 5xx de la última hora sin resultados; no acredita el
+  funcionamiento de recorridos no ejecutados.
+- Product Hunt abierto sin sesión. Búsqueda interna de Outify sin coincidencia
+  exacta entre los resultados visibles; no acredita inexistencia de ficha.
+  Guía oficial de publicación reconsultada: las dimensiones y textos preparados
+  siguen encajando. No se guardó ni publicó una ficha.
+
+**Pendientes efectivos:** acceso de Daniel a Product Hunt, usuario maker y fecha;
+cobertura contractual; Google externo y móvil; ensayo remoto completo de baja con Storage y
+cron autenticado; copia recuperable y ensayo de restauración; alertas de colas y
+coordinación de identidad central aplazada por Daniel. Marca, dominio e idioma
+resueltos en las decisiones del 2026-09-26. Los textos legales ya están publicados,
+pero su publicación no resuelve esas cuestiones contractuales.
+
+Los cambios de esta sesión en el repositorio son documentación y pruebas SQL;
+no se ha incrementado la versión ni generado otro despliegue de la aplicación.
+
+## Estado tras el merge · 2026-09-25
+
+Daniel informa de problemas y pide solo aclarar pendientes; las correcciones
+se harán en una sesión nueva. PR #2 integrada, commit de `main`
+`d2daa00f52c44ce279521b5f9c256216a76a42c6`. MCP confirma Production **READY**,
+despliegue `dpl_BVQnFuer7dH8wuJ5SZGenkvC8Mtq`. Ese estado acredita el despliegue,
+no el funcionamiento completo de la aplicación.
+
+**Pendiente prioritario confirmado por lectura de Supabase:** no constan las
+migraciones `20260919075341_outify_zone_history.sql` ni
+`20260921104610_outify_account_lifecycle.sql`. Tampoco existen
+`get_workspace_status`, `activate_workspace` ni `request_account_deletion`
+en `outify`/`outify_dev`. El frontend publicado depende de esas RPC; existe un
+desajuste entre código y base de datos. Comprobarlo primero en la próxima sesión,
+sin asumir que explica todos los problemas comunicados.
+
+La sesión anterior terminó con código subido, PR en borrador, CI y Preview
+correctos. Quedaron migración coordinada, prueba remota de baja/cron/reapertura,
+OAuth externo y móvil, recuperación/seguimiento de colas y los pendientes legales
+y de Product Hunt listados abajo. La lista de pasos de Daniel ya estaba escrita,
+pero no llegó a entregarse el mensaje final de cierre.
+
+Persisten seis notas locales con evidencia posterior al push, sin commit ni
+publicación; preservarlas al actualizar la rama. El checkout local permanece en
+`feat/editor-launch-preparation`, commit `875649b`. En esta comprobación no se
+modifican código, base de datos, despliegues ni configuraciones remotas.
+
 ## Avance · 2026-09-22
 
 Daniel revisó el dossier y encargó abordar los pendientes. Preparado localmente:
+
+**Actualización de publicación:** versión 0.3.0 aprobada el 2026-09-22 y subida
+en `875649b08f0ad89f5754c22b1d4e2e528d965876`.
+[PR #2 en borrador](https://github.com/danielperezmartinez/outify/pull/2).
+[Preview](https://outify-a1mzla96l-devappsdpms-projects.vercel.app), despliegue
+`dpl_BqYCejiuYDLYUVekELLM7sWXHWXU`, **READY** por MCP, origen Git y destino Preview.
+Logs de build correctos mediante CLI oficial (el método MCP devolvió no disponible).
+MCP no encontró errores runtime en la consulta; no acredita recorridos privados.
+`/ngsw.json` responde 200 y declara 0.3.0. La protección de Vercel puede pedir sesión.
+Las migraciones no se han aplicado: esta Preview sirve para revisar presentación,
+no acredita alta, editor conectado ni baja remota. Producción continúa en 0.2.0.
+[CI 35775112821](https://github.com/danielperezmartinez/outify/actions/runs/35775112821)
+completado con **success** para ese SHA: SemVer, instalación reproducible, tests,
+PWA, navegador y builds de Preview/Production. No se ha integrado la PR.
+La evidencia posterior al despliegue se conserva localmente en esta bóveda;
+no se genera otra Preview únicamente para publicar este registro.
 
 - Portada `/` y presentación inglesa `/en`, con precio, soporte, relato y aviso
   de que la app está en español. La traducción de la app sigue sin decidirse.
@@ -22,7 +251,9 @@ Daniel revisó el dossier y encargó abordar los pendientes. Preparado localment
 - Open Graph/Twitter y canónica con el dominio actual como propuesta. Fuentes
   autoalojadas, sin peticiones a Google Fonts.
 - Variables de servidor de la baja configuradas y verificadas en Vercel.
-  Migraciones, funciones y cron todavía sin publicar.
+  Funciones incluidas en Preview; migraciones pendientes y cron sin activar en
+  producción. Las pruebas locales descritas siguen siendo las realizadas antes
+  de esta publicación de Preview.
 
 Verificación: build, 23 pruebas Angular, 9 de servidor, 6 de configuración,
 9 de navegador y 1 de PWA, incluyendo AXE y móvil. La prueba de baja con backend real sigue
@@ -73,23 +304,18 @@ proyecto compartido para resolverlo.
 En orden, con las decisiones separadas del trabajo técnico que sigue a cargo
 del agente:
 
-1. **Confirmar el uso del proyecto.** Indicar si es personal y sin ingresos,
-   publicidad, afiliación o actividad profesional/económica. Si existe actividad
-   económica, concretar los datos identificativos exigibles antes de publicar
-   los textos. No añadir domicilio o identificadores privados a la bóveda.
-2. **Resolver Vercel Hobby.** Enviar al soporte la consulta preparada en
+1. **Completado:** proyecto personal y sin actividad económica confirmado el
+   2026-09-26. Reevaluar si cambia el modelo.
+2. **Entender y resolver el contrato de tratamiento.** Daniel solicita primero
+   explicación. Opción propuesta sin coste: enviar al soporte la consulta en
    [[Tratamiento de datos#Cobertura contractual pendiente]] y trasladar la
    respuesta. Si no hay cobertura, decidir entre un plan cubierto con coste
    autorizado o una alternativa de alojamiento que se evaluará antes de migrar.
-3. **Dar el visto bueno visual.** Revisar `tmp/Outify-Product-Hunt.zip` y confirmar
-   símbolo, iconos y galería, o indicar cambios concretos. Las prendas son
-   ilustraciones propias y el inventario de demostración es ficticio.
-4. **Confirmar dominio e idioma.** Elegir el dominio actual `outify.vercel.app`
-   o uno propio, y presentación inglesa con app española (preparada) o traducción
-   adicional de la app. Comprar un dominio solo si se decide usar uno propio.
-5. **Completar la revisión de otras apps.** Compartir los resultados de sus
-   agentes sobre bajas centrales. Acordar cómo se atiende una petición que
-   abarque la identidad común sin borrar datos ajenos a una baja de Outify.
+3. **Marca aprobada.** Los recursos están en `tmp/Outify-Product-Hunt.zip`;
+   las capturas finales se revisarán con la ficha si cambia la interfaz.
+4. **Completado:** dominio Vercel y presentación inglesa con app española.
+   La tarea futura ES/EN no bloquea el lanzamiento.
+5. **Aplazado por Daniel:** revisión de otras apps y coordinación de identidad.
 6. **Comprobar Google con nosotros.** En la consola del proyecto Google correcto,
    confirmar que OAuth permite usuarios externos y registrar las URLs legales
    cuando estén publicadas. Probar acceso desde móvil con una cuenta externa

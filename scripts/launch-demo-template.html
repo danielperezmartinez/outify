@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Outify — Interactive product tour</title>
+  <style>
+    /* FONT_DATA */
+    :root {
+      color-scheme: light;
+      --ink: #292724;
+      --muted: #4f4b46;
+      --green: #334231;
+      --sage: #dee7d8;
+      --line: #b6b0a8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f8f7f5;
+      color: var(--ink);
+      font-family: Atkinson, sans-serif;
+    }
+    button,
+    a {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--green);
+      outline-offset: 5px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 4vw;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font:
+        400 32px Geologica,
+        sans-serif;
+      letter-spacing: -1.5px;
+    }
+    .brand svg {
+      width: 36px;
+      height: 36px;
+    }
+    .meta {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    main {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 36px;
+      padding: 36px 4vw;
+      max-width: 1920px;
+      margin: auto;
+    }
+    .number {
+      font: 400 64px Geologica;
+      color: #52664e;
+      letter-spacing: -3px;
+    }
+    .number span {
+      font: 18px Atkinson;
+      letter-spacing: 0;
+      color: var(--muted);
+    }
+    h1 {
+      font: 400 31px/1.15 Geologica;
+      letter-spacing: -1px;
+      margin: 24px 0 16px;
+    }
+    .description {
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--muted);
+      min-height: 140px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin: 28px 0 22px;
+    }
+    button {
+      border: 1px solid #716d6c;
+      border-radius: 4px;
+      background: transparent;
+      padding: 12px 16px;
+      color: var(--ink);
+    }
+    button.primary {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+    button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dots span {
+      height: 4px;
+      flex: 1;
+      background: #d9d6cf;
+    }
+    .dots span.active {
+      background: var(--green);
+    }
+    .hint {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-top: 26px;
+    }
+    .screen {
+      position: relative;
+      border: 1px solid var(--line);
+      align-self: start;
+      line-height: 0;
+      box-shadow: 0 12px 25px #2927240a;
+    }
+    .screen img {
+      width: 100%;
+      height: auto;
+    }
+    .hotspot {
+      position: absolute;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      background: #334231;
+      color: #fff;
+      border: 3px solid white;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 6px #33423144;
+      line-height: 24px;
+      font-size: 18px;
+    }
+    .hotspot:hover {
+      box-shadow: 0 0 0 10px #33423133;
+    }
+    .end {
+      display: none;
+      min-height: 500px;
+      background: var(--sage);
+      padding: 9%;
+      line-height: 1.4;
+    }
+    .end h2 {
+      font: 400 clamp(36px, 4vw, 74px)/1.1 Geologica;
+      letter-spacing: -2px;
+      max-width: 800px;
+    }
+    .end a {
+      display: inline-block;
+      color: #fff;
+      background: var(--green);
+      padding: 14px 24px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 20px;
+    }
+    .end p {
+      line-height: 1.6;
+      font-size: 17px;
+      color: var(--muted);
+    }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 4vw 25px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    a {
+      color: var(--green);
+    }
+    @media (max-width: 850px) {
+      header {
+        padding: 18px 5vw;
+      }
+      .meta {
+        max-width: 170px;
+        text-align: right;
+      }
+      main {
+        grid-template-columns: 1fr;
+        padding: 24px 5vw;
+        gap: 18px;
+      }
+      .number {
+        font-size: 38px;
+      }
+      h1 {
+        margin: 14px 0;
+        font-size: 28px;
+      }
+      .description {
+        min-height: 0;
+        margin: 0;
+      }
+      .controls {
+        margin: 18px 0;
+      }
+      .hint {
+        margin: 12px 0;
+      }
+      .screen {
+        grid-row: 2;
+      }
+      .hotspot {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .end {
+        min-height: 350px;
+      }
+      footer {
+        flex-direction: column;
+        padding: 10px 5vw 24px;
+        gap: 4px;
+      }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .screen img {
+        animation: reveal 0.2s ease;
+      }
+      @keyframes reveal {
+        from {
+          opacity: 0.6;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    }
+  </style>
+  <header>
+    <div class="brand"><!-- BRAND -->outify</div>
+    <div class="meta">Interactive product tour<br />Sample inventory · App in Spanish</div>
+  </header>
+  <main>
+    <aside>
+      <div class="number" id="number"></div>
+      <div aria-live="polite">
+        <h1 id="title"></h1>
+        <p class="description" id="description"></p>
+      </div>
+      <div class="controls">
+        <button id="previous" aria-label="Previous step">← Back</button
+        ><button class="primary" id="next">Next →</button>
+      </div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <p class="hint">
+        Click the marked point or use Next.<br />This is a guided tour of captured screens.
+      </p>
+    </aside>
+    <div class="screen">
+      <img id="screenshot" alt="" /><button
+        class="hotspot"
+        id="hotspot"
+        aria-label="Continue to the next step"
+      >
+        →
+      </button>
+      <section class="end" id="end">
+        <h2>Know what you own.<br />Find where it lives.</h2>
+        <a href="https://outify.vercel.app/en" target="_blank" rel="noopener">Explore Outify ↗</a>
+        <p>Free at launch · Google sign-in · App in Spanish</p>
+        <p>Saved outfits are a future idea, not part of this release.</p>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <span>Actual app screens · Local sample inventory with original illustrations</span
+    ><span>Preview prepared for the Product Hunt launch</span>
+  </footer>
+  <script>
+    const steps = /* STEP_DATA */;
+    let current = 0;
+    const $ = id => document.getElementById(id);
+    function render(){
+     const done=current===steps.length, step=steps[current];
+     $('number').innerHTML=String(current+1).padStart(2,'0')+' <span>/ '+String(steps.length+1).padStart(2,'0')+'</span>';
+     $('title').textContent=done?'A place for everything.':step.title;
+     $('description').textContent=done?'A little map of your wardrobe, and a little less searching. Explore Outify or replay this tour.':step.text;
+     $('previous').disabled=current===0;$('next').textContent=done?'Replay ↺':current===steps.length-1?'Finish →':'Next →';
+     $('screenshot').style.display=done?'none':'block';$('end').style.display=done?'block':'none';
+     $('hotspot').style.display=!done&&step.hotspot?'block':'none';
+     if(!done){$('screenshot').src=step.image;$('screenshot').alt=step.title+' — Outify app screen';if(step.hotspot){$('hotspot').style.left=(step.hotspot.x*100)+'%';$('hotspot').style.top=(step.hotspot.y*100)+'%';$('hotspot').setAttribute('aria-label',step.text+' Continue.')}}
+     $('dots').innerHTML=Array.from({length:steps.length+1},(_,i)=>'<span class="'+(i<=current?'active':'')+'"></span>').join('');
+    }
+    function next(){current=current===steps.length?0:current+1;render()}
+    $('previous').onclick=()=>{if(current>0){current--;render()}};$('next').onclick=next;$('hotspot').onclick=next;
+    document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();next()}if(e.key==='ArrowLeft'&&current>0){e.preventDefault();current--;render()}});render();
+  </script>
+</html>

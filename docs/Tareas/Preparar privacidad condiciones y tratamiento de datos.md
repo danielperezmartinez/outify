@@ -5,10 +5,16 @@ Resumen: Definir y publicar los textos y flujos legales necesarios antes de admi
 Decisiones: '[[Decisiones/ADR-0001 Supabase como plataforma backend|ADR-0001]]; [[Decisiones/ADR-0002 Modelo de datos inicial|ADR-0002]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]; [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase|ADR-0009]]'
 Bloqueada: []
 Fecha de creación: 2026-09-18T14:27:30+02:00
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 # Preparar privacidad, condiciones y tratamiento de datos
+
+Actualización 2026-09-25: páginas legales y enlaces publicados y comprobados;
+migración de ciclo de cuenta aplicada. Prueba SQL remota de baja/reapertura con
+rollback satisfactoria, sin acreditar todavía el recorrido HTTP/Storage completo.
+Cobertura contractual, recuperación y coordinación central siguen pendientes.
+Evidencia actual en [[Lanzamiento en Product Hunt]] y [[Tratamiento de datos]].
 
 ## Objetivo
 
@@ -36,7 +42,7 @@ de inventario.
 
 - [x] Inventario de datos y proveedores verificado contra la implementación.
 - [ ] Política de privacidad y condiciones aprobadas y publicadas.
-- [ ] Flujos de acceso y cuenta enlazan los documentos vigentes.
+- [x] Flujos de acceso y cuenta enlazan los documentos publicados; acceso verificado en producción, cuenta cubierta por las pruebas previas de navegador.
 - [ ] La eliminación de cuenta y datos se ha probado de extremo a extremo.
 - [x] Baja implementada y probada con Auth, RLS y Storage reales en Supabase local aislado.
 - [x] Registro desde 14 años y declaración persistida en servidor, sin fecha de nacimiento.
@@ -116,7 +122,7 @@ y verificados con navegador/AXE. Fuentes autoalojadas con licencias. Procedimien
 interno de derechos, exportación, soporte y conservación añadido a [[Tratamiento de datos]].
 
 Variables de servidor configuradas en Vercel y verificadas sin mostrar secretos.
-Las funciones, cron y migraciones siguen sin desplegar. La API confirma plan Hobby;
+Las funciones están en Preview 0.3.0; cron de producción y migraciones pendientes. La API confirma plan Hobby;
 el DPA publicado de Vercel delimita su alcance a Pro/Enterprise. Resolver cobertura
 contractual antes de cerrar/publicar los textos. No se ha cambiado de plan ni
 enviado una consulta a terceros. Supabase Free y ausencia de backups automáticos

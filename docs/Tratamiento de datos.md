@@ -1,8 +1,48 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-30
 ---
 
 # Tratamiento de datos
+
+## Ampliación local de outfits · 2026-09-30
+
+[[Tareas/Implementar outfits guardados]] incorpora nombres, notas, favoritos y
+composiciones privadas del inventario. El borrado de una prenda conserva en sus
+outfits únicamente el último nombre como aviso, sin foto; la baja elimina las
+composiciones. Los textos públicos de privacidad y condiciones se actualizaron
+localmente a la versión documental 2, fechada el 2026-09-30.
+
+La migración se verificó en PostgreSQL local; todavía no está aplicada en remoto
+ni se ha publicado la ampliación. El estado operativo siguiente describe la
+versión 0.3.0 anterior a esta función.
+
+## Actualización operativa · 2026-09-25
+
+Producción 0.3.0, migraciones de historial/admisión/baja aplicadas y cron activo
+a las 03:00 UTC. Evidencia y límites en
+[[Lanzamiento en Product Hunt#Estado vigente · cierre técnico del 2026-09-25]].
+Las referencias posteriores a implementación local o migración pendiente son
+históricas. La prueba SQL remota con rollback pasó; siguen sin acreditarse
+Google externo, baja HTTP/Storage completa y ejecución autenticada del cron.
+
+Seguimiento manual reproducible: ejecutar
+`supabase/tests/account-queue-status.sql` con mantenimiento. Solo devuelve
+agregados por entorno. Investigar errores de reintento y solicitudes mayores de
+48 horas; ese umbral es operativo, no un plazo garantizado al usuario. Revisar
+el resultado HTTP del cron diario y sus logs antes de que expire la ventana
+disponible. No existe aún una alerta automática ni una guardia asignada.
+
+Recuperación pendiente de implementación y ensayo: una copia debe incluir solo
+esquemas Outify y sus buckets, cifrarse y mantenerse fuera de Git y de esta bóveda.
+Las identidades Auth son compartidas: no restaurarlas ni sobrescribir otras apps.
+Ensayar primero en instancia aislada, conservar las solicitudes de baja más
+recientes y reaplicarlas antes de reabrir acceso. Un dump SQL no recupera fotos.
+Hasta disponer de copia y ensayo verificables, no prometer recuperación de datos.
+
+Advisors: las dos tablas privadas de ciclo de cuenta tienen RLS sin políticas,
+intencionadamente cerradas y accesibles mediante funciones controladas. El aviso
+global de contraseñas filtradas sigue presente; no se cambió Auth compartido
+(Outify usa Google). No se encontraron otros avisos en esta consulta.
 
 Inventario técnico verificado contra `Session`, `Backend`, `ItemStore`, las
 definiciones SQL, el manifest y la configuración del service worker. Complementa
@@ -248,19 +288,65 @@ conservando EXIF; no anunciar eliminación de metadatos.
   `CRON_SECRET` sensible solo para Production. Los transitorios con secretos se
   eliminaron. La clave de servidor tiene alcance del proyecto Supabase compartido:
   solo se usa en los handlers con esquema/bucket fijo; nunca se envía al navegador.
-- Funciones y cron **sin desplegar**; las dos migraciones siguen pendientes.
-  Configurar variables no activa la baja ni modifica la base compartida.
+- Funciones incluidas en la Preview 0.3.0 del commit `875649b`, READY por MCP.
+  Cron sin activar en producción y dos migraciones pendientes. La baja remota
+  aún no está operativa; no se ha modificado la base compartida.
 - El límite visible de logs de runtime de Hobby es una hora según la
   [documentación](https://vercel.com/docs/logs/runtime). No equivale al plazo de
   todos sus registros internos de seguridad, facturación o soporte.
 
 ### Cobertura contractual pendiente
 
+Respuesta aportada por Daniel del agente de Vercel, 2026-09-26: indica que Hobby
+no ofrece DPA ni otro acuerdo del artículo 28; remite a Pro/Enterprise. No emite
+criterio sobre alojamiento estático y metadatos, y deriva las consultas formales
+a `privacy@vercel.com`. El alcance publicado del DPA coincide con Pro/Enterprise,
+reconsultado ese día. Se conserva la atribución al agente: no equivale a un acuerdo
+firmado ni a una respuesta individual del equipo de privacidad.
+
+Siguiente paso recomendado: consultar al equipo de privacidad por escrito sobre
+sus roles y términos para servir solo HTML/CSS/JS estáticos en Hobby, los datos
+de visitantes que procesa y los fines de ese tratamiento. Pedir las cláusulas
+aplicables; evitar pedir al soporte que certifique el cumplimiento global de
+Outify. Mover la API sigue siendo una opción por evaluar, no una solución legal
+verificada. Daniel no ha autorizado pagos, migraciones ni envíos por el agente.
+
+Daniel confirma el 2026-09-26 que Outify es personal y sin actividad económica.
+Esto encaja con el uso no comercial del [plan Hobby](https://vercel.com/docs/plans/hobby).
+Solicita entender el contrato antes de decidir; no autoriza un plan de pago.
+La revisión de otras apps queda aplazada por su indicación, conservando la
+separación entre baja de Outify e identidad central.
+
+«Cobertura» se refiere aquí al acuerdo de encargo de tratamiento (DPA). Define
+instrucciones, confidencialidad, seguridad, subencargados, ayuda con derechos e
+incidentes y devolución/supresión. El artículo 28 exige un contrato u otro acto
+jurídico vinculante cuando un proveedor trata datos por cuenta del responsable.
+[Contenido según AEPD](https://www.aepd.es/preguntas-frecuentes/2-tus-obligaciones-como-responsable-del-tratamiento/8-responsable-y-encargado-del-tratamiento/FAQ-0238-cual-seria-el-contenido-del-contrato-de-encargo-de-tratamiento),
+[RGPD, artículos 2 y 28](https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807).
+
+La excepción personal/doméstica es más estrecha que «proyecto gratuito»: ofrecer
+cuentas a usuarios del público no se considera aquí una actividad exclusivamente
+doméstica. Es una valoración del alcance descrito, no una resolución jurídica
+individual. En el código actual, la función Vercel de baja recibe el token de
+sesión, valida al usuario y opera con su UUID y rutas de imágenes. Por tanto,
+la cuestión existe aunque PostgreSQL y Storage estén en Supabase. Un DPA no
+garantiza por sí solo el cumplimiento global ni sustituye las medidas operativas.
+
+Opciones, sin obligación de pagar por una marca concreta: confirmar un instrumento
+aplicable a Hobby; contratar un plan/proveedor con términos adecuados; o evaluar
+mover la API y su ejecución a un proveedor ya cubierto. La última opción exige
+revisar también qué datos seguirían pasando por el alojamiento estático y sus
+registros, y no se da por resuelta solo por mover la base de datos. Recomendación
+actual: consultar primero, sin gasto. Una renuncia del desarrollador al DPA no
+sustituye el acuerdo si el artículo 28 resulta aplicable. Fuentes revisadas el
+2026-09-26; Daniel consultó al agente de Vercel según la actualización anterior.
+No consta respuesta del equipo de privacidad ni se han cambiado servicios.
+
 El [DPA de Vercel](https://vercel.com/legal/dpa), apartados 1 y 4, delimita su
 aplicación a Pro/Enterprise. No hay evidencia suficiente para afirmar que cubre
 el tratamiento de la API de baja en Hobby. Opciones: obtener confirmación
 contractual del proveedor, autorizar un plan cubierto o revisar alojamiento y
-ejecución. No se ha enviado ninguna consulta externa ni autorizado un gasto.
+ejecución. Consulta al agente realizada por Daniel; sin gasto autorizado.
 
 Consulta preparada para Daniel: «Uso Vercel Hobby para una aplicación gratuita
 con usuarios en España. Una función valida un JWT de Supabase y tramita la baja

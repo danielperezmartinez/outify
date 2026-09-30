@@ -163,6 +163,86 @@ export type Database = {
           },
         ];
       };
+      outfit_items: {
+        Row: {
+          deleted_name: string | null;
+          id: number;
+          item_id: number | null;
+          outfit_id: number;
+          position: number;
+          user_id: string;
+        };
+        Insert: {
+          deleted_name?: string | null;
+          id?: never;
+          item_id?: number | null;
+          outfit_id: number;
+          position: number;
+          user_id?: string;
+        };
+        Update: {
+          deleted_name?: string | null;
+          id?: never;
+          item_id?: number | null;
+          outfit_id?: number;
+          position?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'outfit_items_item_id_user_id_fkey';
+            columns: ['item_id', 'user_id'];
+            isOneToOne: false;
+            referencedRelation: 'items';
+            referencedColumns: ['id', 'user_id'];
+          },
+          {
+            foreignKeyName: 'outfit_items_outfit_id_user_id_fkey';
+            columns: ['outfit_id', 'user_id'];
+            isOneToOne: false;
+            referencedRelation: 'outfits';
+            referencedColumns: ['id', 'user_id'];
+          },
+        ];
+      };
+      outfits: {
+        Row: {
+          created_at: string;
+          id: number;
+          is_favorite: boolean;
+          name: string;
+          notes: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: never;
+          is_favorite?: boolean;
+          name: string;
+          notes?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: never;
+          is_favorite?: boolean;
+          name?: string;
+          notes?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'outfits_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -336,27 +416,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      account_deletion_batch: {
-        Args: { claim: string; target_user: string };
-        Returns: Json;
-      };
+      account_deletion_batch: { Args: { claim: string; target_user: string }; Returns: Json };
       activate_workspace: {
         Args: { age_confirmed: boolean; start_new?: boolean };
         Returns: undefined;
       };
       claim_account_deletion: { Args: { target_user?: string }; Returns: Json };
-      defer_account_deletion: {
-        Args: { claim: string; target_user: string };
-        Returns: undefined;
-      };
+      defer_account_deletion: { Args: { claim: string; target_user: string }; Returns: undefined };
       delete_archived_item: { Args: { item: number }; Returns: undefined };
-      finish_account_deletion: {
-        Args: { claim: string; target_user: string };
-        Returns: boolean;
-      };
-      get_workspace_status: { Args: never; Returns: string };
-      initialize_user_workspace: { Args: never; Returns: undefined };
-      request_account_deletion: { Args: never; Returns: string };
+      finish_account_deletion: { Args: { claim: string; target_user: string }; Returns: boolean };
+      get_workspace_status: { Args: Record<PropertyKey, never>; Returns: string };
+      initialize_user_workspace: { Args: Record<PropertyKey, never>; Returns: undefined };
+      request_account_deletion: { Args: Record<PropertyKey, never>; Returns: string };
       restore_zone_state: {
         Args: {
           assigned_items: number[];
@@ -369,6 +440,10 @@ export type Database = {
       };
       save_item: {
         Args: { item_data: Json; tag_names?: string[]; target_zone?: number };
+        Returns: number;
+      };
+      save_outfit: {
+        Args: { entries: Json; outfit_id: number; outfit_name: string; outfit_notes: string };
         Returns: number;
       };
     };
@@ -541,6 +616,86 @@ export type Database = {
           },
         ];
       };
+      outfit_items: {
+        Row: {
+          deleted_name: string | null;
+          id: number;
+          item_id: number | null;
+          outfit_id: number;
+          position: number;
+          user_id: string;
+        };
+        Insert: {
+          deleted_name?: string | null;
+          id?: never;
+          item_id?: number | null;
+          outfit_id: number;
+          position: number;
+          user_id?: string;
+        };
+        Update: {
+          deleted_name?: string | null;
+          id?: never;
+          item_id?: number | null;
+          outfit_id?: number;
+          position?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'outfit_items_item_id_user_id_fkey';
+            columns: ['item_id', 'user_id'];
+            isOneToOne: false;
+            referencedRelation: 'items';
+            referencedColumns: ['id', 'user_id'];
+          },
+          {
+            foreignKeyName: 'outfit_items_outfit_id_user_id_fkey';
+            columns: ['outfit_id', 'user_id'];
+            isOneToOne: false;
+            referencedRelation: 'outfits';
+            referencedColumns: ['id', 'user_id'];
+          },
+        ];
+      };
+      outfits: {
+        Row: {
+          created_at: string;
+          id: number;
+          is_favorite: boolean;
+          name: string;
+          notes: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: never;
+          is_favorite?: boolean;
+          name: string;
+          notes?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: never;
+          is_favorite?: boolean;
+          name?: string;
+          notes?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'outfits_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -714,27 +869,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      account_deletion_batch: {
-        Args: { claim: string; target_user: string };
-        Returns: Json;
-      };
+      account_deletion_batch: { Args: { claim: string; target_user: string }; Returns: Json };
       activate_workspace: {
         Args: { age_confirmed: boolean; start_new?: boolean };
         Returns: undefined;
       };
       claim_account_deletion: { Args: { target_user?: string }; Returns: Json };
-      defer_account_deletion: {
-        Args: { claim: string; target_user: string };
-        Returns: undefined;
-      };
+      defer_account_deletion: { Args: { claim: string; target_user: string }; Returns: undefined };
       delete_archived_item: { Args: { item: number }; Returns: undefined };
-      finish_account_deletion: {
-        Args: { claim: string; target_user: string };
-        Returns: boolean;
-      };
-      get_workspace_status: { Args: never; Returns: string };
-      initialize_user_workspace: { Args: never; Returns: undefined };
-      request_account_deletion: { Args: never; Returns: string };
+      finish_account_deletion: { Args: { claim: string; target_user: string }; Returns: boolean };
+      get_workspace_status: { Args: Record<PropertyKey, never>; Returns: string };
+      initialize_user_workspace: { Args: Record<PropertyKey, never>; Returns: undefined };
+      request_account_deletion: { Args: Record<PropertyKey, never>; Returns: string };
       restore_zone_state: {
         Args: {
           assigned_items: number[];
@@ -747,6 +893,10 @@ export type Database = {
       };
       save_item: {
         Args: { item_data: Json; tag_names?: string[]; target_zone?: number };
+        Returns: number;
+      };
+      save_outfit: {
+        Args: { entries: Json; outfit_id: number; outfit_name: string; outfit_notes: string };
         Returns: number;
       };
     };
@@ -773,9 +923,7 @@ export type Tables<
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R;
@@ -799,9 +947,7 @@ export type TablesInsert<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Insert: infer I;
     }
@@ -824,9 +970,7 @@ export type TablesUpdate<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
       Update: infer U;
     }
@@ -849,9 +993,7 @@ export type Enums<
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
+> = DefaultSchemaEnumNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
     ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
@@ -866,9 +1008,7 @@ export type CompositeTypes<
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
-}
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
     ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]

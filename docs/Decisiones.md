@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-18
+Última modificación: 2026-09-30
 ---
 # Decisiones de arquitectura (ADR)
 
@@ -22,6 +22,7 @@ ni contradecir sin darse cuenta una decisión vigente.
 - [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]]
 - [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]
 - [[Decisiones/ADR-0011 PWA y actualización voluntaria]]
+- [[Decisiones/ADR-0012 Composición persistente de outfits]]
 
 ## Cómo utilizarlo
 

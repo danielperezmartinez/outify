@@ -9,12 +9,14 @@ Resumen: Portada ES/EN sin sesión, privacidad y condiciones públicas, enlaces 
 Fuente: src/app/public/landing.ts
 Entrada pública: /; /en; /privacy; /terms; LegalLinks
 Fecha de creación: 2026-09-22
-Última modificación: 2026-09-22
+Última modificación: 2026-09-30
 ---
 
 `Landing` carga de forma diferida fuera del guard de sesión; `/en` usa datos de
 ruta para la presentación inglesa. La app privada conserva el español y se avisa
-antes de acceder. No se ofrecen outfits guardados como función existente.
+antes de acceder. La ampliación local de outfits actualiza la presentación ES/EN
+y los textos de privacidad y condiciones; pendiente de publicación junto con
+[[Tareas/Implementar outfits guardados]].
 
 `Legal` selecciona privacidad o condiciones mediante datos de ruta. La fuente del
 texto público es `src/app/public/legal.ts`; la bóveda conserva fundamentos y
