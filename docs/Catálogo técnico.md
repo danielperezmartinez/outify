@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-30
 ---
 
 # Catálogo técnico
@@ -17,6 +17,8 @@ Piezas vigentes: [[Catálogo técnico/Sesión y cliente Supabase]],
 [[Catálogo técnico/Lectura paginada]].
 
 PWA: [[Catálogo técnico/Actualizaciones de la aplicación]].
+
+Outfits: [[Catálogo técnico/Outfits guardados]].
 
 Cuentas: [[Catálogo técnico/Baja y admisión de cuentas]] (implementación local).
 

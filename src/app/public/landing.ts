@@ -174,8 +174,8 @@ import { LegalLinks } from '../shared/ui/legal-links';
         <p class="muted">
           {{
             english
-              ? 'Saved outfits are a future idea, not a feature available today. For now, it starts with giving each piece a place.'
-              : 'Guardar outfits sigue siendo una idea para el futuro; todavía no está disponible. Por ahora, todo empieza por darle un lugar a cada prenda.'
+              ? 'Save outfits from your inventory, add notes, mark your favorites and find where each piece belongs.'
+              : 'Guarda outfits con las prendas de tu inventario, añade notas, marca tus favoritos y consulta dónde está cada pieza.'
           }}
         </p>
         <a href="mailto:dlperezmartinez@gmail.com"

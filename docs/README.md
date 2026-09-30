@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-19
+Última modificación: 2026-09-30
 ---
 # Memoria del proyecto
 
@@ -118,7 +118,8 @@ documenta contexto, alternativas consideradas y consecuencias.
   [[Decisiones/ADR-0008 Flujo Git con ramas cortas y squash]] y
   [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]],
   [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]] y
-  [[Decisiones/ADR-0011 PWA y actualización voluntaria]].
+  [[Decisiones/ADR-0011 PWA y actualización voluntaria]] y
+  [[Decisiones/ADR-0012 Composición persistente de outfits]].
 
 [[Decisiones|Abrir decisiones de arquitectura]]
 

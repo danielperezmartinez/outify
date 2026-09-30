@@ -13,7 +13,7 @@ import { LegalLinks } from '../shared/ui/legal-links';
     <main class="legal-document">
       <p class="eyebrow">TU ESPACIO. TUS DATOS.</p>
       <h1>{{ privacy ? 'Política de privacidad' : 'Condiciones de uso' }}</h1>
-      <p class="muted">Versión 1 · 22 de septiembre de 2026</p>
+      <p class="muted">Versión 2 · 30 de septiembre de 2026</p>
       @if (privacy) {
         <p class="intro">
           Tu inventario es privado. Aquí explicamos qué guardamos, para qué y cómo puedes
@@ -30,7 +30,8 @@ import { LegalLinks } from '../shared/ui/legal-links';
           Google nos facilita tu identificador, nombre, correo y avatar al iniciar sesión. No
           recibimos tu contraseña de Google. Guardamos los armarios, zonas, medidas y posiciones que
           defines, así como las fichas de prendas, fotografías, etiquetas, categorías, temporadas y
-          ubicaciones que añades.
+          ubicaciones que añades. También guardamos los outfits que creas, su nombre, notas,
+          favoritos y las prendas que los componen.
         </p>
         <p>
           El registro está disponible desde los 14 años. Guardamos cuándo declaras cumplir esa edad;
@@ -92,7 +93,9 @@ import { LegalLinks } from '../shared/ui/legal-links';
           Conservamos el inventario mientras mantienes tu espacio. Archivar una prenda conserva su
           ficha e imagen; eliminar una zona o un armario deja las prendas sin ubicación. Borrar
           definitivamente una prenda elimina su ficha y deja su fotografía pendiente de limpieza. Si
-          falla, la aplicación reintenta la limpieza al abrir el inventario.
+          falla, la aplicación reintenta la limpieza al abrir el inventario. Si la prenda pertenecía
+          a un outfit, se conserva su último nombre con el aviso «Prenda eliminada», sin fotografía,
+          hasta que retires esa entrada o elimines el outfit. La baja elimina también tus outfits.
         </p>
         <p>
           En Mi cuenta puedes solicitar «Eliminar mis datos de Outify». Al registrarse la solicitud
@@ -158,8 +161,9 @@ import { LegalLinks } from '../shared/ui/legal-links';
         <p>
           Outify es un servicio de Daniel Pérez Martínez, establecido en España. Permite registrar
           ropa, calzado y accesorios, organizar armarios por zonas y consultar las ubicaciones que
-          indicas. No detecta movimientos físicos de las prendas. Guardar conjuntos u outfits
-          todavía no está disponible.
+          indicas. También permite guardar outfits con las prendas del inventario, notas y
+          favoritos. No detecta movimientos físicos de las prendas ni ofrece recomendaciones de
+          compra.
         </p>
         <p>
           El servicio es gratuito en su lanzamiento. Cualquier cambio económico se comunicará antes

@@ -1,7 +1,11 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 # Decisiones visuales y de estilos
+
+Marca aprobada por Daniel el 2026-09-26: símbolo O con compartimentos y variantes,
+nombre tipográfico e iconos preparados. Recursos y cierre en
+[[Tareas/Definir identidad pública de Outify]].
 
 Acuerdos sobre lenguaje visual, tokens y componentes de outify. Lista ligera
 mientras el volumen sea bajo; se migrará a formato `.base` (como

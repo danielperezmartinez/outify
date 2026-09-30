@@ -1,8 +1,14 @@
 ---
-Última modificación: 2026-09-22
+Última modificación: 2026-09-30
 ---
 
 # Privacidad y condiciones · borrador para revisión
+
+Actualización 2026-09-26: Daniel confirma proyecto personal sin actividad
+económica. Las páginas legales ya se publicaron con 0.3.0; las referencias a
+preparación local de abajo son históricas. La gratuidad no se interpreta como
+exención automática del RGPD al admitir cuentas del público. Contrato del
+proveedor pendiente de aclaración en [[Tratamiento de datos]].
 
 Documento interno de preparación. Daniel confirmó el 2026-09-22 que lo ha leído
 y delega su desarrollo y mantenimiento. La versión pública preparada está en
@@ -24,6 +30,7 @@ solo debe publicarse junto con su infraestructura funcional.
 ## Datos confirmados y pendientes
 
 - Responsable: Daniel Pérez Martínez.
+- Naturaleza: proyecto personal sin actividad económica, confirmado el 2026-09-26.
 - País de establecimiento: España. [COMPLETAR OTROS DATOS EXIGIBLES, SI PROCEDE].
 - Contacto público de soporte y privacidad: dlperezmartinez@gmail.com.
 - Dirección de contacto, si corresponde: [DIRECCIÓN].
@@ -150,7 +157,14 @@ de forma separada antes de activarlas.
 Outify permite registrar artículos de ropa, calzado y accesorios, dibujar zonas
 en tus armarios y consultar dónde has guardado cada artículo. Las ubicaciones
 dependen de la información que introduzcas: la aplicación no detecta movimientos
-físicos. Esta versión no crea conjuntos ni ofrece recomendaciones de compra.
+físicos. La ampliación de [[Tareas/Implementar outfits guardados]] permite guardar
+conjuntos del inventario con nombre, notas y favoritos; no ofrece recomendaciones
+de compra. Su publicación se sigue en esa tarea.
+
+Si se elimina una prenda que formaba parte de un outfit, su foto se elimina con
+el flujo habitual y se conserva únicamente su último nombre como referencia de
+prenda eliminada, hasta retirar esa entrada, eliminar el outfit o dar de baja el
+espacio. Los outfits también quedan incluidos en la eliminación del perfil.
 
 El servicio lo presta Daniel Pérez Martínez. Para crear una cuenta de Outify
 debes tener al menos 14 años. Las personas menores de 14 años no pueden registrarse.

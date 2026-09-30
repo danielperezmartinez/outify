@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-21
+Última modificación: 2026-09-30
 ---
 
 # Producto
@@ -22,9 +22,40 @@ Un artículo físico solo puede tener una ubicación actual. Puede estar colocad
 en una zona o quedar sin asignar. En esta especificación, «artículo» incluye
 prendas, calzado y accesorios.
 
-La creación de conjuntos u outfits combinando varias prendas no forma parte de
-este primer MVP. Se evaluará después de validar el inventario y la organización
-de armarios.
+Los outfits quedaron fuera del primer MVP. La ampliación aprobada el 2026-09-30
+añade combinaciones guardadas del inventario con el alcance descrito a continuación.
+Estado de implementación y publicación en [[Tareas/Implementar outfits guardados]].
+
+## Outfits guardados
+
+- Sección Outfits: listado con búsqueda por nombre y filtro de favoritos, ordenado
+  por última modificación y después identificador. Cada tarjeta muestra nombre,
+  número de entradas y las cuatro primeras prendas con foto, nombre y ubicación.
+  «Ver todas (+N)» abre la ficha; un aviso cuenta todas las entradas archivadas o
+  eliminadas, incluidas las que no caben en la preview.
+- Ficha de consulta con notas, favorito, composición completa ordenada, acceso a
+  cada artículo existente y a su armario cuando tiene ubicación. Editar y eliminar
+  son acciones explícitas; eliminar un outfit conserva todos sus artículos.
+- Editor compartido para crear y editar: nombre obligatorio de hasta 160
+  caracteres, notas opcionales y selección de artículos activos mediante búsqueda,
+  categoría y armario. Una prenda puede pertenecer a varios outfits, sin repetirse
+  dentro de uno. La selección permanece visible al filtrar y permite subir, bajar
+  y quitar prendas mediante botones accesibles.
+- Crear exige una prenda activa como mínimo. Una composición existente puede
+  conservar entradas archivadas o eliminadas, pero no guardarse sin ninguna
+  entrada. El guardado es explícito y avisa al salir con cambios pendientes.
+- La foto, el nombre y la ubicación se resuelven desde el inventario actual al
+  abrir la pantalla. Archivar conserva la referencia con su estado; restaurar
+  recupera la disponibilidad. El borrado definitivo conserva únicamente el último
+  nombre con «Prenda eliminada», sin foto ni enlace, hasta retirarlo expresamente.
+- Si una prenda nueva deja de estar activa antes del guardado, no se aplica ningún
+  cambio y se conserva el borrador para corregir la selección.
+- Los outfits son privados y se eliminan con la baja del espacio. Esta versión
+  no incluye foto propia, collage editable, etiquetas, duplicación, archivado de
+  outfits, compartir ni sincronización en tiempo real entre dispositivos.
+
+Contrato técnico en [[Catálogo técnico/Outfits guardados]] y modelo en
+[[Decisiones/ADR-0012 Composición persistente de outfits]].
 
 ## Pantallas
 

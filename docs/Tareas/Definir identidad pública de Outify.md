@@ -1,11 +1,11 @@
 ---
 Nombre: Definir identidad pública de Outify
-Estado: En curso
-Resumen: Crear la identidad pública que acompañará al sistema visual aprobado: logotipo, iconos, dominio y metadatos para navegador y redes sociales.
+Estado: Hecha
+Resumen: Marca aprobada por Daniel el 2026-09-26; dominio outify.vercel.app confirmado. Símbolo, iconos y metadatos publicados en 0.3.0 y recursos públicos verificados.
 Decisiones: "[[Decisiones visuales]]; sistema Replicate wabi-sabi «Atelier sereno»"
 Bloqueada: []
 Fecha de creación: 2026-09-18T14:27:30+02:00
-Última modificación: 2026-09-22
+Última modificación: 2026-09-26
 ---
 
 # Definir identidad pública de Outify
@@ -28,11 +28,11 @@ la aplicación, el navegador, Vercel y futuras superficies de comunicación.
 
 ## Criterios de finalización
 
-- [ ] Logotipo y símbolo aprobados en variantes claras y oscuras.
+- [x] Logotipo y símbolo aprobados en variantes claras y oscuras.
 - [x] Paquete de iconos exportado en formatos web necesarios.
-- [ ] Dominio elegido y documentado.
+- [x] Dominio elegido y documentado: `https://outify.vercel.app`.
 - [x] Metadatos del navegador y redes sociales definidos.
-- [ ] Recursos preparados en build local; pendientes integración y publicación.
+- [x] Recursos integrados y publicados en 0.3.0, verificados en el cierre técnico del 2026-09-25.
 
 ## Fuera de alcance
 
@@ -40,6 +40,11 @@ la aplicación, el navegador, Vercel y futuras superficies de comunicación.
 - Rediseñar el sistema Replicate wabi-sabi ya aceptado.
 
 ## Avance durante el MVP
+
+Estado vigente: Daniel aprueba la marca el 2026-09-26 y confirma el dominio de
+Vercel; no se comprará un dominio propio por ahora. Publicación y comprobaciones
+en [[Lanzamiento en Product Hunt#Estado vigente · cierre técnico del 2026-09-25]].
+Las propuestas y pendientes que siguen son el historial de preparación.
 
 Se ha aplicado el nombre tipográfico Outify, un favicon SVG provisional y los
 metadatos básicos de título/descripción. La identidad final, el dominio y los

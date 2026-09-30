@@ -65,6 +65,10 @@ export const routes: Routes = [
         loadChildren: () => import('./inventory/inventory.routes').then((m) => m.INVENTORY_ROUTES),
       },
       {
+        path: 'outfits',
+        loadChildren: () => import('./outfits/outfits.routes').then((m) => m.OUTFIT_ROUTES),
+      },
+      {
         path: 'account',
         title: 'Mi cuenta · Outify',
         loadComponent: () => import('./account/account').then((m) => m.Account),
