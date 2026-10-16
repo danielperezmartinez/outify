@@ -46,9 +46,9 @@ Supabase: conviene revisarlas juntas.
       Free sin copias de seguridad; la copia recuperable y el ensayo de
       restauración siguen pendientes en
       [[Tareas/Preparar privacidad condiciones y tratamiento de datos]]._
-- [ ] `pg_net`/`http` sin acceso de `anon` ni `authenticated` en el proyecto
-      remoto. El test de catálogo solo lo comprueba en la base local, donde
-      Outify no instala esas extensiones.
+- [x] `pg_net`/`http` sin acceso de `anon` ni `authenticated` en el proyecto
+      remoto. _2026-10-17: ninguna de las dos está instalada en `devappsdpm-db`
+      (SELECT de solo lectura)._
 
 ## Vercel (outify)
 
@@ -87,5 +87,6 @@ Supabase: conviene revisarlas juntas.
 
 | Fecha | Quién | Notas |
 | --- | --- | --- |
+| 2026-10-17 | Agente (Claude Code) | Migración de límites aplicada y catálogo remoto verificado (solo SELECT); `pg_net`/`http` no instalados. |
 | 2026-10-17 | Agente (Claude Code) | Variables de Vercel y Firewall consultados por MCP (solo lectura). |
 | 2026-10-16 | Agente (Claude Code) | Checklist creada al montar el sistema. Valores tomados de la auditoría de solo lectura del 2026-10-16; los paneles de Supabase y Vercel no se han revisado aún. |

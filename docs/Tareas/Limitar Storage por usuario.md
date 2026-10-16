@@ -1,7 +1,7 @@
 ---
 Nombre: Limitar Storage por usuario
-Estado: En curso
-Resumen: "Implementado y verificado en local en la v0.4.1: cuota de 50 MB y 500 fotos por usuario y tope de 250 MB por bucket de Outify, mediante un trigger solo sobre los buckets de Outify. Falta aplicarlo en remoto."
+Estado: Hecha
+Resumen: "Cuota de 50 MB y 500 fotos por usuario y tope de 250 MB por bucket de Outify, aplicados en remoto y verificados el 2026-10-17 (v0.4.1)."
 Decisiones: "[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]"
 Bloqueada: []
 Fecha de creación: 2026-10-16
@@ -33,7 +33,4 @@ Trigger `guard_image_quota` en `storage.objects`, uno por entorno, que solo act�
 
 ## Verificación
 
-Pendiente. Antes de pasar a `Hecha`, aplicar la compuerta de
-[[README#Comprobaciones y compuerta de "Hecha"]]: `supabase test db supabase/tests/security`
-en verde en local y en el job `Seguridad`, con el test nuevo de este cambio en
-el mismo PR.
+Publicado y verificado el 2026-10-17. PR #4 integrada (`442aaf6`), checks `Verificar` y `Seguridad` en verde, y Production `dpl_ZsnZqCkPomkyjam8Zo7jBr9DkeL7` READY sin errores de runtime. Migración `20261017090000_outify_security_limits` aplicada en `devappsdpm-db` con aprobación expresa del usuario y versión del historial reasignada a la original. Comprobado con SELECT en remoto: 0 tablas sin RLS, 0 políticas de escritura `true`, 0 funciones SECURITY DEFINER sin `search_path` vacío o ejecutables por `anon` sin excepción, buckets de Outify con límite, 20 triggers y 18 CHECK nuevos. No se tocaron objetos de otras apps.

@@ -1,7 +1,7 @@
 ---
 Nombre: Resolver EXECUTE de anon en workspace_active
 Estado: En curso
-Resumen: "Resuelto con la excepción escrita y el comentario excepcion: en ambas funciones (opción a); el job Seguridad pasa en local. Falta aplicar la migración en remoto y marcar el job como obligatorio."
+Resumen: "Excepción escrita y comentario aplicados en remoto el 2026-10-17; el job Seguridad pasa en main. Solo falta marcarlo como check obligatorio en la protección de main (ajuste de GitHub del usuario)."
 Decisiones: "[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]"
 Bloqueada: []
 Fecha de creación: 2026-10-16
@@ -38,7 +38,4 @@ Nota [[Seguridad/Excepción - outify_private.workspace_active()]] y `comment on 
 
 ## Verificación
 
-Pendiente. Antes de pasar a `Hecha`, aplicar la compuerta de
-[[README#Comprobaciones y compuerta de "Hecha"]]: `supabase test db supabase/tests/security`
-en verde en local y en el job `Seguridad`, con el test nuevo de este cambio en
-el mismo PR.
+Publicado y verificado el 2026-10-17. PR #4 integrada (`442aaf6`), checks `Verificar` y `Seguridad` en verde, y Production `dpl_ZsnZqCkPomkyjam8Zo7jBr9DkeL7` READY sin errores de runtime. Migración `20261017090000_outify_security_limits` aplicada en `devappsdpm-db` con aprobación expresa del usuario y versión del historial reasignada a la original. Comprobado con SELECT en remoto: 0 tablas sin RLS, 0 políticas de escritura `true`, 0 funciones SECURITY DEFINER sin `search_path` vacío o ejecutables por `anon` sin excepción, buckets de Outify con límite, 20 triggers y 18 CHECK nuevos. No se tocaron objetos de otras apps.
