@@ -208,7 +208,7 @@ lo que se haga con MCP, CLI o panel.
 #### Comprobaciones y compuerta de "Hecha"
 
 - Comprobaciones del proyecto: tests pgTAP de `supabase/tests/security/`
-  (`catalog.test.sql` y `isolation.test.sql`), ejecutados con
+  (`catalog.test.sql`, `isolation.test.sql` y `limits.test.sql`), ejecutados con
   `supabase test db supabase/tests/security` sobre una base local construida con
   las migraciones, en el job `Seguridad` de `.github/workflows/ci.yml`; AXE en
   `e2e/public.spec.ts`, `e2e/editor.spec.ts` y `e2e/outfits.spec.ts`

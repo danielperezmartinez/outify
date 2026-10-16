@@ -4,7 +4,7 @@ Tipo: Checklist
 Estado: Pendiente
 Resumen: "Estado de la configuración fuera del código (gasto, Auth, firewall, secretos, plan y legal) que ningún test del repo comprueba. Bloquea la publicación en Product Hunt; la mayoría de puntos siguen sin revisar en los paneles."
 Última revisión: 2026-10-16
-Última modificación: 2026-10-16
+Última modificación: 2026-10-17
 ---
 
 # Checklist de lanzamiento
@@ -57,11 +57,13 @@ Supabase: conviene revisarlas juntas.
       [[Tareas/Preparar privacidad condiciones y tratamiento de datos]]._
 - [ ] Spend Management: tope y alertas configurados, y acción al superarlo.
 - [ ] Firewall: reglas de límite de peticiones en rutas públicas y de API.
-      Véase [[Tareas/Limitar peticiones en la API]].
+      _2026-10-17: sin configuración de Firewall (MCP); regla para `/api/`
+      propuesta en [[Tareas/Limitar peticiones en la API]]._
 - [ ] Deployment Protection en Preview si las previews no deben ser públicas.
 - [ ] Variables secretas solo en los entornos que las usan (no en Preview si no
-      hace falta) y marcadas como sensibles. Véase
-      [[Tareas/Revisar entornos de la clave secreta de Supabase]].
+      hace falta) y marcadas como sensibles. _2026-10-17: `OUTIFY_SUPABASE_SECRET_KEY`
+      y `CRON_SECRET` son `sensitive`; la primera también está en Preview, pendiente
+      de decisión en [[Tareas/Revisar entornos de la clave secreta de Supabase]]._
 
 ## Legal y privacidad
 
@@ -85,4 +87,5 @@ Supabase: conviene revisarlas juntas.
 
 | Fecha | Quién | Notas |
 | --- | --- | --- |
+| 2026-10-17 | Agente (Claude Code) | Variables de Vercel y Firewall consultados por MCP (solo lectura). |
 | 2026-10-16 | Agente (Claude Code) | Checklist creada al montar el sistema. Valores tomados de la auditoría de solo lectura del 2026-10-16; los paneles de Supabase y Vercel no se han revisado aún. |

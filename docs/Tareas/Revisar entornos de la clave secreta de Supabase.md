@@ -1,11 +1,11 @@
 ---
 Nombre: Revisar entornos de la clave secreta de Supabase
-Estado: Pendiente
-Resumen: "Hallazgo medio de la auditoría del 2026-10-16: OUTIFY_SUPABASE_SECRET_KEY es la clave de todo el proyecto compartido; comprobar que solo está en los entornos de Vercel que la necesitan y marcada como sensible."
+Estado: En curso
+Resumen: "Comprobado por MCP el 2026-10-17: OUTIFY_SUPABASE_SECRET_KEY es sensitive, pero está en Production y Preview. Está pendiente que el usuario decida si se retira de Preview."
 Decisiones: "[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]"
 Bloqueada: []
 Fecha de creación: 2026-10-16
-Última modificación: 2026-10-16
+Última modificación: 2026-10-17
 ---
 
 # Revisar entornos de la clave secreta de Supabase
@@ -25,6 +25,10 @@ no solo de Outify: quien la obtenga controla también las otras tres apps.
 - Si Preview la necesita, valorar una clave de menor alcance o desactivar la
   baja en Preview, y registrar la decisión.
 - Anotar el resultado en [[Seguridad/Checklist de lanzamiento#Vercel (outify)]].
+
+## Avance · 2026-10-17
+
+Metadatos leídos sin descifrar valores. Cualquier rama que genere una Preview tiene acceso a la clave secreta de todo `devappsdpm-db`. La API de baja responde 503 si falta la clave, así que retirarla de Preview desactiva la baja en las previews sin romper la build. Cambiarlo es un cambio remoto en Vercel y requiere aprobación expresa.
 
 ## Verificación
 
