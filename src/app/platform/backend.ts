@@ -31,7 +31,7 @@ export function errorMessage(error: unknown): string {
     if (/row-level security|permission denied/i.test(error.message))
       return 'No tienes acceso a estos datos. Vuelve a iniciar sesión e inténtalo de nuevo.';
     if (/check constraint|invalid input/i.test(error.message))
-      return 'Revisa los campos: los nombres son obligatorios y las medidas deben estar dentro del armario.';
+      return 'Revisa los campos: los nombres son obligatorios, los textos no superan su longitud máxima y las medidas deben estar dentro del armario.';
     if (/foreign key/i.test(error.message))
       return 'La ubicación ya no está disponible. Actualiza la página y elige otra zona.';
   }

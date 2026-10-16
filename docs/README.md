@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-30
+Última modificación: 2026-10-16
 ---
 # Memoria del proyecto
 
@@ -123,6 +123,105 @@ documenta contexto, alternativas consideradas y consecuencias.
 
 [[Decisiones|Abrir decisiones de arquitectura]]
 
+### Seguridad, coste y cumplimiento
+
+_Versión del sistema: 1._
+
+Carpeta [[Seguridad/Seguridad.base|Seguridad/]]: excepciones justificadas a estas
+reglas y la [[Seguridad/Checklist de lanzamiento|checklist de lanzamiento]].
+Estas reglas aplican a todo cambio, lo haga una persona o un agente, y también a
+lo que se haga con MCP, CLI o panel.
+
+#### Backend y datos (Supabase)
+
+- **RLS activado no basta.** Cada política expresa quién puede hacer qué sobre
+  qué filas; lo normal es `owner_id = (select auth.uid())`.
+- Prohibido `USING (true)` o `WITH CHECK (true)` en políticas de `INSERT`,
+  `UPDATE`, `DELETE` o `ALL`. En `SELECT` solo con una excepción escrita en
+  `Seguridad/` y referenciada en la política
+  (`comment on policy … is 'excepcion: <nombre de la nota>'`).
+- Los datos compartidos por enlace se sirven con una función RPC que recibe el
+  token y devuelve solo esa fila. La tabla nunca es listable por `anon`.
+- Las funciones `SECURITY DEFINER` llevan `set search_path = ''` y nombres
+  cualificados con esquema, y se revoca `EXECUTE` a `anon` (y a `public`) salvo
+  excepción escrita. Si no necesitan saltarse RLS, se usa `SECURITY INVOKER`.
+- Las extensiones con efectos fuera de la base de datos (`pg_net`, `http`) quedan
+  fuera del alcance de `anon` y `authenticated`.
+- Los esquemas expuestos por la API son los mínimos. Lo interno vive en un
+  esquema `*_private` no expuesto.
+- **Todo el DDL** (tablas, políticas, funciones, grants, buckets y sus límites)
+  vive en migraciones versionadas del repo. Nada se hace solo en el panel ni solo
+  por MCP; si se hizo, se vuelca a una migración en el mismo cambio.
+- "El Security Advisor no da avisos" **no** cuenta como verificación. La
+  verificación son los tests de `supabase/tests/` (ver "Comprobaciones").
+
+#### Coste y abuso
+
+- Todo lo que un usuario puede crear tiene **tope de tamaño y de cantidad**:
+  buckets con `file_size_limit` y `allowed_mime_types`, cuota por usuario
+  (comprobada en la política de Storage o en un trigger), `CHECK` de longitud en
+  columnas de texto y tope de filas por usuario en tablas que crecen.
+- Nada de llamadas recursivas ni bucles sin tope: triggers que llaman a funciones
+  HTTP, funciones que se invocan a sí mismas, reintentos sin límite, efectos del
+  cliente que se disparan en bucle. Todo reintento tiene un máximo y espera entre
+  intentos.
+- Los endpoints públicos (funciones serverless, Edge Functions, RPC accesibles a
+  `anon`) tienen límite de peticiones.
+- Este proyecto comparte el proyecto Supabase `devappsdpm-db` (plan gratuito:
+  Auth, Storage de 1 GB, base de datos de 500 MB, egress y la configuración
+  `pgrst.db_schemas` de PostgREST) con gift-card, nocendland y perro-sanxe.
+  Agotar Auth, Storage o la cuota del plan aquí deja sin servicio a todas:
+  cualquier límite se diseña pensando en el conjunto.
+
+#### Secretos
+
+- La clave publicable (`anon` / `sb_publishable_…`) puede ir en el cliente.
+- La clave secreta (`service_role` / `sb_secret_…`) y cualquier otro secreto solo
+  viven en el servidor o en el CI, nunca en el código del cliente ni en el repo.
+- Cada secreto está solo en los entornos que lo necesitan (p. ej. Production y no
+  Preview si las previews no lo usan), marcado como sensible donde la plataforma
+  lo permita.
+
+#### Legal y privacidad (UE / España)
+
+> Estas reglas resumen obligaciones habituales y no son asesoramiento legal. Ante
+> dudas concretas, consulta a un profesional.
+
+- Antes de publicar: **aviso legal** (LSSI-CE, art. 10) y **política de
+  privacidad** (RGPD, art. 13), enlazados desde todas las páginas.
+- No se envían datos personales ni la ubicación a terceros (APIs de mapas, de
+  analítica, de IA…) sin avisar antes en la interfaz y sin una acción explícita
+  del usuario que lo dispare. Cada tercero que reciba datos aparece en la
+  política de privacidad.
+- Las comunicaciones comerciales (emails, notificaciones push) requieren
+  consentimiento expreso, separado de aceptar los términos, y una forma sencilla
+  de darse de baja.
+- El banner de cookies solo es necesario si hay cookies o almacenamiento no
+  técnicos (analítica, publicidad, terceros). Si existe, rechazar es tan fácil
+  como aceptar y nada no técnico se carga antes del consentimiento.
+
+#### Accesibilidad
+
+- Objetivo: **WCAG 2.2 nivel AA**. AXE en el CI sin infracciones; además,
+  revisión manual de teclado y foco en los flujos nuevos (AXE no detecta todo).
+
+#### Comprobaciones y compuerta de "Hecha"
+
+- Comprobaciones del proyecto: tests pgTAP de `supabase/tests/security/`
+  (`catalog.test.sql`, `isolation.test.sql` y `limits.test.sql`), ejecutados con
+  `supabase test db supabase/tests/security` sobre una base local construida con
+  las migraciones, en el job `Seguridad` de `.github/workflows/ci.yml`; AXE en
+  `e2e/public.spec.ts`, `e2e/editor.spec.ts` y `e2e/outfits.spec.ts`
+  (`pnpm test:editor`, job `Verificar`), y el paso "Sin secretos en el bundle"
+  tras el build de Production. Las suites SQL funcionales anteriores de
+  `supabase/tests/*.sql` siguen vigentes.
+- **Una tarea que toque backend o UI no pasa a `Hecha`** hasta que esas
+  comprobaciones estén en verde, y su sección "Verificación" lo deja escrito (qué
+  se ejecutó y dónde). Si el cambio añade tablas, políticas, funciones o rutas,
+  añade también su test en el mismo cambio.
+- Una excepción a estas reglas es una nota `Excepción` en `Seguridad/` con su
+  justificación. Sin nota, no hay excepción.
+
 ## Reglas fundamentales del proyecto
 
 ### 1. Gestor de paquetes
@@ -196,9 +295,8 @@ pnpm test   # Tests con Vitest
 
 **Accesibilidad:**
 
-- Debe pasar todas las comprobaciones AXE.
-- Debe cumplir los mínimos WCAG AA: gestión de foco, contraste de color,
-  atributos ARIA.
+- Véase [[#Accesibilidad]] en el sistema "Seguridad, coste y cumplimiento"
+  (WCAG 2.2 AA, AXE en CI y revisión manual de teclado y foco).
 
 **Componentes:**
 
