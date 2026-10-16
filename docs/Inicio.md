@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-19
+Última modificación: 2026-10-16
 ---
 # Inicio
 
@@ -29,3 +29,8 @@ Preparación pública: [[Lanzamiento en Product Hunt]], [[Tratamiento de datos]]
 ### ADR (decisiones de arquitectura)
 
 [[Decisiones|Abrir decisiones de arquitectura]]
+
+### Seguridad, coste y cumplimiento
+
+[[Seguridad/Seguridad.base|Abrir el panel de seguridad]] ·
+[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]

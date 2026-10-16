@@ -5,10 +5,16 @@ Resumen: Daniel confirma preparación terminada y lanzamiento previsto para el 2
 Decisiones: '[[Producto]]; [[Decisiones visuales]]'
 Bloqueada: []
 Fecha de creación: 2026-09-19
-Última modificación: 2026-09-30
+Última modificación: 2026-10-16
 ---
 
 # Preparar lanzamiento en Product Hunt
+
+Requisito previo desde el 2026-10-16: revisar la
+[[Seguridad/Checklist de lanzamiento|checklist de lanzamiento]] del sistema de
+seguridad, coste y cumplimiento (gasto, Auth, firewall, secretos, plan Hobby,
+revisión jurídica y prueba de baja remota). No se publica con puntos abiertos
+sin una decisión escrita.
 
 Estado vigente del 2026-09-30: Daniel confirma todo preparado para publicar el
 2026-10-01. Ficha pública verificada; enlace y alcance de la comprobación en
