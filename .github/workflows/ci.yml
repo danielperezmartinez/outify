@@ -56,3 +56,21 @@ jobs:
         env:
           VERCEL_ENV: production
         run: pnpm build
+      - name: Sin secretos en el bundle
+        run: '! grep -rIE "sb_secret_|SERVICE_ROLE" dist/outify/browser'
+
+  security:
+    name: Seguridad
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1.7.3
+        with:
+          version: 2.117.0
+      - name: Base local con las migraciones del repo
+        run: supabase db start
+      - name: Tests de RLS, catálogo y aislamiento
+        run: supabase test db supabase/tests/security
