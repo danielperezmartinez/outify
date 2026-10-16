@@ -159,9 +159,13 @@ import { errorMessage } from '../../platform/backend';
                 <fieldset [disabled]="busy()">
                   <legend>El armario</legend>
                   <label>Nombre *<input formControlName="name" maxlength="120" /></label
-                  ><label>Habitación<input formControlName="room" /></label
+                  ><label>Habitación<input formControlName="room" maxlength="80" /></label
                   ><label
-                    >Descripción<textarea formControlName="description" rows="2"></textarea>
+                    >Descripción<textarea
+                      formControlName="description"
+                      rows="2"
+                      maxlength="1000"
+                    ></textarea>
                   </label>
                   <div class="form-row">
                     <label
@@ -334,8 +338,8 @@ export class WardrobeView {
   private previousLocation: { itemId: number; zoneId: number | null } | null = null;
   readonly wardrobeForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    room: '',
-    description: '',
+    room: ['', Validators.maxLength(80)],
+    description: ['', Validators.maxLength(1000)],
     width: [800, [Validators.min(200), Validators.max(4000)]],
     height: [600, [Validators.min(200), Validators.max(4000)]],
   });

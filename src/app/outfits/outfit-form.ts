@@ -59,6 +59,7 @@ import { errorMessage } from '../platform/backend';
             >Notas<textarea
               formControlName="notes"
               rows="3"
+              maxlength="1000"
               placeholder="Cuándo te gusta llevarlo, detalles que recordar…"
             ></textarea>
           </label>
@@ -184,7 +185,7 @@ export class OutfitForm {
   private completed = false;
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.pattern(/\S/), Validators.maxLength(160)]],
-    notes: '',
+    notes: ['', Validators.maxLength(1000)],
   });
   readonly filters = this.fb.nonNullable.group({ search: '', category: '', wardrobe: '' });
   private readonly filterValues = toSignal(this.filters.valueChanges, {

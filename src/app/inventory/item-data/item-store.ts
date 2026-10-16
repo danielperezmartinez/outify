@@ -5,6 +5,8 @@ import { Session } from '../../platform/session';
 import { Item } from './models';
 import { readPages } from '../../shared/utilities/read-pages';
 import { WorkspaceAccess } from '../../platform/workspace-access';
+import { prepareImage } from './prepare-image';
+import { pathsToSign, SIGNED_URL_SECONDS, SignedUrl } from './signed-urls';
 @Injectable()
 export class ItemStore {
   private readonly backend = inject(Backend);
@@ -12,33 +14,42 @@ export class ItemStore {
   private readonly workspace = inject(WorkspaceAccess);
   private readonly state = signal<Item[]>([]);
   readonly items = this.state.asReadonly();
+  private readonly signedUrls = new Map<string, SignedUrl>();
   constructor() {
-    this.workspace.registerCache(() => this.state.set([]), inject(DestroyRef));
+    this.workspace.registerCache(() => {
+      this.state.set([]);
+      this.signedUrls.clear();
+    }, inject(DestroyRef));
     const timer = setInterval(
       () => {
         void this.refreshImages().catch(() => {});
       },
-      45 * 60 * 1000,
+      15 * 60 * 1000,
     );
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
   }
+  // Solo firma las fotos sin URL vigente; las demás conservan la suya y la caché del navegador.
   private async refreshImages() {
     const revision = this.workspace.revision;
-    const rows = this.items();
-    for (let offset = 0; offset < rows.length; offset += 100) {
-      const batch = rows.slice(offset, offset + 100);
-      const signed = unwrap(
-        await this.backend.images.createSignedUrls(
-          batch.map((i) => i.image_path),
-          3600,
-        ),
-      );
-      const urls = new Map(batch.map((i, index) => [i.id, signed?.[index]?.signedUrl ?? '']));
+    const pending = pathsToSign(
+      this.items().map((i) => i.image_path),
+      this.signedUrls,
+      Date.now(),
+    );
+    for (let offset = 0; offset < pending.length; offset += 100) {
+      const batch = pending.slice(offset, offset + 100);
+      const expiresAt = Date.now() + SIGNED_URL_SECONDS * 1000;
+      const signed = unwrap(await this.backend.images.createSignedUrls(batch, SIGNED_URL_SECONDS));
       if (revision !== this.workspace.revision) return;
-      this.state.update((items) =>
-        items.map((i) => (urls.has(i.id) ? { ...i, imageUrl: urls.get(i.id)! } : i)),
-      );
+      batch.forEach((path, index) => {
+        const url = signed?.[index]?.signedUrl;
+        if (url) this.signedUrls.set(path, { url, expiresAt });
+      });
     }
+    if (revision !== this.workspace.revision) return;
+    this.state.update((items) =>
+      items.map((i) => ({ ...i, imageUrl: this.signedUrls.get(i.image_path)?.url ?? '' })),
+    );
   }
   async load() {
     const revision = this.workspace.revision;
@@ -63,9 +74,10 @@ export class ItemStore {
     await this.refreshImages();
     await this.cleanupImages();
   }
-  async upload(file: File) {
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type))
+  async upload(original: File) {
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(original.type))
       throw new Error('Elige una imagen JPG, PNG o WebP.');
+    const file = await prepareImage(original);
     if (file.size > 8 * 1024 * 1024) throw new Error('La imagen no puede superar 8 MB.');
     const uid = this.session.user()?.id;
     if (!uid) throw new Error('Tu sesión ha caducado.');

@@ -79,18 +79,31 @@ import { errorMessage } from '../../platform/backend';
               ><label
                 >Color principal<input
                   formControlName="primary_color"
+                  maxlength="80"
                   placeholder="Ej. verde salvia"
               /></label>
             </div>
             <div class="form-row">
-              <label>Marca<input formControlName="brand" /></label
+              <label>Marca<input formControlName="brand" maxlength="80" /></label
               ><label
-                >Talla<input formControlName="size_label" placeholder="Ej. M, 38, única"
+                >Talla<input
+                  formControlName="size_label"
+                  maxlength="80"
+                  placeholder="Ej. M, 38, única"
               /></label>
             </div>
             <label
-              >Material<input formControlName="material" placeholder="Ej. lino, algodón…" /></label
-            ><label>Descripción<textarea rows="3" formControlName="description"></textarea></label>
+              >Material<input
+                formControlName="material"
+                maxlength="80"
+                placeholder="Ej. lino, algodón…" /></label
+            ><label
+              >Descripción<textarea
+                rows="3"
+                formControlName="description"
+                maxlength="1000"
+              ></textarea>
+            </label>
             <fieldset class="season-options">
               <legend>Temporadas</legend>
               @for (o of seasons; track o.value) {
@@ -195,11 +208,11 @@ export class ItemForm {
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.pattern(/\S/), Validators.maxLength(160)]],
     category: ['top', Validators.required],
-    primary_color: '',
-    brand: '',
-    size_label: '',
-    material: '',
-    description: '',
+    primary_color: ['', Validators.maxLength(80)],
+    brand: ['', Validators.maxLength(80)],
+    size_label: ['', Validators.maxLength(80)],
+    material: ['', Validators.maxLength(80)],
+    description: ['', Validators.maxLength(1000)],
     tags: '',
     wardrobe: '',
     zone: '',
