@@ -69,16 +69,19 @@ Supabase: conviene revisarlas juntas.
 
 - [x] Visibilidad del repo (público o privado) conocida y coherente con las
       reglas de "Repositorio y publicación". _2026-10-17: público (API de GitHub)._
-- [ ] Secret scanning activado.
-- [ ] Push protection activado (bloquea en el servidor los pushes con secretos
+- [x] Secret scanning activado. _2026-10-17: activado (API de GitHub)._
+- [x] Push protection activado (bloquea en el servidor los pushes con secretos
       conocidos).
-- [ ] Private vulnerability reporting activado, si el repo es público.
-- [ ] Protección de la rama principal con los jobs de seguridad (incluido
-      `fugas`) como obligatorios.
-- [ ] Hooks activos en cada clon de trabajo (`git config core.hooksPath`
+- [x] Private vulnerability reporting activado, si el repo es público.
+      _2026-10-17: activado con `gh` y aprobación del usuario._
+- [x] Protección de la rama principal con los jobs de seguridad (incluido
+      `fugas`) como obligatorios. _2026-10-17: `Verificar`, `Seguridad` y `Fugas`
+      obligatorios, con rama actualizada, historial lineal y sin force-push._
+- [x] Hooks activos en cada clon de trabajo (`git config core.hooksPath`
       apunta a `.githooks`) y gitleaks instalado; fichero de patrones
-      personales creado fuera del repo.
-- [ ] Alertas de Dependabot activadas.
+      personales creado fuera del repo. _2026-10-17: en el PC de trabajo, gitleaks
+      8.30.1 y cuatro reglas personales activas, probadas sin falsos positivos._
+- [x] Alertas de Dependabot activadas. _2026-10-17: activadas con `gh`._
 
 ## Legal y privacidad
 
@@ -102,6 +105,7 @@ Supabase: conviene revisarlas juntas.
 
 | Fecha | Quién | Notas |
 | --- | --- | --- |
+| 2026-10-17 | Agente (Claude Code) | Sección GitHub revisada y completada con `gh` (ajustes aprobados por el usuario). |
 | 2026-10-17 | Agente (Claude Code) | Migración de límites aplicada y catálogo remoto verificado (solo SELECT); `pg_net`/`http` no instalados. |
 | 2026-10-17 | Agente (Claude Code) | Variables de Vercel y Firewall consultados por MCP (solo lectura). |
 | 2026-10-16 | Agente (Claude Code) | Checklist creada al montar el sistema. Valores tomados de la auditoría de solo lectura del 2026-10-16; los paneles de Supabase y Vercel no se han revisado aún. |
