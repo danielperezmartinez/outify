@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-09-30
+Última modificación: 2026-10-17
 ---
 # Decisiones de arquitectura (ADR)
 
@@ -23,6 +23,7 @@ ni contradecir sin darse cuenta una decisión vigente.
 - [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]
 - [[Decisiones/ADR-0011 PWA y actualización voluntaria]]
 - [[Decisiones/ADR-0012 Composición persistente de outfits]]
+- [[Decisiones/ADR-0013 Publicación separada de código y bóveda]]
 
 ## Cómo utilizarlo
 

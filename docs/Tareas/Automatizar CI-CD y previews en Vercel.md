@@ -62,7 +62,7 @@ y desarrollo en Preview. La conexión inicial ya está hecha.
 - Vercel identificado por MCP: proyecto `prj_szp42yXWRAcl4hPaOLsnEvFPTBZA`, equipo
   `team_pg6J2nXKfiXk3LNIcM2QVWnB`; producción inicial `READY`, commit `d2b593e`.
 - Protocolo y autoridad: [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]
-  y [[../README#3. Versionado y despliegue]].
+  y [[../README#3. Publicación: el código va por pull request y todo despliegue se verifica]].
 
 ## Validación y publicación completadas
 

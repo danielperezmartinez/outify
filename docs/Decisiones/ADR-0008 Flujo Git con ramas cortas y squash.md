@@ -1,14 +1,14 @@
 ---
 Nombre: Flujo Git con ramas cortas y squash
 Número: 8
-Estado: Aceptada
+Estado: Reemplazada
 Resumen: El desarrollo parte de main estable, usa ramas cortas por cambio y se integra mediante pull request con squash y comprobaciones previas.
 Decisión: Proteger main y trabajar con ramas feat, fix, chore o docs, Conventional Commits y squash merge.
 Consecuencias: "El historial principal queda lineal y revisable, a cambio de requerir pull requests incluso en un equipo pequeño y automatizar sus comprobaciones más adelante."
 Reemplaza: []
-Reemplazada por: []
+Reemplazada por: "[[ADR-0013 Publicación separada de código y bóveda]]"
 Fecha de creación: 2026-09-18T14:27:30+02:00
-Última modificación: 2026-09-18T14:27:30+02:00
+Última modificación: 2026-10-17
 ---
 
 # ADR-0008 · Flujo Git con ramas cortas y squash

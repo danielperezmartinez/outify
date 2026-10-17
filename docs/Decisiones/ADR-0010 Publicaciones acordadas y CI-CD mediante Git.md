@@ -1,14 +1,14 @@
 ---
 Nombre: Publicaciones acordadas y CI-CD mediante Git
 Número: 10
-Estado: Aceptada
+Estado: Reemplazada
 Resumen: GitHub verifica cada PR y Vercel despliega por Git; cada publicación requiere una versión SemVer acordada y los fallos solo se diagnostican y reportan.
 Decisión: Automatizar validaciones y previews manteniendo el consenso humano de versión y la publicación mediante push y squash a main.
 Consecuencias: Las previews usan desarrollo, producción se recompila desde main y no hay recuperación automática ante fallos.
 Reemplaza: "[[ADR-0007 Repositorio GitHub y despliegue en Vercel]]"
-Reemplazada por: []
+Reemplazada por: "[[ADR-0013 Publicación separada de código y bóveda]]"
 Fecha de creación: 2026-09-18
-Última modificación: 2026-09-18
+Última modificación: 2026-10-17
 ---
 
 # ADR-0010 · Publicaciones acordadas y CI-CD mediante Git
