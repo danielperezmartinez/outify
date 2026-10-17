@@ -12,7 +12,7 @@ keywords = ["sb_secret_"]
 [[rules]]
 id = "ruta-personal-windows"
 description = 'Ruta personal de Windows (C:\Users\<nombre>)'
-regex = '''(?i)\b[a-z]:[\/]+users[\/]+[a-z0-9._-]+'''
+regex = '''(?i)\b[a-z]:[\\/]+users[\\/]+[a-z0-9._-]+'''
 keywords = ["users"]
 [[rules.allowlists]]
 stopwords = ["public", "default"]
