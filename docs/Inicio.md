@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-10-16
+Última modificación: 2026-10-17
 ---
 # Inicio
 
@@ -34,3 +34,7 @@ Preparación pública: [[Lanzamiento en Product Hunt]], [[Tratamiento de datos]]
 
 [[Seguridad/Seguridad.base|Abrir el panel de seguridad]] ·
 [[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]
+
+### Publicación
+
+Reglas en [[README#Publicación|README → Publicación]].

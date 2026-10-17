@@ -119,14 +119,15 @@ documenta contexto, alternativas consideradas y consecuencias.
   [[Decisiones/ADR-0009 Entornos lógicos en un único proyecto Supabase]],
   [[Decisiones/ADR-0010 Publicaciones acordadas y CI-CD mediante Git]] y
   [[Decisiones/ADR-0011 PWA y actualización voluntaria]],
-  [[Decisiones/ADR-0012 Composición persistente de outfits]] y
-  [[Decisiones/ADR-0013 Publicación separada de código y bóveda]].
+  [[Decisiones/ADR-0012 Composición persistente de outfits]],
+  [[Decisiones/ADR-0013 Publicación separada de código y bóveda]] y
+  [[Decisiones/ADR-0014 Guarda técnica y política común de publicación]].
 
 [[Decisiones|Abrir decisiones de arquitectura]]
 
 ### Seguridad, coste y cumplimiento
 
-_Versión del sistema: 2._
+_Versión del sistema: 3._
 
 Carpeta [[Seguridad/Seguridad.base|Seguridad/]]: excepciones justificadas a estas
 reglas, la [[Seguridad/Checklist de lanzamiento|checklist de lanzamiento]] y las
@@ -281,8 +282,6 @@ lo que se haga con MCP, CLI o panel.
   tras el build de Production; gitleaks en los hooks de `.githooks/` y en el
   job `Fugas`. Las suites SQL funcionales anteriores de `supabase/tests/*.sql`
   siguen vigentes.
-- Los jobs `Verificar`, `Seguridad` y `Fugas` son obligatorios para integrar en
-  `main` (flujo en [[#3. Publicación: el código va por pull request y todo despliegue se verifica|la regla 3]]).
 - **Una tarea que toque backend o UI no pasa a `Hecha`** hasta que esas
   comprobaciones estén en verde, y su sección "Verificación" lo deja escrito (qué
   se ejecutó y dónde). Si el cambio añade tablas, políticas, funciones o rutas,
@@ -291,6 +290,65 @@ lo que se haga con MCP, CLI o panel.
   han pasado en cada commit y push, y el job de fugas del CI está en verde.
 - Una excepción a estas reglas es una nota `Excepción` en `Seguridad/` con su
   justificación. Sin nota, no hay excepción.
+- Sus jobs son checks obligatorios para integrar en la rama principal; el flujo
+  de publicación está en la sección [[#Publicación]] y no se repite aquí.
+
+### Publicación
+
+_Versión del sistema: 1._
+
+Esta es la única regla de publicación del proyecto (política común de las webs
+del usuario); las demás secciones, la plantilla de PR y los workflows la
+enlazan en vez de repetirla.
+
+| Cambio | Cómo se publica | Versión | Despliegue |
+| --- | --- | --- | --- |
+| **Código**: cualquier archivo fuera de `docs/` | Rama corta y pull request contra `main`, integrada con squash | Sube en la propia PR | Production al integrar en `main` |
+| **Solo bóveda**: todo dentro de `docs/` | Commit y push directo a `main` | No cambia | Ninguno: Vercel lo omite con `ignoreCommand` |
+
+- Un commit o una PR que mezcle bóveda y código cuenta como **código**.
+- **Nunca se hace push directo de código a `main`**, aunque GitHub lo permita a
+  administradores. La guarda de `.githooks/pre-push`
+  (`.githooks/_rama_principal.sh`) rechaza un push a `main` que toque algo fuera
+  de `docs/`; es la red que cubre `enforce_admins=false` y no se salta
+  (`--no-verify`) sin autorización del usuario.
+- **Integración: solo squash.** En el repo, merge commit y rebase desactivados,
+  `delete_branch_on_merge` activado y auto-merge desactivado.
+- **Protección de `main`:** PR obligatoria con 0 aprobaciones; checks
+  `Verificar`, `Seguridad` y `Fugas` obligatorios en modo strict; historial
+  lineal; **no** se exige resolver las conversaciones; `enforce_admins=false`
+  para que el push directo de `docs/` funcione con la cuenta compartida; sin
+  force push ni borrado de la rama.
+- **Versión:** cada PR de código sube la versión de `package.json` (SemVer),
+  única fuente de la versión visible y de los metadatos de actualización de la
+  PWA. El agente propone el incremento según los commits (Conventional Commits)
+  y **el usuario lo aprueba** antes de abrir la PR; `major`, siempre con
+  autorización expresa. El acuerdo queda en la PR. El CI comprueba que la
+  versión supera la de `main` (`pnpm check:release` en `Verificar`).
+- **Dependabot:** sus PR son código. El agente añade la subida `patch` y la
+  integra con autorización, como cualquier otra.
+- **Quién integra:** el agente, solo con autorización explícita del usuario
+  para esa PR; si no la tiene, se detiene con la PR abierta.
+- **Despliegue:** la integración Git de Vercel (proyecto `outify`) crea Preview
+  para las ramas y Production (`https://outify.vercel.app`) al integrar en
+  `main`; no se usan despliegues manuales por CLI/MCP. Al integrar, se localiza
+  con el MCP de Vercel el despliegue del SHA exacto y se verifica que queda en
+  `READY`. Si queda en `ERROR`, **se detiene e informa al usuario** sin
+  reintentar, redesplegar ni hacer rollback; la corrección es una PR nueva con
+  su versión.
+- **CI:** el job `Cambios` de `.github/workflows/ci.yml` omite `Verificar` y
+  `Seguridad` cuando el cambio solo toca `docs/`; `Fugas` se ejecuta siempre.
+- **Migraciones del Supabase compartido** `devappsdpm-db` (con nocendland y
+  gift-card): aparte, con autorización expresa, antes de integrar el frontend
+  que las necesita y con la versión que registra el historial remoto
+  (`list_migrations`); si `apply_migration` asigna otra, se renombra el fichero.
+- **Correo:** los commits nuevos usan el correo `noreply` de GitHub. El
+  historial ya publicado no se reescribe.
+- Una tarea de código no pasa a `Hecha` hasta que su PR está integrada y el
+  despliegue verificado; su sección "Verificación" anota la PR, el commit y el
+  estado del despliegue. Si la PR espera autorización, la tarea sigue `En curso`.
+- Fuente y justificación:
+  [[Decisiones/ADR-0014 Guarda técnica y política común de publicación]].
 
 ## Reglas fundamentales del proyecto
 
@@ -411,59 +469,9 @@ pnpm test   # Tests con Vitest
 
 ### 3. Publicación: el código va por pull request y todo despliegue se verifica
 
-Esta es la única regla de publicación del proyecto; las demás secciones la
-enlazan en vez de repetirla.
-
-| Cambio | Cómo se publica | Versión | Despliegue |
-| --- | --- | --- | --- |
-| **Código**: cualquier archivo fuera de `docs/` | Rama corta y pull request contra `main`, integrada con squash | Sube en la propia PR | Production al integrar en `main` |
-| **Solo bóveda**: todo dentro de `docs/` | Commit y push directo a `main` | No cambia | Ninguno: Vercel y el CI pesado lo omiten |
-
-- Un commit o una PR que mezcle bóveda y código cuenta como **código**.
-- **Nunca se hace push directo de código a `main`**, aunque GitHub lo permita a
-  administradores. `main` exige los checks `Verificar`, `Seguridad` y `Fugas`
-  actualizados con `main` para integrar una PR; un push directo se desplegaría
-  sin esperarlos, por eso el código va siempre por PR. La protección no se
-  aplica a administradores solo para que la bóveda pueda publicarse con push
-  directo.
-- Versionado semántico (SemVer) en `package.json`, única fuente de la versión
-  visible y de los metadatos de actualización de la PWA. **Cada PR de código
-  sube la versión** y no se integra si no supera la de `main` (lo comprueba
-  `pnpm check:release` en `Verificar`).
-- Antes de subir la versión, acordar con el usuario el incremento y el número
-  exacto: `major` para cambios incompatibles, `minor` para funcionalidades
-  compatibles y `patch` para correcciones compatibles. No inferir el consenso
-  por silencio ni incrementar o publicar sin él. Registrar el acuerdo en la PR.
-- **Desplegar código** significa: trabajar en una rama corta `feat/*`, `fix/*`,
-  `chore/*` o `docs/*` con Conventional Commits; abrir la PR con `gh`; esperar
-  los checks; integrarla con squash solo si el usuario lo autorizó (si no,
-  detenerse con la PR abierta); y verificar el despliegue. La integración Git de
-  Vercel crea Preview para las ramas y Production al integrar en `main`; no usar
-  despliegues manuales por CLI/MCP ni promover una Preview construida con
-  recursos de desarrollo.
-- **Publicar la bóveda** (solo `docs/`) significa: commit y push directo a
-  `main`, sin PR, sin subir la versión y sin despliegue.
-- Después de integrar código, usar el MCP de Vercel para localizar el despliegue
-  del SHA exacto y comprobar destino, URL, estado `READY` y logs. Ante un fallo,
-  **avisar con un reporte y detenerse**: no corregir, reintentar, redesplegar ni
-  ejecutar rollback por iniciativa propia. Cualquier recuperación requiere una
-  nueva instrucción, y una corrección tras un despliegue en `ERROR` es una PR
-  nueva con su propia versión.
-- Los cambios en el Supabase compartido `devappsdpm-db` (migraciones) se
-  aplican aparte, con autorización expresa, antes de integrar el frontend que los
-  necesita. El archivo de migración del repo lleva la misma versión que registra
-  el historial remoto (`list_migrations`); si `apply_migration` asigna otra, se
-  renombra el archivo.
-- `main` es la rama estable: historial lineal, solo squash, sin force-push ni
-  borrado. Repositorio enlazado como `origin` a
-  `https://github.com/danielperezmartinez/outify`.
-- Destino de despliegue: el proyecto Vercel `outify`, conectado a GitHub, con
-  producción en `https://outify.vercel.app`. El `ignoreCommand` de `vercel.json`
-  omite la build cuando el commit no cambia nada fuera de `docs/`, y el job
-  `Cambios` del CI omite `Verificar` y `Seguridad` en ese caso; `Fugas` se
-  ejecuta siempre.
-- Fuente y justificación:
-  [[Decisiones/ADR-0013 Publicación separada de código y bóveda]].
+La regla de publicación (código por pull request con versión nueva, bóveda por
+push directo y despliegue verificado) vive en la sección del sistema
+[[#Publicación]] y no se repite aquí.
 
 ### 4. Idioma
 

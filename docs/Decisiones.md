@@ -24,6 +24,7 @@ ni contradecir sin darse cuenta una decisión vigente.
 - [[Decisiones/ADR-0011 PWA y actualización voluntaria]]
 - [[Decisiones/ADR-0012 Composición persistente de outfits]]
 - [[Decisiones/ADR-0013 Publicación separada de código y bóveda]]
+- [[Decisiones/ADR-0014 Guarda técnica y política común de publicación]]
 
 ## Cómo utilizarlo
 
