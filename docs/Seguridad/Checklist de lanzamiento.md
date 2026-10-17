@@ -76,7 +76,7 @@ Supabase: conviene revisarlas juntas.
       _2026-10-17: activado con `gh` y aprobación del usuario._
 - [x] Protección de la rama principal con los jobs de seguridad (incluido
       `fugas`) como obligatorios. _2026-10-17: `Verificar`, `Seguridad` y `Fugas`
-      obligatorios, con rama actualizada, historial lineal y sin force-push._
+      obligatorios, con rama actualizada, historial lineal y sin force-push. Sin exigir resolver conversaciones desde el mismo día (política común)._
 - [x] Hooks activos en cada clon de trabajo (`git config core.hooksPath`
       apunta a `.githooks`) y gitleaks instalado; fichero de patrones
       personales creado fuera del repo. _2026-10-17: en el PC de trabajo, gitleaks
