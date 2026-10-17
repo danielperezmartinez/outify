@@ -1,7 +1,7 @@
 ---
 Nombre: Separar la publicación de código y bóveda
-Estado: En curso
-Resumen: "El código va por PR con checks obligatorios y subida SemVer; la bóveda (docs/) se publica con push directo a main sin build. PR #7 integrada (v0.4.4, Production READY) y protección de main aplicada; falta comprobar el primer push de solo docs/."
+Estado: Hecha
+Resumen: "El código va por PR con checks obligatorios y subida SemVer; la bóveda (docs/) se publica con push directo a main sin build. Verificado el 2026-10-17: PR #7 (v0.4.4) READY, protección de main aplicada y el primer push de solo docs/ no desplegó."
 Decisiones: "[[Decisiones/ADR-0013 Publicación separada de código y bóveda|ADR-0013]]"
 Bloqueada: []
 Fecha de creación: 2026-10-17
@@ -33,7 +33,7 @@ repositorios (primero en nocendland): una sola regla en
 
 - [x] PR de código integrada y Production `READY` en Vercel.
 - [x] Protección de `main` aplicada y leída de vuelta por la API.
-- [ ] Primer push de solo `docs/`: Vercel omite la build y el CI solo ejecuta
+- [x] Primer push de solo `docs/`: Vercel omite la build y el CI solo ejecuta
       `Cambios` y `Fugas`.
 
 ## Verificación
@@ -48,5 +48,6 @@ repositorios (primero en nocendland): una sola regla en
   `Verificar`, `Seguridad` y `Fugas` estrictos (GitHub Actions),
   `enforce_admins` desactivado, PR obligatoria con 0 aprobaciones, historial
   lineal, resolución de conversaciones y sin force-push ni borrado.
-- Este registro se publica como primer push de solo `docs/` para comprobar que
-  Vercel omite la build.
+- Primer push de solo `docs/` (`accbd14`, directo a `main` con la cuenta
+  administradora): Vercel lo marcó «Canceled by Ignored Build Step»; en el CI
+  `Cambios` y `Fugas` en verde y `Verificar` y `Seguridad` omitidos.
