@@ -1,7 +1,7 @@
 ---
 Nombre: Separar la publicación de código y bóveda
 Estado: En curso
-Resumen: El código va por PR con checks obligatorios y subida SemVer; la bóveda (docs/) se publica con push directo a main sin build. Pendiente aplicar la protección de main y comprobar el primer push de solo docs/.
+Resumen: "El código va por PR con checks obligatorios y subida SemVer; la bóveda (docs/) se publica con push directo a main sin build. PR #7 integrada (v0.4.4, Production READY) y protección de main aplicada; falta comprobar el primer push de solo docs/."
 Decisiones: "[[Decisiones/ADR-0013 Publicación separada de código y bóveda|ADR-0013]]"
 Bloqueada: []
 Fecha de creación: 2026-10-17
@@ -31,8 +31,8 @@ repositorios (primero en nocendland): una sola regla en
 
 ## Criterios de finalización
 
-- [ ] PR de código integrada y Production `READY` en Vercel.
-- [ ] Protección de `main` aplicada y leída de vuelta por la API.
+- [x] PR de código integrada y Production `READY` en Vercel.
+- [x] Protección de `main` aplicada y leída de vuelta por la API.
 - [ ] Primer push de solo `docs/`: Vercel omite la build y el CI solo ejecuta
       `Cambios` y `Fugas`.
 
@@ -41,3 +41,12 @@ repositorios (primero en nocendland): una sola regla en
 - Historial de migraciones: `20261017090000_outify_security_limits` coincide
   con la versión del historial remoto de `devappsdpm-db`; no hay que renombrar.
 - `remote.origin.push` no está configurado en el checkout local.
+- PR danielperezmartinez/outify#7 integrada con squash (`5886460`, v0.4.4) con
+  `Cambios`, `Verificar`, `Seguridad` y `Fugas` en verde. Production
+  `dpl_DZ1wiMkswEBPszSkzSw65iZZ6N2P` `READY` en `https://outify.vercel.app`.
+- Protección de `main` aplicada con confirmación del usuario y leída por la API:
+  `Verificar`, `Seguridad` y `Fugas` estrictos (GitHub Actions),
+  `enforce_admins` desactivado, PR obligatoria con 0 aprobaciones, historial
+  lineal, resolución de conversaciones y sin force-push ni borrado.
+- Este registro se publica como primer push de solo `docs/` para comprobar que
+  Vercel omite la build.
