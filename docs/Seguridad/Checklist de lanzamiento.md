@@ -2,7 +2,7 @@
 Nombre: Checklist de lanzamiento
 Tipo: Checklist
 Estado: Pendiente
-Resumen: "Estado de la configuración fuera del código (gasto, Auth, firewall, secretos, plan y legal) que ningún test del repo comprueba. Bloquea la publicación en Product Hunt; la mayoría de puntos siguen sin revisar en los paneles."
+Resumen: "Estado de la configuración fuera del código (gasto, Auth, firewall, secretos, plan, GitHub y legal) que ningún test del repo comprueba. Bloquea la publicación en Product Hunt; la mayoría de puntos siguen sin revisar en los paneles."
 Última revisión: 2026-10-16
 Última modificación: 2026-10-17
 ---
@@ -64,6 +64,21 @@ Supabase: conviene revisarlas juntas.
       hace falta) y marcadas como sensibles. _2026-10-17: `OUTIFY_SUPABASE_SECRET_KEY`
       y `CRON_SECRET` son `sensitive` y solo están en Production desde el 2026-10-17
       (ver [[Tareas/Revisar entornos de la clave secreta de Supabase]])._
+
+## GitHub (danielperezmartinez/outify)
+
+- [x] Visibilidad del repo (público o privado) conocida y coherente con las
+      reglas de "Repositorio y publicación". _2026-10-17: público (API de GitHub)._
+- [ ] Secret scanning activado.
+- [ ] Push protection activado (bloquea en el servidor los pushes con secretos
+      conocidos).
+- [ ] Private vulnerability reporting activado, si el repo es público.
+- [ ] Protección de la rama principal con los jobs de seguridad (incluido
+      `fugas`) como obligatorios.
+- [ ] Hooks activos en cada clon de trabajo (`git config core.hooksPath`
+      apunta a `.githooks`) y gitleaks instalado; fichero de patrones
+      personales creado fuera del repo.
+- [ ] Alertas de Dependabot activadas.
 
 ## Legal y privacidad
 
