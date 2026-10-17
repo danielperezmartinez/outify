@@ -2,7 +2,7 @@
 Nombre: Checklist de lanzamiento
 Tipo: Checklist
 Estado: Pendiente
-Resumen: "Estado de la configuración fuera del código (gasto, Auth, firewall, secretos, plan y legal) que ningún test del repo comprueba. Bloquea la publicación en Product Hunt; la mayoría de puntos siguen sin revisar en los paneles."
+Resumen: "Estado de la configuración fuera del código (gasto, Auth, firewall, secretos, plan, GitHub y legal) que ningún test del repo comprueba. Bloquea la publicación en Product Hunt; la mayoría de puntos siguen sin revisar en los paneles."
 Última revisión: 2026-10-16
 Última modificación: 2026-10-17
 ---
@@ -46,9 +46,9 @@ Supabase: conviene revisarlas juntas.
       Free sin copias de seguridad; la copia recuperable y el ensayo de
       restauración siguen pendientes en
       [[Tareas/Preparar privacidad condiciones y tratamiento de datos]]._
-- [ ] `pg_net`/`http` sin acceso de `anon` ni `authenticated` en el proyecto
-      remoto. El test de catálogo solo lo comprueba en la base local, donde
-      Outify no instala esas extensiones.
+- [x] `pg_net`/`http` sin acceso de `anon` ni `authenticated` en el proyecto
+      remoto. _2026-10-17: ninguna de las dos está instalada en `devappsdpm-db`
+      (SELECT de solo lectura)._
 
 ## Vercel (outify)
 
@@ -64,6 +64,21 @@ Supabase: conviene revisarlas juntas.
       hace falta) y marcadas como sensibles. _2026-10-17: `OUTIFY_SUPABASE_SECRET_KEY`
       y `CRON_SECRET` son `sensitive` y solo están en Production desde el 2026-10-17
       (ver [[Tareas/Revisar entornos de la clave secreta de Supabase]])._
+
+## GitHub (danielperezmartinez/outify)
+
+- [x] Visibilidad del repo (público o privado) conocida y coherente con las
+      reglas de "Repositorio y publicación". _2026-10-17: público (API de GitHub)._
+- [ ] Secret scanning activado.
+- [ ] Push protection activado (bloquea en el servidor los pushes con secretos
+      conocidos).
+- [ ] Private vulnerability reporting activado, si el repo es público.
+- [ ] Protección de la rama principal con los jobs de seguridad (incluido
+      `fugas`) como obligatorios.
+- [ ] Hooks activos en cada clon de trabajo (`git config core.hooksPath`
+      apunta a `.githooks`) y gitleaks instalado; fichero de patrones
+      personales creado fuera del repo.
+- [ ] Alertas de Dependabot activadas.
 
 ## Legal y privacidad
 
@@ -87,5 +102,6 @@ Supabase: conviene revisarlas juntas.
 
 | Fecha | Quién | Notas |
 | --- | --- | --- |
+| 2026-10-17 | Agente (Claude Code) | Migración de límites aplicada y catálogo remoto verificado (solo SELECT); `pg_net`/`http` no instalados. |
 | 2026-10-17 | Agente (Claude Code) | Variables de Vercel y Firewall consultados por MCP (solo lectura). |
 | 2026-10-16 | Agente (Claude Code) | Checklist creada al montar el sistema. Valores tomados de la auditoría de solo lectura del 2026-10-16; los paneles de Supabase y Vercel no se han revisado aún. |

@@ -1,7 +1,7 @@
 ---
 Nombre: Limitar longitud de textos y filas por usuario
-Estado: En curso
-Resumen: "Implementado y verificado en local en la v0.4.1: CHECK de longitud en todos los textos editables, topes de filas por usuario y límites maxlength en los formularios. Falta aplicarlo en remoto."
+Estado: Hecha
+Resumen: "CHECK de longitud, topes de filas por usuario y límites en los formularios, aplicados en remoto y verificados el 2026-10-17 (v0.4.1)."
 Decisiones: "[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]"
 Bloqueada: []
 Fecha de creación: 2026-10-16
@@ -32,7 +32,4 @@ Límites acordados con el usuario el 2026-10-17: descripciones y notas ≤ 1000,
 
 ## Verificación
 
-Pendiente. Antes de pasar a `Hecha`, aplicar la compuerta de
-[[README#Comprobaciones y compuerta de "Hecha"]]: `supabase test db supabase/tests/security`
-en verde en local y en el job `Seguridad`, con el test nuevo de este cambio en
-el mismo PR.
+Publicado y verificado el 2026-10-17. PR #4 integrada (`442aaf6`), checks `Verificar` y `Seguridad` en verde, y Production `dpl_ZsnZqCkPomkyjam8Zo7jBr9DkeL7` READY sin errores de runtime. Migración `20261017090000_outify_security_limits` aplicada en `devappsdpm-db` con aprobación expresa del usuario y versión del historial reasignada a la original. Comprobado con SELECT en remoto: 0 tablas sin RLS, 0 políticas de escritura `true`, 0 funciones SECURITY DEFINER sin `search_path` vacío o ejecutables por `anon` sin excepción, buckets de Outify con límite, 20 triggers y 18 CHECK nuevos. No se tocaron objetos de otras apps.

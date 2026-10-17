@@ -1,0 +1,40 @@
+title = "Patrones genéricos del proyecto"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "supabase-clave-secreta"
+description = "Clave secreta de Supabase"
+regex = '''sb_secret_[A-Za-z0-9_-]{16,}'''
+keywords = ["sb_secret_"]
+
+[[rules]]
+id = "ruta-personal-windows"
+description = 'Ruta personal de Windows (C:\Users\<nombre>)'
+regex = '''(?i)\b[a-z]:[\\/]+users[\\/]+[a-z0-9._-]+'''
+keywords = ["users"]
+[[rules.allowlists]]
+stopwords = ["public", "default"]
+
+# secretGroup es necesario: la lista de permitidos global de gitleaks ignora
+# cualquier secreto que empiece por /home/ o /Users/.
+[[rules]]
+id = "ruta-personal-unix"
+description = "Ruta personal de Linux o macOS (/home/<nombre>, /Users/<nombre>)"
+regex = '''/(?:home|Users)/([A-Za-z0-9._-]+)'''
+secretGroup = 1
+keywords = ["/home/", "/users/"]
+[[rules.allowlists]]
+stopwords = ["runner", "shared"]
+
+[[rules]]
+id = "ip-privada"
+description = "IP de red local o de Tailscale"
+regex = '''\b(?:10\.\d{1,3}|192\.168|172\.(?:1[6-9]|2\d|3[01])|100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7]))\.\d{1,3}\.\d{1,3}\b'''
+
+# La clave publicable de Supabase es pública por diseño (va en el bundle del cliente).
+[[allowlists]]
+description = "Clave publicable de Supabase"
+regexTarget = "match"
+regexes = ['''sb_publishable_[A-Za-z0-9_-]+''']

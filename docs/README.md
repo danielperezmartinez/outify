@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-10-16
+Última modificación: 2026-10-17
 ---
 # Memoria del proyecto
 
@@ -125,10 +125,11 @@ documenta contexto, alternativas consideradas y consecuencias.
 
 ### Seguridad, coste y cumplimiento
 
-_Versión del sistema: 1._
+_Versión del sistema: 2._
 
 Carpeta [[Seguridad/Seguridad.base|Seguridad/]]: excepciones justificadas a estas
-reglas y la [[Seguridad/Checklist de lanzamiento|checklist de lanzamiento]].
+reglas, la [[Seguridad/Checklist de lanzamiento|checklist de lanzamiento]] y las
+referencias opacas a hallazgos privados.
 Estas reglas aplican a todo cambio, lo haga una persona o un agente, y también a
 lo que se haga con MCP, CLI o panel.
 
@@ -181,6 +182,69 @@ lo que se haga con MCP, CLI o panel.
 - Cada secreto está solo en los entornos que lo necesitan (p. ej. Production y no
   Preview si las previews no lo usan), marcado como sensible donde la plataforma
   lo permita.
+- Los ficheros de secretos locales (`.env*` salvo `.env.example`, keystores,
+  claves) están en `.gitignore`.
+
+#### Repositorio y publicación
+
+- Todo lo que se sube queda expuesto y **no se puede retirar**: el código, esta
+  bóveda `docs/`, los mensajes de commit, los nombres de rama, los títulos y
+  cuerpos de PR, las issues, los workflows, los logs y artefactos de CI. Borrarlo
+  después no lo quita del historial, de los forks ni de las cachés.
+- **Nunca se sube:**
+  - Secretos: claves, contraseñas, tokens, ficheros `.env`, keystores.
+  - Datos del entorno personal: nombres de host, de máquina o de dispositivo,
+    usuarios del sistema operativo, IP (de red local, VPN o públicas), dominios y
+    redes propios, rutas personales (`C:\Users\<nombre>`, `/home/<nombre>`,
+    unidades y carpetas propias) y correos personales.
+  - Vulnerabilidades sin corregir (ver "Vulnerabilidades y hallazgos sensibles").
+- En la documentación se usan **marcadores genéricos** (`<usuario>`,
+  `<host-de-pruebas>`, `<ruta-al-proyecto>`). Los valores reales viven fuera del
+  repo: variables de entorno, la memoria local del agente (que no se versiona) o
+  el fichero de patrones personales.
+- **Antes de cada commit y de cada push** se revisan el diff y los mensajes. Los
+  hooks versionados en `.githooks/` lo comprueban con gitleaks (patrones
+  genéricos de `.gitleaks.toml` y patrones personales fuera del repo), y el CI lo
+  repite. Los hooks no se saltan (`--no-verify`) sin permiso explícito del
+  usuario. Un falso positivo se resuelve ajustando el patrón o con
+  `gitleaks:allow` en esa línea, nunca desactivando la revisión.
+- Los logs de CI no imprimen secretos ni datos personales. Los secretos de CI van
+  en los secretos de la plataforma (GitHub Secrets), y el CI no depende de
+  máquinas, redes ni cuentas personales del usuario.
+- **Si algo sensible llega a subirse:** se avisa al usuario **de inmediato**. No
+  se reescribe el historial ni se fuerza un push sin su permiso explícito. Si era
+  un secreto, se da por comprometido y se revoca o se rota, aunque se borre del
+  repo.
+
+#### Vulnerabilidades y hallazgos sensibles
+
+- **Criterio.** Un hallazgo es sensible si describe cómo dañar, espiar o engañar
+  a usuarios de la versión publicada y todavía no hay una versión publicada que
+  lo corrija. Ante la duda, es sensible.
+- **Dónde vive.** Cada hallazgo sensible es un **aviso privado de GitHub**
+  (*Security Advisory* en borrador, pestaña *Security* del repo), uno por
+  hallazgo. Es su única fuente de verdad mientras no se publique.
+- **Qué nunca lo cuenta** mientras no se publique el arreglo: esta bóveda, los
+  mensajes de commit, los nombres de rama, los títulos y cuerpos de PR, las
+  issues, los comentarios de código y los nombres de test.
+- **En la bóveda** solo hay una referencia opaca: una nota `SEC-AAAA-NN`
+  (correlativo por año, no se reutiliza) de tipo `Hallazgo` en `Seguridad/`, con
+  severidad, estado, el ID `GHSA-…` del aviso y la versión que lo corrige. Nunca
+  un título ni una descripción.
+- **El arreglo** se prepara en local, con mensajes de commit, nombres de rama y
+  nombres de test neutros que no expliquen el fallo, y se sube junto con la
+  publicación de la versión que lo corrige. Entonces se publica el aviso y la
+  nota pasa a `Publicado`; desde ese momento ya se puede describir.
+- **Los agentes no crean, publican ni cierran avisos por su cuenta.** Preparan el
+  borrador del aviso y el usuario lo da de alta, o lo autoriza en esa sesión.
+  Publicar un aviso es irreversible.
+- Lo no sensible (endurecimiento, CVE públicos de dependencias) se gestiona con
+  tareas normales.
+- Estados de las notas `Hallazgo`: `Abierto` · `Corregido` · `Publicado` ·
+  `Descartado`. `Corregido` significa que el arreglo está listo pero aún no
+  publicado: sigue siendo sensible. Al pasar a `Publicado` (arreglo y aviso
+  publicados por el usuario), la nota ya puede enlazar el aviso y describir el
+  fallo.
 
 #### Legal y privacidad (UE / España)
 
@@ -213,12 +277,15 @@ lo que se haga con MCP, CLI o panel.
   las migraciones, en el job `Seguridad` de `.github/workflows/ci.yml`; AXE en
   `e2e/public.spec.ts`, `e2e/editor.spec.ts` y `e2e/outfits.spec.ts`
   (`pnpm test:editor`, job `Verificar`), y el paso "Sin secretos en el bundle"
-  tras el build de Production. Las suites SQL funcionales anteriores de
-  `supabase/tests/*.sql` siguen vigentes.
+  tras el build de Production; gitleaks en los hooks de `.githooks/` y en el
+  job `Fugas`. Las suites SQL funcionales anteriores de `supabase/tests/*.sql`
+  siguen vigentes.
 - **Una tarea que toque backend o UI no pasa a `Hecha`** hasta que esas
   comprobaciones estén en verde, y su sección "Verificación" lo deja escrito (qué
   se ejecutó y dónde). Si el cambio añade tablas, políticas, funciones o rutas,
   añade también su test en el mismo cambio.
+- **Ninguna tarea pasa a `Hecha` con commits sin revisar:** los hooks de gitleaks
+  han pasado en cada commit y push, y el job de fugas del CI está en verde.
 - Una excepción a estas reglas es una nota `Excepción` en `Seguridad/` con su
   justificación. Sin nota, no hay excepción.
 

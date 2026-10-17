@@ -1,7 +1,7 @@
 ---
 Nombre: Reducir transferencia de imágenes
 Estado: En curso
-Resumen: "Implementado en la v0.4.1: las fotos se suben como WebP de 1600 px como máximo y las URL firmadas (12 h) se reutilizan mientras siguen vigentes. Falta publicarlo y medir el egress."
+Resumen: "Publicado en Production con la v0.4.1 el 2026-10-17: WebP de 1600 px como máximo y URL firmadas de 12 h reutilizadas. Falta medir el egress durante unos días y compararlo con el anterior."
 Decisiones: "[[Seguridad/Checklist de lanzamiento|Checklist de lanzamiento]]; [[Decisiones/ADR-0004 Aislamiento de Outify en Supabase compartido|ADR-0004]]"
 Bloqueada: []
 Fecha de creación: 2026-10-16
@@ -31,7 +31,4 @@ El cliente redimensiona con `prepareImage` (si el navegador no genera WebP o no 
 
 ## Verificación
 
-Pendiente. Antes de pasar a `Hecha`, aplicar la compuerta de
-[[README#Comprobaciones y compuerta de "Hecha"]]: `supabase test db supabase/tests/security`
-en verde en local y en el job `Seguridad`, con el test nuevo de este cambio en
-el mismo PR.
+Publicado y verificado el 2026-10-17. PR #4 integrada (`442aaf6`), checks `Verificar` y `Seguridad` en verde, y Production `dpl_ZsnZqCkPomkyjam8Zo7jBr9DkeL7` READY sin errores de runtime. Migración `20261017090000_outify_security_limits` aplicada en `devappsdpm-db` con aprobación expresa del usuario y versión del historial reasignada a la original. Comprobado con SELECT en remoto: 0 tablas sin RLS, 0 políticas de escritura `true`, 0 funciones SECURITY DEFINER sin `search_path` vacío o ejecutables por `anon` sin excepción, buckets de Outify con límite, 20 triggers y 18 CHECK nuevos. No se tocaron objetos de otras apps.
