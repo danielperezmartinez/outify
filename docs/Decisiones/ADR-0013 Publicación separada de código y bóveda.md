@@ -1,12 +1,12 @@
 ---
 Nombre: Publicación separada de código y bóveda
 Número: 13
-Estado: Aceptada
+Estado: Reemplazada
 Resumen: El código se publica siempre por PR con los checks de seguridad en verde y subida SemVer; los cambios que solo tocan docs/ se publican con push directo a main, sin versión ni despliegue.
 Decisión: Separar la publicación de código (PR, squash, versión y despliegue verificado) de la de la bóveda (push directo a main sin build).
 Consecuencias: La bóveda deja de esperar a una PR con versión y no consume builds; la norma de no subir código directo a main depende del README porque la protección no se aplica a administradores.
 Reemplaza: "[[ADR-0008 Flujo Git con ramas cortas y squash]]; [[ADR-0010 Publicaciones acordadas y CI-CD mediante Git]]"
-Reemplazada por: []
+Reemplazada por: "[[ADR-0014 Guarda técnica y política común de publicación]]"
 Fecha de creación: 2026-10-17
 Última modificación: 2026-10-17
 ---

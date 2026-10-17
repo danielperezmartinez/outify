@@ -30,7 +30,7 @@ jobs:
         id: diff
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-        # Solo la bóveda (docs/) no sube versión ni necesita build ni tests de base de datos.
+        # Flujo de publicación: docs/README.md, sección "Publicación".
         # Si el diff no puede calcularse, se trata como código.
         run: |
           if git diff --quiet "$BASE_SHA" HEAD -- . ':(exclude)docs' 2>/dev/null; then
