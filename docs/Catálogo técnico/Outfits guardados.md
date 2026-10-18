@@ -5,7 +5,7 @@ Tipo: Feature y store
 Feature: outfits
 Estado: Vigente
 Ámbito: Ruta
-Resumen: Contrato local verificado de listado, consulta y editor de outfits con selección ordenada, notas, favoritos y datos actuales del inventario; publicación pendiente.
+Resumen: Listado, consulta y editor de outfits con selección ordenada, notas, favoritos y datos actuales del inventario; migración remota aplicada y verificada en ambos entornos el 2026-09-30.
 Fuente: src/app/outfits/outfit-data/outfit-store.ts
 Entrada pública: OUTFIT_ROUTES; OutfitStore; OutfitPiece; save_outfit
 Fecha de creación: 2026-09-30

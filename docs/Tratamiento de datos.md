@@ -12,9 +12,10 @@ outfits únicamente el último nombre como aviso, sin foto; la baja elimina las
 composiciones. Los textos públicos de privacidad y condiciones se actualizaron
 localmente a la versión documental 2, fechada el 2026-09-30.
 
-La migración se verificó en PostgreSQL local; todavía no está aplicada en remoto
-ni se ha publicado la ampliación. El estado operativo siguiente describe la
-versión 0.3.0 anterior a esta función.
+Daniel confirmó la publicación de la ampliación. El 2026-09-30 se aplicó la
+migración pendiente en remoto y se verificaron las invariantes con rollback en
+producción y desarrollo; evidencia en [[Tareas/Implementar outfits guardados]].
+El estado operativo siguiente describe la versión 0.3.0 anterior a esta función.
 
 ## Actualización operativa · 2026-09-25
 

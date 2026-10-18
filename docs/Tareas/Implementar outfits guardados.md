@@ -1,7 +1,7 @@
 ---
 Nombre: Implementar outfits guardados
 Estado: Hecha
-Resumen: Implementación verificada de outfits y publicación minor 0.4.0 acordada el 2026-09-30. Listado, ficha y editor con notas, favoritos, orden manual y referencias eliminadas. Migración remota preparada.
+Resumen: Outfits 0.4.0 desplegados e integrados según confirma Daniel. Migración remota aplicada el 2026-09-30 y pruebas SQL con rollback correctas en producción y desarrollo; resuelto el error de tabla inexistente.
 Decisiones: '[[Producto]]; [[Decisiones/ADR-0012 Composición persistente de outfits]]'
 Bloqueada: []
 Fecha de creación: 2026-09-30
@@ -9,6 +9,28 @@ Fecha de creación: 2026-09-30
 ---
 
 # Implementar outfits guardados
+
+## Corrección remota · 2026-09-30
+
+Daniel confirmó despliegue, PR y merge, y notificó que faltaba
+`outify.outfit_items`. Se comprobó que ninguna tabla de outfits existía en
+`outify` ni `outify_dev`: el despliegue de Vercel no aplica las migraciones SQL.
+
+Se aplicó íntegramente `20260930171430_outify_saved_outfits.sql` mediante MCP en
+`devappsdpm-db` (`zckqbrwdgxohdymiwbfz`). El historial remoto quedó alineado con
+la versión del archivo; el MCP asignó inicialmente `20260930191609`, corregida
+en el registro de esa misma migración a `20260930171430` para evitar reaplicarla.
+Se notificó a PostgREST la recarga del esquema.
+
+Verificados: las cuatro tablas existen, RLS activo, lectura para authenticated
+y sin lectura anónima. La suite `supabase/tests/outfits.sql` pasó en remoto con
+rollback tanto en `outify_dev` como, sustituyendo el esquema, en `outify`.
+Incluye creación, edición y orden, favoritos, validaciones atómicas,
+archivado/restauración, referencias eliminadas, aislamiento y baja.
+No se conservaron datos sintéticos ni se modificaron artículos de usuarios.
+No fue necesario un nuevo despliegue del frontend.
+
+La evidencia anterior de implementación local se conserva a continuación.
 
 Plan aprobado el 2026-09-30: sección Outfits con listado y preview de cuatro
 prendas, consulta completa, edición, notas, favoritos, búsqueda y selección de
