@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-10-17
+Última modificación: 2026-10-19
 ---
 # Memoria del proyecto
 
@@ -342,8 +342,8 @@ enlazan en vez de repetirla.
   gift-card): aparte, con autorización expresa, antes de integrar el frontend
   que las necesita y con la versión que registra el historial remoto
   (`list_migrations`); si `apply_migration` asigna otra, se renombra el fichero.
-- **Correo:** los commits nuevos usan el correo `noreply` de GitHub. El
-  historial ya publicado no se reescribe.
+- **Correo:** los commits usan el correo personal (`user.email` global); el
+  usuario lo tiene público en GitHub. El historial ya publicado no se reescribe.
 - Una tarea de código no pasa a `Hecha` hasta que su PR está integrada y el
   despliegue verificado; su sección "Verificación" anota la PR, el commit y el
   estado del despliegue. Si la PR espera autorización, la tarea sigue `En curso`.
