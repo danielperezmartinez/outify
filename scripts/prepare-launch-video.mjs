@@ -11,7 +11,7 @@ if (!['localhost', '127.0.0.1'].includes(new URL(origin).hostname))
 const output = resolve('tmp/Outify-Product-Hunt-Media');
 const work = resolve('tmp/launch-video-work');
 for (const dir of [output, `${output}/arcade`, work]) await mkdir(dir, { recursive: true });
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch();
 const viewport = { width: 1440, height: 900 };
 const editorOnly = process.env.OUTIFY_CAPTURE_EDITOR_ONLY === '1';
 const steps = editorOnly

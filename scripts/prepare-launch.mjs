@@ -12,7 +12,7 @@ const symbol = (ink, background = 'none') =>
 await writeFile('public/brand/symbol.svg', symbol('#334231'));
 await writeFile('public/brand/symbol-inverse.svg', symbol('#F8F7F5'));
 await writeFile('public/favicon.svg', symbol('#292724', '#B7C7A8'));
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch();
 try {
   const art = await browser.newPage();
   for (const [name, size, maskable] of [

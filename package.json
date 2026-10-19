@@ -1,6 +1,6 @@
 {
   "name": "outify",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "scripts": {
     "preinstall": "node scripts/require-pnpm.mjs",
     "prepare": "node scripts/enable-git-hooks.mjs",

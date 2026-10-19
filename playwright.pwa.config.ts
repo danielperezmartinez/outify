@@ -7,7 +7,6 @@ export default defineConfig({
   workers: 1,
   use: {
     baseURL: 'http://127.0.0.1:4300',
-    channel: process.env.CI ? undefined : 'chrome',
     viewport: { width: 1440, height: 1000 },
   },
   webServer: {

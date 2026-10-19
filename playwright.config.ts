@@ -6,7 +6,6 @@ export default defineConfig({
   workers: 1,
   use: {
     baseURL: 'http://127.0.0.1:4200',
-    channel: 'chrome',
     viewport: { width: 1440, height: 1000 },
     trace: 'off',
     actionTimeout: 12000,

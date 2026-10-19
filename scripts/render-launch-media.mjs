@@ -10,7 +10,7 @@ const imageData = async (path) =>
   `data:image/png;base64,${(await readFile(path)).toString('base64')}`;
 const fonts = `@font-face{font-family:Geologica;src:url(data:font/woff2;base64,${(await readFile('public/fonts/font-4.woff2')).toString('base64')})}@font-face{font-family:Atkinson;src:url(data:font/woff2;base64,${(await readFile('public/fonts/font-2.woff2')).toString('base64')})}`;
 const mark = await readFile('public/brand/symbol.svg', 'utf8');
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 async function poster(name, content, extra = '') {
   await page.setContent(
