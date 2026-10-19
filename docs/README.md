@@ -1,5 +1,5 @@
 ---
-Última modificación: 2026-10-19
+Última modificación: 2026-10-20
 ---
 # Memoria del proyecto
 
@@ -198,7 +198,9 @@ lo que se haga con MCP, CLI o panel.
   - Datos del entorno personal: nombres de host, de máquina o de dispositivo,
     usuarios del sistema operativo, IP (de red local, VPN o públicas), dominios y
     redes propios, rutas personales (`C:\Users\<nombre>`, `/home/<nombre>`,
-    unidades y carpetas propias) y correos personales.
+    unidades y carpetas propias) y correos personales en el contenido de los
+    ficheros. El correo del autor de los commits no cuenta: se rige por la
+    norma «Correo» de [[#Publicación]].
   - Vulnerabilidades sin corregir (ver "Vulnerabilidades y hallazgos sensibles").
 - En la documentación se usan **marcadores genéricos** (`<usuario>`,
   `<host-de-pruebas>`, `<ruta-al-proyecto>`). Los valores reales viven fuera del
