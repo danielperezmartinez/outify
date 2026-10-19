@@ -1,11 +1,11 @@
 ---
 Nombre: Usar Chromium de Playwright en local
-Estado: En curso
+Estado: Hecha
 Resumen: "Las pruebas e2e y los scripts de lanzamiento usan el Chromium de Playwright en vez de Google Chrome, igual que el CI, para funcionar en Linux sin instalar Chrome."
 Decisiones: ""
 Bloqueada: []
 Fecha de creación: 2026-10-19
-Última modificación: 2026-10-19
+Última modificación: 2026-10-20
 ---
 
 # Usar Chromium de Playwright en local
@@ -27,5 +27,10 @@ pedían `channel: 'chrome'` fuera del CI, y Google Chrome no está instalado.
 
 En local (Linux) y sin `CI=1`: `pnpm build`, `pnpm test:pwa` (1/1) y
 `pnpm test:editor` (11/11) en verde. Los scripts de lanzamiento solo se han
-comprobado con `node --check`. Pendiente: aprobar la versión, abrir la PR y
-verificar el CI y el despliegue.
+comprobado con `node --check`.
+
+## Publicación · 2026-10-20
+
+Versión 0.4.6 aprobada por el usuario. PR #9 integrada con squash en `main`
+(commit `0af903e`) con `Verificar`, `Seguridad` y `Fugas` en verde. Despliegue
+de Production en Vercel de ese commit en `READY`, sirviendo la versión 0.4.6.
