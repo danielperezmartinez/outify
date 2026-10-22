@@ -1,6 +1,6 @@
 ---
 Nombre: Fijar Node 24.22.1 por los parches de octubre
-Estado: En curso
+Estado: Hecha
 Resumen: "El CI fija Node 24.22.1 y engines exige >=24.22.1 <25, versión que corrige los fallos de seguridad de Node del 21 de octubre de 2026; Vercel la toma al desplegar."
 Decisiones: ""
 Bloqueada: []
@@ -29,9 +29,10 @@ publicados.
 
 ## Criterios de finalización
 
-- [ ] PR con `Verificar`, `Seguridad` y `Fugas` en verde.
-- [ ] Integrada con squash y Production `READY`.
-- [ ] Log de Vercel: build y funciones con Node >=24.22.1.
+- [x] PR con `Verificar`, `Seguridad` y `Fugas` en verde.
+- [x] Integrada con squash y Production `READY`.
+- [x] Log de Vercel: build con Node >=24.22.1; funciones en `24.x` (el parche
+      exacto no aparece en los logs, véase Publicación).
 
 ## Verificación · 2026-10-23
 
@@ -39,3 +40,14 @@ En local con Node 24.22.1: `pnpm install --frozen-lockfile`,
 `pnpm check:release` (0.4.6 → 0.4.7), `pnpm test:config` (6/6),
 `pnpm test --watch=false` (35/35), `pnpm test:server` (9/9) y `pnpm build`
 en verde.
+
+## Publicación · 2026-10-23
+
+Versión 0.4.7 aprobada por el usuario. PR #10 integrada con squash en `main`
+(commit `9dee145`) con `Cambios`, `Verificar`, `Seguridad` y `Fugas` en verde;
+el log de `Verificar` muestra `node: v24.22.1`. Production
+`dpl_2YU7QHUKxa1m2qt85iTEdxyPpKKD` en `READY`. El proyecto de Vercel usa Node
+`24.x`: la instalación del build pasó con `engines` `>=24.22.1 <25` y
+`engineStrict`, así que corrió con Node >=24.22.1. El parche exacto del runtime
+de las funciones no aparece en los logs; el usuario acepta cerrar la tarea sin
+ese dato.
