@@ -5,7 +5,7 @@ Signals y Supabase. Reglas y decisiones: [docs/README.md](docs/README.md).
 
 ## Arranque
 
-Requisitos: Node 24 y pnpm 12.4.2 (también disponible con `corepack pnpm`).
+Requisitos: Node 24.22.1 o superior (dentro de la 24) y pnpm 12.4.2 (también disponible con `corepack pnpm`).
 
 ```sh
 corepack pnpm install --frozen-lockfile
